@@ -1,0 +1,16 @@
+{
+  "root_lm": "qwen14b-nothink",
+  "sub_lm": "qwen14b-nothink",
+  "sub_max_tokens": 512,
+  "root_max_tokens": 512,
+  "questions": "data/2wikimultihop/questions_1000_seed42.json",
+  "n": 1000,
+  "out_dir": "results/2wiki1000_qwen14b_homogeneous_nothink_20260501",
+  "experience_library": null,
+  "gepa_program": null,
+  "max_iters": 10,
+  "concurrency": 32,
+  "retriever_url": "http://node408:8003",
+  "no_citation_gate": false,
+  "overwrite": true
+}

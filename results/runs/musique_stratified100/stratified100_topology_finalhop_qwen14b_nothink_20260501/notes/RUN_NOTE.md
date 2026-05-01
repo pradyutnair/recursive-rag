@@ -1,0 +1,9 @@
+# Run Note
+
+{
+  "rows": 100,
+  "mean_tokens": 12809.43,
+  "mean_hops": 2.72,
+  "mean_retries": 0.81,
+  "answered": 100
+}

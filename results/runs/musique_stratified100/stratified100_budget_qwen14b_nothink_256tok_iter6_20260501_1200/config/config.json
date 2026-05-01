@@ -1,0 +1,16 @@
+{
+  "root_lm": "qwen14b-nothink",
+  "sub_lm": "qwen14b-nothink",
+  "sub_max_tokens": 256,
+  "root_max_tokens": 256,
+  "questions": "data/musique/stratified_100.json",
+  "n": 100,
+  "out_dir": "results/stratified100_budget_qwen14b_nothink_256tok_iter6_20260501_1200",
+  "experience_library": null,
+  "gepa_program": null,
+  "max_iters": 6,
+  "concurrency": 32,
+  "retriever_url": "http://node408:8003",
+  "no_citation_gate": false,
+  "overwrite": true
+}

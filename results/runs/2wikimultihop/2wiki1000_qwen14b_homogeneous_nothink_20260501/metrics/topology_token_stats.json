@@ -1,0 +1,35 @@
+{
+  "answered": 1000,
+  "dataset": "2wikimultihop",
+  "hop_hist": {
+    "1": 10,
+    "2": 623,
+    "3": 85,
+    "4": 168,
+    "5": 43,
+    "6": 37,
+    "7": 8,
+    "8": 10,
+    "9": 5,
+    "10": 6,
+    "11": 1,
+    "12": 2,
+    "14": 1,
+    "18": 1
+  },
+  "max_tokens": 99694,
+  "mean_hops": 2.928,
+  "mean_retries": 1.531,
+  "mean_tokens": 14025.355,
+  "median_tokens": 9422.0,
+  "over_10k": 487,
+  "over_20k": 175,
+  "p90_tokens": 26524.9,
+  "rows": 1000,
+  "topology": {
+    "easy_1hop": 10,
+    "multi_sequential": 84,
+    "parallel": 401,
+    "sequential_2hop": 505
+  }
+}

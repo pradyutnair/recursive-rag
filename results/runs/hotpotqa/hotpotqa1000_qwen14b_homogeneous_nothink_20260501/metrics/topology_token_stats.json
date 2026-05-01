@@ -1,0 +1,35 @@
+{
+  "answered": 1000,
+  "dataset": "hotpotqa",
+  "hop_hist": {
+    "1": 136,
+    "2": 636,
+    "3": 95,
+    "4": 55,
+    "5": 24,
+    "6": 19,
+    "7": 7,
+    "8": 8,
+    "9": 4,
+    "10": 9,
+    "11": 3,
+    "12": 2,
+    "16": 1,
+    "18": 1
+  },
+  "max_tokens": 75712,
+  "mean_hops": 2.477,
+  "mean_retries": 1.257,
+  "mean_tokens": 12177.202,
+  "median_tokens": 9005.0,
+  "over_10k": 413,
+  "over_20k": 104,
+  "p90_tokens": 20784.0,
+  "rows": 1000,
+  "topology": {
+    "easy_1hop": 136,
+    "multi_sequential": 139,
+    "parallel": 203,
+    "sequential_2hop": 522
+  }
+}

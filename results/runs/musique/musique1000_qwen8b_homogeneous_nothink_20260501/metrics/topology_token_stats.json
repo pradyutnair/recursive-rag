@@ -1,0 +1,32 @@
+{
+  "rows": 1000,
+  "answered": 1000,
+  "mean_tokens": 11965.083,
+  "median_tokens": 10384.5,
+  "p90_tokens": 18202.5,
+  "max_tokens": 61260,
+  "over_10k": 523,
+  "over_20k": 66,
+  "mean_hops": 2.673,
+  "mean_retries": 0.633,
+  "topology": {
+    "sequential_2hop": 556,
+    "multi_sequential": 387,
+    "easy_1hop": 26,
+    "parallel": 31
+  },
+  "hop_hist": {
+    "0": 3,
+    "1": 23,
+    "2": 556,
+    "3": 257,
+    "4": 103,
+    "5": 34,
+    "6": 9,
+    "7": 5,
+    "8": 2,
+    "9": 3,
+    "10": 4,
+    "13": 1
+  }
+}
