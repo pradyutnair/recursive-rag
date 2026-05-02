@@ -9,6 +9,7 @@ from typing import Any
 
 import dspy
 
+from .aio import to_thread
 from .contracts import CitationCheck, HopFinding, RetrievedChunk, normalize_answer
 from .retriever import Retriever
 
@@ -183,13 +184,14 @@ def _grounded(answer: str, evidence_id: str, chunks: list[RetrievedChunk]) -> bo
 async def _extract(sub_lm: dspy.LM, question: str, expected_answer_type: str, chunks: list[RetrievedChunk]) -> tuple[HopFinding, int]:
     start = len(getattr(sub_lm, "history", []))
     try:
-        with dspy.context(lm=sub_lm):
-            pred = await asyncio.to_thread(
-                dspy.Predict(ExtractAnswerSpan),
-                question=question,
-                expected_answer_type=_clean_answer_type(expected_answer_type),
-                chunks_json=_format_chunks(chunks),
-            )
+        def _call() -> Any:
+            with dspy.context(lm=sub_lm):
+                return dspy.Predict(ExtractAnswerSpan)(
+                    question=question,
+                    expected_answer_type=_clean_answer_type(expected_answer_type),
+                    chunks_json=_format_chunks(chunks),
+                )
+        pred = await to_thread(_call)
     except Exception:
         return HopFinding(confidence=0.0), 0
 
@@ -222,14 +224,15 @@ async def _extract(sub_lm: dspy.LM, question: str, expected_answer_type: str, ch
 async def _rewrite(sub_lm: dspy.LM, question: str, expected_answer_type: str, queries: list[str], best: HopFinding) -> tuple[str, int]:
     start = len(getattr(sub_lm, "history", []))
     try:
-        with dspy.context(lm=sub_lm):
-            pred = await asyncio.to_thread(
-                dspy.Predict(ProposeQueryRewrite),
-                question=question,
-                expected_answer_type=_clean_answer_type(expected_answer_type),
-                previous_queries="\n".join(queries),
-                best_answer_so_far=best.answer,
-            )
+        def _call() -> Any:
+            with dspy.context(lm=sub_lm):
+                return dspy.Predict(ProposeQueryRewrite)(
+                    question=question,
+                    expected_answer_type=_clean_answer_type(expected_answer_type),
+                    previous_queries="\n".join(queries),
+                    best_answer_so_far=best.answer,
+                )
+        pred = await to_thread(_call)
         rewritten = str(getattr(pred, "rewritten_query", "")).strip()
     except Exception:
         rewritten = ""

@@ -1,0 +1,20 @@
+{
+  "n": 5,
+  "norm_em": 0.0,
+  "token_f1": 0.08,
+  "contain": 0.0,
+  "mean_quality": 0.4,
+  "mean_efficiency": 0.5688,
+  "mean_composite": 0.3453,
+  "mean_tokens": 4729.2,
+  "mean_elapsed_s": 47.89,
+  "mean_nodes": 1.0,
+  "profiles": {
+    "bridge_2hop": 4,
+    "temporal": 1
+  },
+  "topologies": {
+    "single_hop": 5
+  },
+  "wall_clock_s": 97.34
+}

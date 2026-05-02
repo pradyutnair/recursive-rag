@@ -1,0 +1,167 @@
+{
+  "n": 100,
+  "mean_tokens": 12765.8,
+  "buckets": {
+    "extractor_wrong_high_conf": 42,
+    "correct": 27,
+    "synthesis_dropped_gold": 9,
+    "planner_overdecomposed": 9,
+    "surface_form": 7,
+    "extractor_low_conf_partial": 6
+  },
+  "examples": {
+    "extractor_wrong_high_conf": [
+      {
+        "id": "musique_2hop__61714_42553",
+        "q": "In The Office, Pam get's together with her husband in which episode?",
+        "pred": "Roy's Wedding",
+        "gold": "the season finale, ``The Job, ''",
+        "answers": [
+          "roys wedding"
+        ],
+        "confs": [
+          0.9
+        ]
+      },
+      {
+        "id": "musique_2hop__695364_513121",
+        "q": "Who is the child of the male star of the 1921 film Money?",
+        "pred": "Percy Fawcett",
+        "gold": "Anthony Ainley",
+        "answers": [
+          "george fawcett",
+          "percy fawcett"
+        ],
+        "confs": [
+          0.8,
+          0.9
+        ]
+      },
+      {
+        "id": "musique_2hop__463353_66723",
+        "q": "Who was the first black student admitted to the school that owns Swayze Field?",
+        "pred": "James Meredith",
+        "gold": "James Howard Meredith",
+        "answers": [
+          "university of mississippi",
+          "james meredith"
+        ],
+        "confs": [
+          0.9,
+          0.95
+        ]
+      }
+    ],
+    "correct": [
+      {
+        "id": "musique_2hop__157498_127908",
+        "q": "What league does the team that uses Dick's Sporting Goods Park play for?"
+      },
+      {
+        "id": "musique_2hop__821197_368148",
+        "q": "In which county is Southern Maryland Electric Cooperative headquartered?"
+      },
+      {
+        "id": "musique_2hop__511296_577502",
+        "q": "Who married the actor from Terminator?"
+      }
+    ],
+    "surface_form": [
+      {
+        "id": "musique_2hop__152027_141308",
+        "q": "What is the parent company of the record label releasing Cold Turkey?",
+        "pred": "Apple Corps Ltd",
+        "gold": "Apple Corps"
+      },
+      {
+        "id": "musique_2hop__35173_17335",
+        "q": "When did the person who ended the Archaemenid Empire by conquest in 330 BC die?",
+        "pred": "10/11 June 323 BC",
+        "gold": "323 BC"
+      },
+      {
+        "id": "musique_3hop1__465684_160545_62931",
+        "q": "Where in the country where Bodindecha was born was The Beach filmed?",
+        "pred": "the Thai island Koh Phi Phi",
+        "gold": "island Koh Phi Phi"
+      }
+    ],
+    "extractor_low_conf_partial": [
+      {
+        "id": "musique_2hop__16581_16525",
+        "q": "When did the person who first brought a postal service into Umayyad lands become caliph?",
+        "confs": [
+          0.9,
+          0.35
+        ]
+      },
+      {
+        "id": "musique_2hop__24441_36630",
+        "q": "What countries found their economic growth in the period young boys were employed in the glass making industries?",
+        "confs": [
+          0.35,
+          0.7
+        ]
+      },
+      {
+        "id": "musique_2hop__269766_43945",
+        "q": "Common Sense which was written by the author of The Age of Reason was an important work because?",
+        "confs": [
+          0.95,
+          0.45
+        ]
+      }
+    ],
+    "synthesis_dropped_gold": [
+      {
+        "id": "musique_2hop__40970_90367",
+        "q": "What was the role of God in the Biblical crossing of the sea where herbivorous fishes have been seen feeding on gelatino",
+        "pred": "God parted the Red Sea to allow the Israelites to escape from Pharaoh's forces.",
+        "gold": "the Red Sea was parted by God",
+        "answers": [
+          "crossing red sea",
+          "god"
+        ]
+      },
+      {
+        "id": "musique_2hop__77832_159673",
+        "q": "The actor who plays copper in Fox and the Hound is a character in which film?",
+        "pred": "National Velvet",
+        "gold": "The Hateful Eight",
+        "answers": [
+          "",
+          "mickey rooney",
+          "national velvet"
+        ]
+      },
+      {
+        "id": "musique_2hop__593633_82341",
+        "q": "Where is New Perry's place of death found in Florida?",
+        "pred": "The question is invalid or misphrased, as \"New Perry\" is a place, not a person, and it is not located in Florida. Therefore, it does not have a place of death in Florida.",
+        "gold": "in Northern Florida",
+        "answers": [
+          "new lexington",
+          "place",
+          "no"
+        ]
+      }
+    ],
+    "planner_overdecomposed": [
+      {
+        "id": "musique_3hop2__132957_295815_40768",
+        "q": "When did the maker of the Acura Legend, the manufacturer of Toyopet Master, and Nissan open US assembly plants?",
+        "n": 5
+      },
+      {
+        "id": "musique_3hop2__831456_223623_162182",
+        "q": "In what region of the country where Sa Thay is located is John Phan's birthplace?",
+        "n": 4
+      },
+      {
+        "id": "musique_4hop1__145087_32392_823060_610794",
+        "q": "What county is the city that shares a border with the state capital of the state where Velma Barfield was born located i",
+        "n": 4
+      }
+    ]
+  }
+}

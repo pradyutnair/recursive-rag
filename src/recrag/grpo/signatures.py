@@ -3,45 +3,54 @@ from __future__ import annotations
 import dspy
 
 
-class SummarizeRollout(dspy.Signature):
-    """Analyze one ReAct rollout and extract transferable strategy lessons.
+class SummarizeAdaptiveRollout(dspy.Signature):
+    """Analyze one Adaptive Recursive RAG rollout and extract transferable strategy lessons.
 
-    The trajectory shows each step: THOUGHT, ACTION (hop/hop_batch/submit/finish), and RESULT
-    (answer, confidence, chunk_id). A DIAGNOSIS section at the end flags issues like low confidence,
-    conflicting answers, missed parallelism, and submit rejections.
+    The trace shows the DAG plan: each node has id (Qd.d), question, expected_type, depth,
+    answer, confidence, source chunk_id. The synthesizer then produced a final span and
+    a citation. The reward includes EM/F1/contain plus grounding/shape and a token-cost
+    efficiency factor.
 
     Focus on:
-    - What decomposition strategy was used (single hop, bridge, parallel)?
-    - Did the agent pick the right topology for this question type?
-    - Were there avoidable errors (repeated queries, ignoring low confidence, not re-searching)?
-    - What would a better strategy look like for this question type?
-    - What is transferable to OTHER questions of a similar structure?
+    - Did the planner pick the right topology (1-hop, 2-hop bridge, parallel sibling, 3+hop)?
+    - Did each node return a high-confidence (>=0.7) and grounded answer?
+    - Did the synthesizer pick the correct final-target span (NOT an intermediate bridge)?
+    - Did the run waste tokens (over-decomposition, redundant retries)?
+    - What is transferable to OTHER questions of the SAME profile?
 
-    Output a 2-4 sentence summary of reusable strategy insights. Do NOT mention specific entity
-    names or question details; generalize to question patterns.
+    Output a 2-4 sentence summary of reusable strategy insights tagged with the profile
+    of this question. Do NOT name specific entities; generalize to question patterns.
     """
 
     question: str = dspy.InputField()
+    profile: str = dspy.InputField()
     gold_answer: str = dspy.InputField()
-    trajectory: str = dspy.InputField(desc="Structured trace: steps with THOUGHT/ACTION/RESULT + DIAGNOSIS")
-    score: float = dspy.InputField(desc="1.0 = exact match, 0.0 = wrong")
-    stats: str = dspy.InputField(desc="JSON: topology, hops, retries, tokens, low_confidence_hops, submit_rejections, used_hop_batch")
-    summary: str = dspy.OutputField(desc="2-4 sentence transferable strategy insight")
+    trajectory: str = dspy.InputField(desc="Readable DAG trace + synthesizer output + citation")
+    reward_breakdown: str = dspy.InputField(desc="JSON of em/f1/contain/grounded/shape/quality/efficiency/composite/tokens")
+    summary: str = dspy.OutputField(desc="2-4 sentence transferable strategy insight, prefixed with [profile=...]")
 
 
 class ExtractGroupOps(dspy.Signature):
-    """Given rollout summaries for one question (G rollouts at different temperatures),
-    extract experience library operations.
+    """Given G rollout summaries for ONE question (different temperatures), extract experience
+    library operations.
 
-    Compare winning rollouts (score=1.0) against losing ones (score=0.0).
-    What did winners do differently? What patterns should be added to the experience library?
+    Compare winning trajectories (high composite reward) against losing ones. What did
+    winners do differently? What patterns are TRANSFERABLE to other questions of the same
+    profile? Do NOT add question-specific facts.
 
-    Output a JSON list of ops: [{"op": "ADD", "text": "...", "rationale": "..."}, {"op": "MODIFY", "id": "E-001", "text": "...", "rationale": "..."}, {"op": "DELETE", "id": "E-003"}, {"op": "KEEP", "id": "E-002"}]
-    Only ADD entries that are genuinely transferable to new questions. Do not add question-specific facts.
+    Output a JSON list of ops:
+      [
+        {"op": "ADD", "text": "...", "rationale": "...", "profile": "bridge_2hop|parallel_compare|temporal|numeric|bridge_3hop_plus|one_hop|yes_no|any"},
+        {"op": "MODIFY", "id": "E-001", "text": "...", "profile": "..."},
+        {"op": "DELETE", "id": "E-003"},
+        {"op": "KEEP", "id": "E-002"}
+      ]
+    Only ADD entries that are genuinely transferable. Maximum 2 new entries per ops list.
     """
 
-    summaries: str = dspy.InputField(desc="Newline-separated rollout summaries for one question, each with score")
-    current_library: str = dspy.InputField(desc="Current experience library entries (E-001: ..., E-002: ...)")
+    summaries: str = dspy.InputField(desc="Newline-separated rollout summaries for one question, with composite reward")
+    profile: str = dspy.InputField(desc="The shared profile of all rollouts in this group")
+    current_library: str = dspy.InputField(desc="Current experience library entries (E-NNN [profile|u=N]: text)")
     ops_json: str = dspy.OutputField(desc="JSON list of ADD/MODIFY/DELETE/KEEP operations")
 
 
@@ -49,10 +58,11 @@ class OptimizeBatch(dspy.Signature):
     """Consolidate experience libraries from a batch of questions into one concise library.
 
     Merge duplicate or overlapping entries. Remove entries that contradict each other.
-    Keep the library concise (max ~15 entries). Each entry should be a transferable strategy
-    principle, not a question-specific fact.
+    Keep the library at most ~24 entries total, ~6 per profile. Each entry should be a
+    transferable strategy principle, not a question-specific fact. Preserve the profile
+    tag of each entry.
     """
 
     batch_proposals: str = dspy.InputField(desc="Newline-separated library snapshots from each question in the batch")
     current_library: str = dspy.InputField()
-    merged_library: str = dspy.OutputField(desc="One entry per line: E-NNN: strategy text")
+    merged_library: str = dspy.OutputField(desc="One entry per line: E-NNN [profile|u=N]: strategy text")

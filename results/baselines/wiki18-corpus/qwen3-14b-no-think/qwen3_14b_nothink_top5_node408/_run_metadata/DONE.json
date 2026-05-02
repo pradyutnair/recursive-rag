@@ -1,0 +1,21 @@
+{
+  "outputs": [
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/naive_hotpotqa/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/naive_2wiki/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/naive_musique/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/naive_bamboogle/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/ircot_hotpotqa/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/ircot_2wiki/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/ircot_musique/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/ircot_bamboogle/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/opera_hotpotqa/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/opera_2wiki/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/opera_musique/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/opera_bamboogle/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/ma-rag_hotpotqa/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/ma-rag_2wiki/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/ma-rag_musique/predictions.jsonl",
+    "/local/yzheng/pnair/baseline/results/full/qwen14b_nothink_top5_node408/combined/ma-rag_bamboogle/predictions.jsonl"
+  ],
+  "completed_at": "2026-05-02 08:56:17"
+}

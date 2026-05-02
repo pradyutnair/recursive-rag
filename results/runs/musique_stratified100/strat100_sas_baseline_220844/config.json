@@ -1,0 +1,20 @@
+{
+  "questions": "data/musique/stratified_100.json",
+  "n": null,
+  "out_dir": "results/runs/musique_stratified100/strat100_sas_baseline_220844",
+  "mode": "sas",
+  "root_lm": "qwen14b-think",
+  "sub_lm": "qwen14b-nothink",
+  "root_max_tokens": 2048,
+  "sub_max_tokens": 512,
+  "max_iters": 15,
+  "max_nodes": 1,
+  "max_recursion": 0,
+  "tau_recurse": 0.5,
+  "experience_library": null,
+  "retriever_url": "http://node408:8003",
+  "token_T": 8000.0,
+  "alpha": 0.3,
+  "concurrency": 6,
+  "overwrite": true
+}
