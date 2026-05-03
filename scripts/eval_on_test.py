@@ -245,7 +245,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--random-easy-rate", type=float, default=-1.0, help="Ablation only: force random easy route with this probability when >=0")
     p.add_argument("--random-route-seed", type=int, default=17)
     p.add_argument("--max-critic-retries", type=int, default=0)
-    p.add_argument("--max-searches", type=int, default=3)
+    p.add_argument("--max-searches", type=int, default=5)
     p.add_argument("--budget-hint", choices=["tight", "normal", "rich"], default="normal")
     p.add_argument("--experience-library")
     p.add_argument("--program", help="JSON file with recovered/compiled prompts {planner, synthesizer, critic}")

@@ -14,7 +14,7 @@ from .contracts import CitationCheck, HopFinding, RetrievedChunk, normalize_answ
 from .retriever import Retriever
 
 CONF_THRESHOLD = 0.65
-MAX_ATTEMPTS = 3
+MAX_ATTEMPTS = 5
 MAX_SPAN_WORDS = 10
 RETRIEVE_TOPK = 5
 

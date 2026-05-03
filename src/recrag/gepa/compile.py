@@ -180,7 +180,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--max-nodes", type=int, default=6)
     p.add_argument("--max-recursion", type=int, default=0)
     p.add_argument("--max-critic-retries", type=int, default=0)
-    p.add_argument("--max-searches", type=int, default=3)
+    p.add_argument("--max-searches", type=int, default=5)
     p.add_argument("--tau-recurse", type=float, default=0.5)
     p.add_argument("--budget-hint", choices=["tight", "normal", "rich"], default="normal")
     p.add_argument("--auto", choices=["light", "medium", "heavy"], default="medium")
