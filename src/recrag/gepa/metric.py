@@ -10,14 +10,14 @@ from recrag.metric import composite_reward_with_oracle, feedback_text
 from recrag.oracle import OracleEntry, OracleLookup
 
 
-def _oracle_feedback(entry: OracleEntry | None, em: float, topology: str, total_tokens: int, reason: str) -> str:
+def _oracle_feedback(entry: OracleEntry | None, f1: float, topology: str, total_tokens: int, reason: str) -> str:
     if entry is None:
         return ""
     sas = "solved" if entry.em == 1 else "failed"
     return (
         f"[ORACLE] naive_rag (Qwen3-14B no-think SAS lane) {sas} this question in "
         f"{entry.tokens} tokens. Yours: topology={topology or 'unknown'}, "
-        f"tokens={total_tokens}, em={em}. {reason}"
+        f"tokens={total_tokens}, f1={f1:.3f}. {reason}"
     )
 
 
@@ -36,6 +36,7 @@ def make_metric(oracle: OracleLookup | None = None) -> Callable:
         total_tokens = int(meta.get("total_tokens", 0))
         expected_type = meta.get("expected_type", "auto")
         topology = meta.get("topology", "")
+        budget_hint = str(meta.get("budget_hint", "normal")).strip().lower()
 
         oracle_entry = oracle.get(gold_id) if oracle and gold_id else None
         oracle_easy = (oracle_entry.em == 1) if oracle_entry else None
@@ -45,9 +46,23 @@ def make_metric(oracle: OracleLookup | None = None) -> Callable:
             pred_answer, gold_answer, findings, total_tokens, expected_type,
             topology=topology, oracle_easy=oracle_easy, naive_tokens=naive_tokens,
         )
+        budget_targets = {"tight": 4000, "normal": 8000, "rich": 12000}
+        budget_target = budget_targets.get(budget_hint, 8000)
+        if total_tokens <= budget_target:
+            score += 0.3
 
         # Build feedback
         fb_parts: list[str] = [feedback_text(rb)]
+        if total_tokens <= budget_target:
+            fb_parts.append(f"[budget={budget_hint}] respected token target {budget_target}.")
+        else:
+            fb_parts.append(f"[budget={budget_hint}] exceeded token target {budget_target} with {total_tokens} tokens.")
+        if pred_name == "router":
+            route = str(meta.get("route", ""))
+            if oracle_easy is True and route != "easy":
+                fb_parts.append("Router missed an oracle-easy SAS-solvable question; prefer easy when the final target is a simple named-subject attribute.")
+            if oracle_easy is False and route == "easy":
+                fb_parts.append("Router under-routed an oracle-hard question to easy; send bridge/comparison/nested questions to hard.")
         if pred_name == "planner":
             n_nodes = int(meta.get("n_nodes", 0))
             expected = int(meta.get("expected_hops_for_profile", 2))
@@ -63,7 +78,7 @@ def make_metric(oracle: OracleLookup | None = None) -> Callable:
             if rb.shape < 0.5:
                 fb_parts.append("Final answer shape does not match expected_type.")
 
-        oracle_str = _oracle_feedback(oracle_entry, rb.em, topology, total_tokens, oracle_reason)
+        oracle_str = _oracle_feedback(oracle_entry, rb.f1, topology, total_tokens, oracle_reason)
         if oracle_str:
             fb_parts.append(oracle_str)
         if gold_dataset:

@@ -37,6 +37,7 @@ from .dag import (
     PlanDAGSig,
     PlanRun,
     PlannedNode,
+    RouteQuestionSig,
     SynthesizeFinalSig,
     execute_plan,
     parse_plan,
@@ -106,6 +107,36 @@ DEFAULT_CRITIC_INSTRUCTIONS = (
     "skip the final target. Return strict JSON only."
 )
 
+DEFAULT_ROUTER_INSTRUCTIONS = (
+    "You are a resource-aware router for open-domain multi-hop QA. Return "
+    "STRICT JSON only: {\"route\":\"easy|hard\",\"reason\":\"...\"}.\n"
+    "Use easy only when one investigator with retrieve/extract/rewrite retries "
+    "can directly answer the final target. Prefer hard for bridge chains, "
+    "unnamed bridge entities, nested of/that/which/who dependencies, "
+    "comparisons, intersections, temporal ordering, arithmetic, numeric "
+    "lookups through another entity, or ambiguity. Route hard when the question "
+    "contains phrases like 'where X is located', 'city where', 'country where', "
+    "'alma mater of', 'composer of', 'director of', or asks for a quantity after "
+    "resolving another entity. Route yes/no questions easy only when both "
+    "entities are explicitly named and the relation can be checked directly. "
+    "\nFew-shot routing examples from fresh SAS-oracle training data:\n"
+    "Q: Are Nicholas Irving and David Ridgway (Scholar) from the same country?\n"
+    "{\"route\":\"easy\",\"reason\":\"Both entities are named and the final answer is a direct yes/no relation.\"}\n"
+    "Q: Musicality features covers of songs from a jukebox musical written by who?\n"
+    "{\"route\":\"easy\",\"reason\":\"One named work leads to one recoverable author attribute.\"}\n"
+    "Q: The organization which sets the standards for ISO 10006 is headquartered in what city?\n"
+    "{\"route\":\"easy\",\"reason\":\"A single named organization can be resolved by retrieval rewrites.\"}\n"
+    "Q: Who is the spouse of the director of film Son Of Samson?\n"
+    "{\"route\":\"hard\",\"reason\":\"Requires resolving a director bridge before spouse lookup.\"}\n"
+    "Q: Which portion of the Nile runs from the nation descendants of African Americans migrated from, to the country where Hay Al-Arab is found?\n"
+    "{\"route\":\"hard\",\"reason\":\"Nested bridges over nations and locations require planned decomposition.\"}\n"
+    "Q: The 17th Premier of Nova Scotia and leader of the federal Progressive Conservative Party of Canada Robert Stanfield fought a few times and lost in general elections against which politician who is currently one of the longest-serving Prime Minister in Canadian history?\n"
+    "{\"route\":\"hard\",\"reason\":\"Long temporal/entity chain with distractors; use the DAG lane.\"}\n"
+    "Budget hints adjust caution: tight may route simple named-subject "
+    "attribute questions to easy; rich should route borderline bridge questions "
+    "to hard."
+)
+
 
 @dataclass
 class AdaptiveConfig:
@@ -115,10 +146,15 @@ class AdaptiveConfig:
     experience_library: str | None = None
     use_dag: bool = True
     planner_instructions: str = DEFAULT_PLANNER_INSTRUCTIONS
+    router_instructions: str = DEFAULT_ROUTER_INSTRUCTIONS
     synth_instructions: str = DEFAULT_SYNTH_INSTRUCTIONS
     critic_instructions: str = DEFAULT_CRITIC_INSTRUCTIONS
     use_critic: bool = True
-    max_critic_retries: int = 1
+    use_router: bool = True
+    force_route: str | None = None
+    budget_hint: str = "normal"
+    max_critic_retries: int = 0
+    max_searches: int = 3
     # Adaptive critic: skip critic when easy (n_nodes==1 AND min_finding_confidence >= tau_skip_critic)
     tau_skip_critic: float = 0.7
 
@@ -155,34 +191,72 @@ class AdaptiveRecursivePipeline:
     """DAG-first adaptive recursive RAG pipeline."""
 
     def __init__(self, root_lm: dspy.LM, sub_lm: dspy.LM, retriever: Retriever, config: AdaptiveConfig, *,
-                 synth_lm: dspy.LM | None = None, critic_lm: dspy.LM | None = None):
+                 synth_lm: dspy.LM | None = None, critic_lm: dspy.LM | None = None, route_lm: dspy.LM | None = None):
         self.root_lm = root_lm
         self.sub_lm = sub_lm
         # synth and critic default to sub_lm (no-think) for speed; planner stays root_lm (think)
         self.synth_lm = synth_lm or sub_lm
         self.critic_lm = critic_lm or sub_lm
+        self.route_lm = route_lm or sub_lm
         self.retriever = retriever
         self.config = config
         self.tool_state = ToolRuntime()
         self.library = _load_library(config.experience_library)
 
         # Build module signatures with current instructions
+        self.route_sig = RouteQuestionSig.with_instructions(config.router_instructions)
         self.plan_sig = PlanDAGSig.with_instructions(config.planner_instructions)
         self.synth_sig = SynthesizeFinalSig.with_instructions(config.synth_instructions)
         self.critic_sig = CritiqueFinalSig.with_instructions(config.critic_instructions)
+        self.route_predict = dspy.Predict(self.route_sig)
         self.plan_predict = dspy.Predict(self.plan_sig)
         self.synth_predict = dspy.Predict(self.synth_sig)
         self.critic_predict = dspy.Predict(self.critic_sig)
 
-    async def _plan_one(self, question: str, expected_type: str = "auto", note: str = "") -> PlanRun | None:
-        prof = classify(question)
+    def _experience(self, prof: str, note: str = "") -> str:
         exp = self.library.to_text(profile=prof, top_k=4) if self.library.entries else ""
         if note:
             exp = (exp + ("\n" if exp else "") + note).strip()
+        return exp
+
+    def _norm_budget_hint(self, budget_hint: str | None) -> str:
+        hint = str(budget_hint or self.config.budget_hint or "normal").strip().lower()
+        return hint if hint in {"tight", "normal", "rich"} else "normal"
+
+    async def _route(self, question: str, prof: str, budget_hint: str) -> tuple[str, str]:
+        forced = str(self.config.force_route or "").strip().lower()
+        if forced in {"easy", "hard"}:
+            return forced, f"forced_{forced}"
+        if not self.config.use_router:
+            return "hard", "router disabled"
+        try:
+            def _call():
+                with dspy.context(lm=self.route_lm):
+                    return self.route_predict(
+                        question=question,
+                        profile=prof,
+                        experience=self._experience(prof),
+                        budget_hint=budget_hint,
+                    )
+            pred = await aio_to_thread(_call)
+            obj = _parse_json_obj(str(getattr(pred, "route_json", "")))
+            route = str(obj.get("route", "")).strip().lower()
+            reason = str(obj.get("reason", "")).strip()
+            if route in {"easy", "hard"}:
+                return route, reason
+        except Exception as exc:
+            self.tool_state.tool_errors.append(f"router error: {exc}")
+        if prof == "one_hop":
+            return "easy", "fallback one_hop"
+        return "hard", "fallback non-one_hop"
+
+    async def _plan_one(self, question: str, expected_type: str = "auto", note: str = "", budget_hint: str = "normal") -> PlanRun | None:
+        prof = classify(question)
+        exp = self._experience(prof, note)
         try:
             def _call():
                 with dspy.context(lm=self.root_lm):
-                    return self.plan_predict(question=question, profile=prof, experience=exp)
+                    return self.plan_predict(question=question, profile=prof, experience=exp, budget_hint=budget_hint)
             pred = await aio_to_thread(_call)
             plan = parse_plan(getattr(pred, "plan_json", ""))
             return plan
@@ -202,10 +276,11 @@ class AdaptiveRecursivePipeline:
                 "chunk_id": n.chunk_id,
                 "expected_type": n.expected_type,
                 "depth": n.depth,
+                "retrieval_query": n.retrieval_query,
             })
         return json.dumps(trace, ensure_ascii=False)
 
-    async def _synth(self, question: str, expected_type: str, plan: PlanRun) -> tuple[str, str]:
+    async def _synth(self, question: str, expected_type: str, plan: PlanRun, budget_hint: str) -> tuple[str, str]:
         trace_json = self._trace_json(plan)
         try:
             def _call():
@@ -214,6 +289,7 @@ class AdaptiveRecursivePipeline:
                         question=question,
                         expected_type=expected_type,
                         trace_json=trace_json,
+                        budget_hint=budget_hint,
                     )
             pred = await aio_to_thread(_call)
             answer = str(getattr(pred, "final_answer", "")).strip()
@@ -223,6 +299,18 @@ class AdaptiveRecursivePipeline:
             answer = ""
             ids = ""
         return answer, ids
+
+    def _prefer_final_node_answer(self, plan: PlanRun, synth_ans: str, synth_ids: str) -> tuple[str, str, bool]:
+        final_node = plan.nodes.get(plan.final_node)
+        if not final_node or not final_node.answer.strip():
+            return synth_ans, synth_ids, False
+        if final_node.confidence < 0.75 or not final_node.chunk_id:
+            return synth_ans, synth_ids, False
+        ans_norm = normalize_answer(synth_ans)
+        node_norm = normalize_answer(final_node.answer)
+        if ans_norm and (ans_norm in node_norm or node_norm in ans_norm):
+            return synth_ans, synth_ids, False
+        return final_node.answer, final_node.chunk_id, True
 
     async def _critic(self, question: str, expected_type: str, plan: PlanRun, answer: str) -> dict[str, str]:
         try:
@@ -246,10 +334,10 @@ class AdaptiveRecursivePipeline:
             self.tool_state.tool_errors.append(f"critic error: {exc}")
             return {"verdict": "accept", "reason": "critic unavailable"}
 
-    async def _execute(self, question: str, expected_type: str, note: str = "") -> PlanRun:
+    async def _execute(self, question: str, expected_type: str, note: str = "", budget_hint: str = "normal") -> PlanRun:
         plan: PlanRun | None = None
         if self.config.use_dag:
-            plan = await self._plan_one(question, expected_type, note)
+            plan = await self._plan_one(question, expected_type, note, budget_hint)
         if plan is None or not plan.nodes:
             return await self._direct_path(question, expected_type)
         runner = AdaptiveDAGRunner(
@@ -259,8 +347,10 @@ class AdaptiveRecursivePipeline:
             max_nodes=self.config.max_nodes,
             max_recursion_depth=self.config.max_recursion_depth,
             tau_recurse=self.config.tau_recurse,
+            max_searches=self.config.max_searches,
         )
-        await execute_plan(plan, runner, self._plan_one if self.config.max_recursion_depth > 0 else None, recursion_depth=0)
+        plan_one = (lambda q, et, n: self._plan_one(q, et, n, budget_hint)) if self.config.max_recursion_depth > 0 else None
+        await execute_plan(plan, runner, plan_one, recursion_depth=0)
         return plan
 
     def _citation_check(self, answer: str, support_ids_raw: str) -> tuple[bool, list[str]]:
@@ -298,6 +388,7 @@ class AdaptiveRecursivePipeline:
         node = PlannedNode(id="Q1.1", question=question, raw_question=question, expected_type=expected_type, depends_on=[])
         plan.nodes["Q1.1"] = node
         runner = AdaptiveDAGRunner(retriever=self.retriever, sub_lm=self.sub_lm, state=self.tool_state, max_nodes=self.config.max_nodes, max_recursion_depth=0, tau_recurse=self.config.tau_recurse)
+        runner.max_searches = self.config.max_searches
         await runner.run_node(node)
         return plan
 
@@ -315,8 +406,9 @@ class AdaptiveRecursivePipeline:
             return "yes_no"
         return "entity"
 
-    async def run(self, question: str) -> dict[str, Any]:
+    async def run(self, question: str, budget_hint: str | None = None) -> dict[str, Any]:
         self.tool_state.reset()
+        budget_hint = self._norm_budget_hint(budget_hint)
         t0 = time.time()
         root_start = len(getattr(self.root_lm, "history", []))
         sub_start = len(getattr(self.sub_lm, "history", []))
@@ -324,20 +416,38 @@ class AdaptiveRecursivePipeline:
         expected_type = self._expected_type_hint(question)
         prof = classify(question)
 
-        plan = await self._execute(question, expected_type)
+        route, route_reason = await self._route(question, prof, budget_hint)
+        if route == "easy":
+            plan = await self._direct_path(question, expected_type)
+        else:
+            plan = await self._execute(question, expected_type, budget_hint=budget_hint)
 
-        # Synthesize final answer + citations
-        synth_ans, synth_ids = await self._synth(question, expected_type, plan)
+        direct_easy_answer = False
+        best_easy = max(self.tool_state.findings, key=lambda f: f.confidence, default=None)
+        if route == "easy" and best_easy and best_easy.confidence >= 0.7 and best_easy.answer.strip() and best_easy.evidence_chunk_id:
+            synth_ans = best_easy.answer
+            synth_ids = best_easy.evidence_chunk_id
+            used_final_node_answer = False
+            direct_easy_answer = True
+        else:
+            # Synthesize final answer + citations
+            synth_ans, synth_ids = await self._synth(question, expected_type, plan, budget_hint)
+            synth_ans, synth_ids, used_final_node_answer = self._prefer_final_node_answer(plan, synth_ans, synth_ids)
         critic_trace: list[dict[str, str]] = []
         topology_mutated = False
         # Adaptive critic: skip on confidently-easy questions (single-node plan with high-conf finding)
         min_conf = min((f.confidence for f in self.tool_state.findings), default=0.0)
         skip_critic = (
-            len(plan.nodes) == 1
-            and min_conf >= self.config.tau_skip_critic
-            and bool(synth_ans.strip())
+            direct_easy_answer
+            or (
+                prof == "one_hop"
+                and route == "easy"
+                and len(plan.nodes) == 1
+                and min_conf >= self.config.tau_skip_critic
+                and bool(synth_ans.strip())
+            )
         )
-        critic_skipped_reason = "easy_high_confidence_single_hop" if skip_critic else ""
+        critic_skipped_reason = "direct_easy_high_confidence" if direct_easy_answer else ("easy_high_confidence_single_hop" if skip_critic else "")
         if self.config.use_critic and not skip_critic:
             verdict = await self._critic(question, expected_type, plan, synth_ans)
             critic_trace.append(verdict)
@@ -348,7 +458,7 @@ class AdaptiveRecursivePipeline:
                     "Topology mutation: re-plan the DAG to resolve the missing final target. "
                     "Add or refine a bridge_resolver node if the current answer is only an intermediate entity."
                 )
-                mutated = await self._plan_one(question, expected_type, hint)
+                mutated = await self._plan_one(question, expected_type, hint, budget_hint)
                 if mutated and mutated.nodes:
                     topology_mutated = True
                     runner = AdaptiveDAGRunner(
@@ -358,10 +468,14 @@ class AdaptiveRecursivePipeline:
                         max_nodes=self.config.max_nodes,
                         max_recursion_depth=self.config.max_recursion_depth,
                         tau_recurse=self.config.tau_recurse,
+                        max_searches=self.config.max_searches,
                     )
-                    await execute_plan(mutated, runner, self._plan_one if self.config.max_recursion_depth > 0 else None, recursion_depth=0)
+                    plan_one = (lambda q, et, n: self._plan_one(q, et, n, budget_hint)) if self.config.max_recursion_depth > 0 else None
+                    await execute_plan(mutated, runner, plan_one, recursion_depth=0)
                     plan = mutated
-                    synth_ans, synth_ids = await self._synth(question, expected_type, plan)
+                    route = "hard"
+                    synth_ans, synth_ids = await self._synth(question, expected_type, plan, budget_hint)
+                    synth_ans, synth_ids, used_final_node_answer = self._prefer_final_node_answer(plan, synth_ans, synth_ids)
                     critic_trace.append(await self._critic(question, expected_type, plan, synth_ans))
 
         # Citation gate; if rejected, try a backup that picks the highest-confidence finding
@@ -391,7 +505,8 @@ class AdaptiveRecursivePipeline:
         # Build a serializable trace
         node_dicts = [plan.nodes[nid].as_dict() for nid in sorted(plan.nodes)]
         topology = (
-            "single_hop" if len(plan.nodes) == 1
+            "easy_lane" if route == "easy"
+            else "single_hop" if len(plan.nodes) == 1
             else "parallel_compare" if all(not plan.nodes[nid].depends_on for nid in plan.nodes) and len(plan.nodes) >= 2
             else f"dag_n{len(plan.nodes)}"
         )
@@ -406,6 +521,9 @@ class AdaptiveRecursivePipeline:
             "tool_errors": list(self.tool_state.tool_errors),
             "findings": [f.as_dict() for f in self.tool_state.findings],
             "profile": prof,
+            "budget_hint": budget_hint,
+            "route": route,
+            "router_reason": route_reason,
             "expected_type": expected_type,
             "topology": topology,
             "n_nodes": len(plan.nodes),
@@ -416,6 +534,8 @@ class AdaptiveRecursivePipeline:
             "critic": critic_trace,
             "critic_skipped_reason": critic_skipped_reason,
             "topology_mutated": topology_mutated,
+            "used_final_node_answer": used_final_node_answer,
+            "direct_easy_answer": direct_easy_answer,
         }
         return {
             "question": question,

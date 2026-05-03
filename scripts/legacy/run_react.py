@@ -84,7 +84,7 @@ async def run_all(args: argparse.Namespace) -> None:
 
 def build_arg_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser()
-    p.add_argument("--root-lm", default="qwen14b-think")
+    p.add_argument("--root-lm", default="qwen14b-nothink")
     p.add_argument("--sub-lm", default="qwen14b-nothink")
     p.add_argument("--sub-max-tokens", type=int, default=512)
     p.add_argument("--root-max-tokens", type=int, default=512)

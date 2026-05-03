@@ -63,6 +63,7 @@ class PlannedNode:
     queries_used: list[str] = field(default_factory=list)
     expanded_into: list[str] = field(default_factory=list)  # ids of children if recursed
     raw_question: str = ""
+    retrieval_query: str = ""
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -77,6 +78,7 @@ class PlannedNode:
             "queries_used": list(self.queries_used),
             "expanded_into": list(self.expanded_into),
             "raw_question": self.raw_question,
+            "retrieval_query": self.retrieval_query,
         }
 
 
@@ -128,7 +130,27 @@ class PlanDAGSig(dspy.Signature):
     question: str = dspy.InputField()
     profile: str = dspy.InputField(desc="Question profile: one_hop, parallel_compare, bridge_2hop, bridge_3hop_plus, temporal, numeric, yes_no")
     experience: str = dspy.InputField(desc="Profile-conditioned strategy hints (may be empty)")
+    budget_hint: str = dspy.InputField(desc="Runtime budget: tight, normal, or rich")
     plan_json: str = dspy.OutputField(desc="Strict JSON DAG schema")
+
+
+class RouteQuestionSig(dspy.Signature):
+    """Route a question to the cheap SAS lane or the full DAG lane.
+
+    Return strict JSON only:
+    {"route":"easy|hard","reason":"short reason"}
+
+    Choose easy only when a single investigator with retrieval rewrites should
+    answer the final target directly. Choose hard for bridge chains, unnamed
+    bridge entities, nested "of/that/which/who" dependencies, comparisons,
+    intersections, temporal reasoning, arithmetic, or any ambiguity.
+    """
+
+    question: str = dspy.InputField()
+    profile: str = dspy.InputField(desc="Heuristic profile")
+    experience: str = dspy.InputField(desc="Profile-conditioned routing hints")
+    budget_hint: str = dspy.InputField(desc="Runtime budget: tight, normal, or rich")
+    route_json: str = dspy.OutputField(desc='Strict JSON: {"route":"easy|hard","reason":"..."}')
 
 
 class SynthesizeFinalSig(dspy.Signature):
@@ -148,6 +170,7 @@ class SynthesizeFinalSig(dspy.Signature):
     question: str = dspy.InputField()
     expected_type: str = dspy.InputField()
     trace_json: str = dspy.InputField(desc="JSON list of resolved nodes")
+    budget_hint: str = dspy.InputField(desc="Runtime budget: tight, normal, or rich")
     final_answer: str = dspy.OutputField(desc="The concise final span")
     support_ids: str = dspy.OutputField(desc="CSV of chunk_ids cited")
 
@@ -246,7 +269,8 @@ def parse_plan(plan_text: str) -> PlanRun | None:
             if mapped:
                 deps.append(mapped)
         et = str(n.get("expected_type") or n.get("type") or "auto").strip().lower() or "auto"
-        nodes[cid] = PlannedNode(id=cid, question=q, raw_question=q, expected_type=et, depends_on=deps)
+        rq = str(n.get("retrieval_query") or n.get("search_query") or n.get("query") or "").strip()
+        nodes[cid] = PlannedNode(id=cid, question=q, raw_question=q, expected_type=et, depends_on=deps, retrieval_query=rq)
     if not nodes:
         return None
     raw_final = str(obj.get("final_node") or obj.get("final") or "").strip()
@@ -305,11 +329,13 @@ class AdaptiveDAGRunner:
     max_nodes: int = 8
     max_recursion_depth: int = 2
     tau_recurse: float = 0.5
+    max_searches: int = 3
 
     async def run_node(self, node: PlannedNode) -> None:
         """Execute a single node (retrieve + extract + maybe rewrite)."""
         finding_json = await _hop_async(
             node.question, node.expected_type, self.retriever, self.sub_lm, self.state,
+            max_attempts=self.max_searches, initial_query=node.retrieval_query or None,
         )
         try:
             data = json.loads(finding_json)
@@ -319,6 +345,7 @@ class AdaptiveDAGRunner:
         node.confidence = float(data.get("confidence", 0.0) or 0.0)
         node.chunk_id = str(data.get("evidence_chunk_id", ""))
         node.queries_used = list(data.get("queries_used", []) or [])
+
 
     async def maybe_recurse(
         self,
@@ -367,7 +394,6 @@ class AdaptiveDAGRunner:
             node.confidence = sub_final.confidence
             node.chunk_id = sub_final.chunk_id
 
-
 async def execute_plan(
     plan: PlanRun,
     runner: AdaptiveDAGRunner,
@@ -381,6 +407,8 @@ async def execute_plan(
         for nid in layer:
             n = plan.nodes[nid]
             n.question = substitute_tags(n.raw_question, resolved)
+            if n.retrieval_query:
+                n.retrieval_query = substitute_tags(n.retrieval_query, resolved)
         await asyncio.gather(*[runner.run_node(plan.nodes[nid]) for nid in layer])
         if plan_one is not None:
             # After running the layer, attempt recursion for low-conf bridge nodes

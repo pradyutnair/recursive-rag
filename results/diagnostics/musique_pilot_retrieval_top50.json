@@ -1,0 +1,2700 @@
+{
+  "n": 100,
+  "topk": 50,
+  "gold_hit_rate": 0.61,
+  "misses": 39,
+  "rows": [
+    {
+      "id": "musique_2hop__46862_68042",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 7550,
+      "gold": "the 2010 election",
+      "prediction": "1994",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 9,
+      "query_hits": [
+        {
+          "query": "Which political party favored harsh punishment of southern states after the Civil War?",
+          "gold_rank": null
+        },
+        {
+          "query": "When did Republican gain control of the House?",
+          "gold_rank": 9
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__786632_831637_91775",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 8291,
+      "gold": "Sea, Air, and Land",
+      "prediction": "Sea, Air, and Land",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Which U.S. military branch operates destroyers and the USS Edsall?",
+          "gold_rank": null
+        },
+        {
+          "query": "What does \"seal\" stand for in the United States Navy military branch?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__731956_126089",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 8339,
+      "gold": "Johan Remkes",
+      "prediction": "Bernt Schneiders",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 5,
+      "query_hits": [
+        {
+          "query": "What is the current administrative region (province/municipality) where Castricum is located?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who is the current mayor or head of government of province of North Holland?",
+          "gold_rank": 5
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__849312_503371_21711",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 12773,
+      "gold": "built in the 15th century",
+      "prediction": "Córdoba",
+      "n_queries": 5,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What region is Perdiguera located in?",
+          "gold_rank": null
+        },
+        {
+          "query": "In which city did Martin from Reguengos de Monsaraz die?",
+          "gold_rank": null
+        },
+        {
+          "query": "When was the Palau de la Generalitat in Córdoba constructed?",
+          "gold_rank": null
+        },
+        {
+          "query": "Construction date of Palau de la Generalitat in Córdoba",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the construction date of the Palau de la Generalitat in Córdoba?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop2__71753_648517_70784_79935",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 11381,
+      "gold": "1930",
+      "prediction": "in 550 BC",
+      "n_queries": 4,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What region is immediately north of Israel and includes the locations of the Battle of Qurah and Umm al Maradim?",
+          "gold_rank": null
+        },
+        {
+          "query": "When was Persian Gulf created?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the historical origin and formation date of the Persian Gulf?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the exact date of the formation of the Persian Gulf?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__144678_443779_52195",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 8882,
+      "gold": "Francisco Guterres",
+      "prediction": "Xanana Gusmão",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 6,
+      "query_hits": [
+        {
+          "query": "Which country, other than Bustami's birth country, had its government established by the Commission of Truth and Friendship?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who was the president of East Timor after it declared independence?",
+          "gold_rank": 6
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__92385_2072",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.5714,
+      "tokens": 9131,
+      "gold": "Brooklyn Public Library",
+      "prediction": "Rapid City Public Library",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Where do the Cosbys live in New York?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the public library system called in 10 Stigwood Avenue?",
+          "gold_rank": null
+        },
+        {
+          "query": "Public library system at 10 Stigwood Avenue",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__7855_7794",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 7752,
+      "gold": "8.005 million",
+      "prediction": "270,098",
+      "n_queries": 2,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Which city is popular with tourists?",
+          "gold_rank": null
+        },
+        {
+          "query": "What was the population of Venice in 2010?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__662618_339990_54675",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9642,
+      "gold": "Tualatin Mountains",
+      "prediction": "Central Mountain",
+      "n_queries": 4,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "In which state is the Fishing Creek Confederacy located?",
+          "gold_rank": null
+        },
+        {
+          "query": "What state is Fishing Creek Confederacy located in?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where is the Fishing Creek Confederacy located?",
+          "gold_rank": null
+        },
+        {
+          "query": "What mountain can be seen from Portland, northern Columbia County, Pennsylvania and southern Sullivan County, Pennsylvania",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__32887_578772",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 6229,
+      "gold": "Chinese surname",
+      "prediction": "Tang dynasty",
+      "n_queries": 1,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What dynasty are the oldest wooden buildings in China dated to?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__152146_5274_458768_33637",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 11801,
+      "gold": "two",
+      "prediction": "43%",
+      "n_queries": 4,
+      "gold_hit_topk": true,
+      "best_gold_rank": 16,
+      "query_hits": [
+        {
+          "query": "What is the record label of Långa nätter?",
+          "gold_rank": 23
+        },
+        {
+          "query": "What is the only group larger than Edward AB?",
+          "gold_rank": 17
+        },
+        {
+          "query": "Where is the headquarters of Bästlein-Jacob-Abshagen Group located?",
+          "gold_rank": 16
+        },
+        {
+          "query": "How many ethnic minorities were looked at differently in Hamburg?",
+          "gold_rank": 21
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__567737_141375_458768_33677",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 12101,
+      "gold": "2013",
+      "prediction": "Los Angeles, California",
+      "n_queries": 5,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "What is the parent company of Study in Brown's record label?",
+          "gold_rank": 17
+        },
+        {
+          "query": "Where is Inside Recordings headquartered?",
+          "gold_rank": 3
+        },
+        {
+          "query": "What is the most recent Bicycle Friendly Community Award date for Los Angeles, California?",
+          "gold_rank": 3
+        },
+        {
+          "query": "When was Los Angeles, California last awarded the Bicycle Friendly Community Award?",
+          "gold_rank": 1
+        },
+        {
+          "query": "What is the most recent date Los Angeles, California received the Bicycle Friendly Community Award?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__389761_567566_84283",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.4,
+      "tokens": 7581,
+      "gold": "Warner Music Group",
+      "prediction": "Warner Bros",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 16,
+      "query_hits": [
+        {
+          "query": "Who performed 'Another Page'?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the record label owner of Christopher Cross?",
+          "gold_rank": 16
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop2__161324_14670_8987_8529",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 8599,
+      "gold": "1943–1992",
+      "prediction": "1941",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 12,
+      "query_hits": [
+        {
+          "query": "Which country's military branch, equivalent to the US Air Defense Artillery, was unprepared for the Nazi invasion?",
+          "gold_rank": null
+        },
+        {
+          "query": "When was the word 'Slavs' used in the national anthem of Slovak Republic?",
+          "gold_rank": 12
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop2__132957_133264_40768",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9870,
+      "gold": "1981",
+      "prediction": "early 1980s",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 3,
+      "query_hits": [
+        {
+          "query": "When did Nissan, Honda (Acura Legend maker), and Toyota (Scion Fuse manufacturer) open their US assembly plants?",
+          "gold_rank": 3
+        },
+        {
+          "query": "When did Nissan, Honda (Acura Legend maker), and Toyota (Scion Fuse manufacturer) open their first US assembly plants?",
+          "gold_rank": 3
+        },
+        {
+          "query": "When did Nissan, Honda (Acura Legend maker), and Toyota (Scion Fuse manufacturer) open their first US assembly plants in the early 1980s?",
+          "gold_rank": 4
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__156700_73244",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 10896,
+      "gold": "Thaba Putsoa",
+      "prediction": "Drakensberg mountains in Lesotho",
+      "n_queries": 4,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What river is the Kraai River a tributary of?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where is the origin of the Orange or Gariep River river?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the exact source location of the Orange or Gariep River?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the specific location in the Drakensberg mountains where the Orange or Gariep River originates?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__152562_5274_458768_33632",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 10630,
+      "gold": "May 4",
+      "prediction": "May 4",
+      "n_queries": 4,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "What is the record label of Vilaiyaadu Mankatha?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which music company is larger than Sony Music Entertainment?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where is the headquarters of Universal Music located?",
+          "gold_rank": null
+        },
+        {
+          "query": "What day is the feast held in Santa Monica, California?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__685045_19320",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 10387,
+      "gold": "74th",
+      "prediction": "190th",
+      "n_queries": 4,
+      "gold_hit_topk": true,
+      "best_gold_rank": 3,
+      "query_hits": [
+        {
+          "query": "Which university was Manuel Isaías López educated at?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the worldwide ranking of National Autonomous University of Mexico (UNAM)?",
+          "gold_rank": 3
+        },
+        {
+          "query": "What is the latest worldwide ranking of National Autonomous University of Mexico (UNAM)?",
+          "gold_rank": 3
+        },
+        {
+          "query": "What is the latest worldwide ranking of National Autonomous University of Mexico (UNAM) according to QS World University Rankings?",
+          "gold_rank": 9
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__88372_83837",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 7744,
+      "gold": "Karen Fairchild",
+      "prediction": "Karen Fairchild",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Who is the singer of \"You Can Crash My Party Anytime\"?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who sings \"Home Alone Tonight\" with Luke Bryan",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__857_846_7877",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 8395,
+      "gold": "two",
+      "prediction": "two",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Where did the Yongle Emperor achieve great feats?",
+          "gold_rank": 13
+        },
+        {
+          "query": "How many major sports centers are located in Changling?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop2__304722_230978_63959",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9551,
+      "gold": "1 December 2010",
+      "prediction": "20 March 2005",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 36,
+      "query_hits": [
+        {
+          "query": "Which team was Matthew Webb a member of?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who won the 1894-95 FA Cup?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the most recent date that Birmingham City beat Aston Villa?",
+          "gold_rank": 36
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__96410_47902",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 2083,
+      "gold": "Matt Damon",
+      "prediction": "Matt Damon",
+      "n_queries": 1,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Who is the actor who plays the title character in The Bourne Betrayal?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__363216_787353",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 1905,
+      "gold": "Ramstein-Miesenbach",
+      "prediction": "Ramstein Air Base, Germany",
+      "n_queries": 1,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Where is the headquarters of the 1st Combat Communication Squadron located?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__15607_59747_211319_557671",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 8898,
+      "gold": "Presque Isle County",
+      "prediction": "Massachusetts",
+      "n_queries": 2,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Which state has armed robbery as a capital crime?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which county shares a border with the county where the most populous city in New Hampshire is located?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__497845_629431_64412",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.5,
+      "tokens": 9508,
+      "gold": "11 February 1929",
+      "prediction": "1929",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Who is the author of Princeps Pastorum?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where did Pope John XXIII die?",
+          "gold_rank": null
+        },
+        {
+          "query": "When did Vatican City State become its own country?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__530579_13529",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 7759,
+      "gold": "June 1982",
+      "prediction": "June 1982",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Who is the father of Diego Sinagra?",
+          "gold_rank": null
+        },
+        {
+          "query": "When was Diego Maradona signed by Barcelona?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__379315_160713_77246",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.3333,
+      "tokens": 13278,
+      "gold": "the country of India",
+      "prediction": "the land of the Indus",
+      "n_queries": 5,
+      "gold_hit_topk": true,
+      "best_gold_rank": 5,
+      "query_hits": [
+        {
+          "query": "What was the majority religion in British India?",
+          "gold_rank": null
+        },
+        {
+          "query": "What term refers to the religion identified in Hinduism?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the Arabic dictionary meaning of the term Hinduism?",
+          "gold_rank": 14
+        },
+        {
+          "query": "What is the Arabic term for Hinduism?",
+          "gold_rank": 5
+        },
+        {
+          "query": "What is the Arabic word for Hinduism?",
+          "gold_rank": 5
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__31124_31093",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 1871,
+      "gold": "Irish",
+      "prediction": "Irish",
+      "n_queries": 1,
+      "gold_hit_topk": true,
+      "best_gold_rank": 3,
+      "query_hits": [
+        {
+          "query": "What nationality was the notable subjective idealist?",
+          "gold_rank": 3
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__640171_228453_86925",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9964,
+      "gold": "fleur - de-lis",
+      "prediction": "fleur-de-lis",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Who is the manufacturer of Blanton's?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the headquarters location of Sazerac Company?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the symbol of the Saints team in Louisville, Kentucky?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__823336_228453_86925",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9515,
+      "gold": "fleur - de-lis",
+      "prediction": "fleur-de-lis",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Who is the manufacturer of Ten High?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the headquarters location of Sazerac Company?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the symbol of the Saints based in Louisville, Kentucky?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop3__746868_88460_30152_20999",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 11161,
+      "gold": "The dynasty regrouped and defeated the Portuguese",
+      "prediction": "Mekong River massacre",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What is the natural boundary between Thailand and Muang Kasi's country?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who were the people from the Somali Muslim Ajuran Empire whose new coins were a proclamation of independence?",
+          "gold_rank": null
+        },
+        {
+          "query": "How were Ajuran Sultanate expelled from Mekong River?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__58323_375563_161848_44231",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 12660,
+      "gold": "Michael Joseph Savage",
+      "prediction": "General Thomas Blamey",
+      "n_queries": 5,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Who is the writer of The Book Thief?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the country of citizenship of Markus Zusak?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which country was near Australia during World War II?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which countries were geographically close to Australia during World War II?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who was the leader of New Guinea during World War II?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__497191_129669",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 8234,
+      "gold": "Lisbon District",
+      "prediction": "Lisbon District",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Where was Alhandra born?",
+          "gold_rank": null
+        },
+        {
+          "query": "In which district is Vila Franca de Xira, Lisbon located?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__161872_21567",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 11763,
+      "gold": "John Kukuzelis",
+      "prediction": "no",
+      "n_queries": 4,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Who introduced musical notation in the 14th century?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who developed musical notation during the 14th century?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who was responsible for developing musical notation in the 14th century?",
+          "gold_rank": null
+        },
+        {
+          "query": "Did <A1.1> participate in a covert mission where their notation was used?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__146155_131905_41948",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 16819,
+      "gold": "English Channel",
+      "prediction": "the National Grid",
+      "n_queries": 7,
+      "gold_hit_topk": true,
+      "best_gold_rank": 4,
+      "query_hits": [
+        {
+          "query": "What is the Irish Channel?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where did Nicolaus Schuback die?",
+          "gold_rank": null
+        },
+        {
+          "query": "Place of death of Nicolaus Schuback",
+          "gold_rank": null
+        },
+        {
+          "query": "Where is the place of death of Nicolaus Schuback?",
+          "gold_rank": null
+        },
+        {
+          "query": "What body of water is located near the city where Nicolaus Schuback died?",
+          "gold_rank": null
+        },
+        {
+          "query": "What else was lowered in the last cold phase besides Elbe and an Irish television channel?",
+          "gold_rank": 7
+        },
+        {
+          "query": "What other entities besides Elbe and an Irish television channel were affected during the last cold phase?",
+          "gold_rank": 4
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__593288_720914_27537",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 7632,
+      "gold": "for the conclave in Rome",
+      "prediction": "Florence",
+      "n_queries": 1,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Why did Roncalli leave the place where Violante's painter died?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__106313_443779_52195",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 11455,
+      "gold": "Francisco Guterres",
+      "prediction": "Francisco Guterres",
+      "n_queries": 4,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "What country is Opor from?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the Commission of Truth and Friendship associated with Indonesia?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which newly declared independent country is part of Indonesia–Timor Leste Commission of Truth and Friendship?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who is the president of East Timor?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__10620_79092",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 6675,
+      "gold": "lava samples have been dated at 341 to 335 million years old",
+      "prediction": "1692",
+      "n_queries": 1,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "When did the volcano named after the legendary King featured in Historia Regum Britanniae last erupt?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop3__857_846_326964_7713",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 11395,
+      "gold": "about 400 years",
+      "prediction": "Beijing",
+      "n_queries": 4,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Which city did the Yongle emperor greet the person to whom the edict was addressed?",
+          "gold_rank": null
+        },
+        {
+          "query": "How long had Beijing been the capital of Yaxing Coach's headquarters location?",
+          "gold_rank": null
+        },
+        {
+          "query": "When was Yaxing Coach's headquarters located in Beijing, and how long had it been there?",
+          "gold_rank": null
+        },
+        {
+          "query": "When was Yaxing Coach's headquarters established in Beijing?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop2__607269_223623_162182",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.4,
+      "tokens": 9794,
+      "gold": "South Central Coast",
+      "prediction": "central Vietnam",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 28,
+      "query_hits": [
+        {
+          "query": "Where was John Phan born?",
+          "gold_rank": null
+        },
+        {
+          "query": "In which region of the country is Da Nang, Vietnam located?",
+          "gold_rank": 28
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__465684_160545_34751",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9162,
+      "gold": "1941",
+      "prediction": "1888",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 6,
+      "query_hits": [
+        {
+          "query": "What is the birth city of Bodindecha?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which country includes the city Campeche?",
+          "gold_rank": null
+        },
+        {
+          "query": "In what year did Mexico form an alliance with Japan?",
+          "gold_rank": 6
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__228_237521_291682",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9630,
+      "gold": "Liza Minnelli",
+      "prediction": "Christian Siriano",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Who is the pop star who influenced Beyonce?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who produced the documentary of Aaliyah?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who is the wife of Bradley Walsh?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__159467_725495_49925_267352",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 11248,
+      "gold": "German Renaissance",
+      "prediction": "Movement for a New Society",
+      "n_queries": 5,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Which church is active in both New Zealand and Lesotho and has 12.6% of Christians in New Zealand?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who is the man who challenged Catholic Church in Lesotho?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who is the individual known for challenging the Catholic Church in Lesotho?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who is the person in Lesotho known for challenging the Catholic Church?",
+          "gold_rank": null
+        },
+        {
+          "query": "What movement was led by <A2.1>?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__662413_42197_18397",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9545,
+      "gold": "the Politburo",
+      "prediction": "Korea",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 18,
+      "query_hits": [
+        {
+          "query": "What is Kirill Eskov's country of citizenship?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is Kirill Eskov's country of citizenship? evidence",
+          "gold_rank": null
+        },
+        {
+          "query": "Where did the arguer from Russia declare he would intervene in the Korean conflict?",
+          "gold_rank": 18
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__689538_547811_80702",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 9611,
+      "gold": "Rialto Bridge",
+      "prediction": "Rialto Bridge",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 3,
+      "query_hits": [
+        {
+          "query": "Who composed La costanza trionfante degl'amori e de gl'odii?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where was Antonio Vivaldi born?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the name of the famous bridge in Venice?",
+          "gold_rank": 3
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__235471_565925",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 7720,
+      "gold": "Columbia Records",
+      "prediction": "Columbia Records",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 2,
+      "query_hits": [
+        {
+          "query": "Who performed the song 'The Place and the Time'?",
+          "gold_rank": 4
+        },
+        {
+          "query": "What record label did Moby Grape belong to?",
+          "gold_rank": 2
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__35137_22940",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 11567,
+      "gold": "Kitab al-shifa",
+      "prediction": "Kitāb al-Šifāʾ",
+      "n_queries": 5,
+      "gold_hit_topk": true,
+      "best_gold_rank": 38,
+      "query_hits": [
+        {
+          "query": "Who is the writer of The Canon of Medicine?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the Book of Healing written by Avicenna (Ibn Sina)?",
+          "gold_rank": 40
+        },
+        {
+          "query": "What is the title of the work written by Avicenna (Ibn Sina) known as the Book of Healing?",
+          "gold_rank": 45
+        },
+        {
+          "query": "What is the title of Avicenna's (Ibn Sina) work known as the Book of Healing?",
+          "gold_rank": 44
+        },
+        {
+          "query": "What is the Arabic title of The Book of Healing?",
+          "gold_rank": 38
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__96411_159054",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 8204,
+      "gold": "the novel of the same name by Robert Ludlum",
+      "prediction": "The Bourne Identity",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 35,
+      "query_hits": [
+        {
+          "query": "What is the name of the main character in The Bourne Deception?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the story of Jason Bourne based on?",
+          "gold_rank": 35
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop2__655849_467331_162182",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.4444,
+      "tokens": 12739,
+      "gold": "South Central Coast",
+      "prediction": "North Central Coast region of Vietnam",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 7,
+      "query_hits": [
+        {
+          "query": "What city has the Zone 5 Military Museum?",
+          "gold_rank": null
+        },
+        {
+          "query": "What region contains the district of A Lưới?",
+          "gold_rank": 15
+        },
+        {
+          "query": "Is the city Da Nang located in the region North Central Coast region of Vietnam?",
+          "gold_rank": 7
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__58323_375563_161848_83118",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.3333,
+      "tokens": 9754,
+      "gold": "the first Sunday in April",
+      "prediction": "in autumn",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "When does daylight savings end in the country near the country where the author of The Book Thief is from?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the date when daylight savings ends in the country near the country where the author of The Book Thief is from?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the specific date when daylight savings ends in the country near the country where the author of The Book Thief is from?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop2__326964_265410_7713",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 14592,
+      "gold": "about 400 years",
+      "prediction": "0",
+      "n_queries": 5,
+      "gold_hit_topk": true,
+      "best_gold_rank": 5,
+      "query_hits": [
+        {
+          "query": "Where was Anhua Gao born?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where is Yaxing Coach's headquarters located?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the location of Yaxing Coach's headquarters?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the address of Yaxing Coach's headquarters?",
+          "gold_rank": null
+        },
+        {
+          "query": "How long has Nanjing, Jiangsu Province, China been the capitol city of Fuxing Road, Beijing?",
+          "gold_rank": 5
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__853227_68633",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 10279,
+      "gold": "Thomas Bach",
+      "prediction": "Dr W.G. Grace",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Which sports association is Arthur Marryatt a member of?",
+          "gold_rank": null
+        },
+        {
+          "query": "What are the leadership roles of Amateur Football Alliance?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who is the president among County Football Association?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__574496_123283",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9008,
+      "gold": "Clifton College",
+      "prediction": "The Juilliard School",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 7,
+      "query_hits": [
+        {
+          "query": "Who is the founder of the Acting Company?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where did John Houseman and Margot Harley study?",
+          "gold_rank": 32
+        },
+        {
+          "query": "Where did John Houseman and Margot Harley study before their acting careers?",
+          "gold_rank": 7
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__652852_2053_52946",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 8212,
+      "gold": "February 7, 2018",
+      "prediction": "January 21, 2019",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 2,
+      "query_hits": [
+        {
+          "query": "Which network, along with ABC and the distributor of The Cube, is one of the major broadcasters based in New York?",
+          "gold_rank": null
+        },
+        {
+          "query": "When is Celebrity Big Brother coming to CBS",
+          "gold_rank": 2
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__88342_75218_128008_80286",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 10605,
+      "gold": "Pete Rose",
+      "prediction": "Delio Onnis",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 27,
+      "query_hits": [
+        {
+          "query": "What type of games are played just before the league MVP is awarded?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which team has played the most games of type Basketball Champions League Game Day?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who has had the most hits in the league that includes team Monaco?",
+          "gold_rank": 27
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__785711_63853",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 10805,
+      "gold": "Thaba Putsoa",
+      "prediction": "Mont-Aux-Sources",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What river is Augrabies Falls located on?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the source of Orange River?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the name of the source identified in Drakensberg mountains in Lesotho?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__433694_20273",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.6667,
+      "tokens": 6365,
+      "gold": "1572",
+      "prediction": "November 1572",
+      "n_queries": 1,
+      "gold_hit_topk": true,
+      "best_gold_rank": 2,
+      "query_hits": [
+        {
+          "query": "In what year did Margaret Knox's spouse pass away?",
+          "gold_rank": 2
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__103180_214799_259594",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 16817,
+      "gold": "GDR",
+      "prediction": "German Democratic Republic",
+      "n_queries": 7,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Which country was Wilfried Grobner from?",
+          "gold_rank": 37
+        },
+        {
+          "query": "What is the literature of Germany?",
+          "gold_rank": 25
+        },
+        {
+          "query": "What are the major works and authors in German literature?",
+          "gold_rank": null
+        },
+        {
+          "query": "What are the major periods and movements in German literature?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which country is associated with German literature?",
+          "gold_rank": null
+        },
+        {
+          "query": "What are the border troops of Germany?",
+          "gold_rank": 1
+        },
+        {
+          "query": "Which country is the Border Troops of the German Democratic Republic from?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__80375_90181",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 12758,
+      "gold": "Milwaukee Deep",
+      "prediction": "Milwaukee Deep",
+      "n_queries": 4,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "What is the deepest part of the ocean off the east coast of the United States?",
+          "gold_rank": 1
+        },
+        {
+          "query": "What is the depth of Milwaukee Deep?",
+          "gold_rank": 1
+        },
+        {
+          "query": "What is the depth of Milwaukee Deep in feet?",
+          "gold_rank": 1
+        },
+        {
+          "query": "What is the depth of Milwaukee Deep in meters?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__96137_62765",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 13983,
+      "gold": "Dathan",
+      "prediction": "no one",
+      "n_queries": 6,
+      "gold_hit_topk": true,
+      "best_gold_rank": 2,
+      "query_hits": [
+        {
+          "query": "What is the cast of The Woman in the Window?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who are the main actors in The Woman in the Window?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who are the main actors in The Woman in the Window? evidence",
+          "gold_rank": null
+        },
+        {
+          "query": "What role did Amy Adams, Julianne Moore, Gary Oldman, Wyatt Russell, Brian Tyree Henry, Fred Hechinger, and Anthony Mackie play in The Ten Commandments?",
+          "gold_rank": 10
+        },
+        {
+          "query": "Which actors played roles in The Ten Commandments?",
+          "gold_rank": 2
+        },
+        {
+          "query": "Which actors played roles in The Ten Commandments? evidence",
+          "gold_rank": 2
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop2__782397_467331_162182",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.6667,
+      "tokens": 10117,
+      "gold": "South Central Coast",
+      "prediction": "South Central Vietnam",
+      "n_queries": 1,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "In what region of the country that contains Phu Luong, is the city that has the Zone 5 Military Museum located?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__313670_42197_18397",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 12030,
+      "gold": "the Politburo",
+      "prediction": "Moscow",
+      "n_queries": 5,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Which country is Vladimir Rapoport from?",
+          "gold_rank": null
+        },
+        {
+          "query": "What organization is Vladimir Rapoport associated with?",
+          "gold_rank": null
+        },
+        {
+          "query": "What organization is Vladimir Rapoport affiliated with?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which world leader referred to <A1.1> as imperialist?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where did Vladimir Lenin announce intervention in the Korean conflict?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__525129_315334_131926_13165",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.5714,
+      "tokens": 9502,
+      "gold": "Treaty of Paris",
+      "prediction": "Treaty of Pontotoc Creek",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 12,
+      "query_hits": [
+        {
+          "query": "Where was the performer 'Lots More Blues, Rags and Hollers' formed?",
+          "gold_rank": null
+        },
+        {
+          "query": "What body of water is located near the city in Minneapolis, Minnesota?",
+          "gold_rank": null
+        },
+        {
+          "query": "What treaty ceded territory to the US extending west to Mississippi River?",
+          "gold_rank": 12
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__472486_97805",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.4,
+      "tokens": 7741,
+      "gold": "Winter War",
+      "prediction": "World War II",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 2,
+      "query_hits": [
+        {
+          "query": "Who is the operator of the Fabian Wrede-class training ship?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which war did Finnish Navy serve in?",
+          "gold_rank": 2
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__389069_132457_51423",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 9338,
+      "gold": "Casa Loma",
+      "prediction": "Casa Loma",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Who performed 'Sleep is the Enemy'?",
+          "gold_rank": null
+        },
+        {
+          "query": "In which city was Danko Jones formed?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the name of the castle in Toronto, Ontario?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__268084_78303",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 10125,
+      "gold": "Cordell Walker",
+      "prediction": "Richard Harrison",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Who is the star of Forced Vengeance?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which of Richard Harrison is known as Walter, Texas Ranger?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who is Richard Harrison also known as Walter, the Texas Ranger?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__131783_131926_13165",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.5714,
+      "tokens": 10782,
+      "gold": "Treaty of Paris",
+      "prediction": "Treaty of Lake Poygan",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 25,
+      "query_hits": [
+        {
+          "query": "What body of water is located near the Minikahda Club?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which treaties ceded territory to the US extending west to Lake Calhoun?",
+          "gold_rank": 29
+        },
+        {
+          "query": "What is the name of the treaty in Treaty of Lake Poygan?",
+          "gold_rank": 25
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__253612_110882",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 12854,
+      "gold": "1 January 1986",
+      "prediction": "Jonathan Sollis",
+      "n_queries": 4,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Who is the performer of Stand Up?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the date of birth of Jonathan Sollis?",
+          "gold_rank": null
+        },
+        {
+          "query": "When was Jonathan Sollis born?",
+          "gold_rank": null
+        },
+        {
+          "query": "Birth date of Jonathan Sollis",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__837871_831637_91775",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9846,
+      "gold": "Sea, Air, and Land",
+      "prediction": "torpedo boat destroyer",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What is the operator of the USS Tringa?",
+          "gold_rank": null
+        },
+        {
+          "query": "What are the destroyer classes operated by United States Navy?",
+          "gold_rank": null
+        },
+        {
+          "query": "What does \"seal\" stand for in the context of destroyers?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__754160_831637_91775",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 8250,
+      "gold": "Sea, Air, and Land",
+      "prediction": "Sea, Air, and Land",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Which U.S. military branch operates the USS Dextrous and a list of destroyer classes?",
+          "gold_rank": null
+        },
+        {
+          "query": "What does SEAL stand for in the United States Navy military branch?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__639955_834494_34088",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 8803,
+      "gold": "Tucson Raceway Park",
+      "prediction": "Clearfield, Pennsylvania",
+      "n_queries": 2,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "In which county is Helvetia located?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where are NASCAR races held in cities that share Clearfield County?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop2__125104_90098_10557",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 16334,
+      "gold": "Medieval Latin",
+      "prediction": "Middle Ages",
+      "n_queries": 7,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Who was Rotrude's father?",
+          "gold_rank": null
+        },
+        {
+          "query": "What era was Charlemagne from?",
+          "gold_rank": 1
+        },
+        {
+          "query": "When was Charlemagne active?",
+          "gold_rank": 8
+        },
+        {
+          "query": "What specific dates mark the reign of Charlemagne?",
+          "gold_rank": 39
+        },
+        {
+          "query": "What was Early Middle Ages later known as?",
+          "gold_rank": null
+        },
+        {
+          "query": "What period followed the Early Middle Ages?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the alternative name for the Early Middle Ages?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__603558_87694_124169",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9819,
+      "gold": "1952",
+      "prediction": "18 November 1626",
+      "n_queries": 2,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What is the saint that San Pietro in Ciel d'Oro is named after?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the end date of the papacy of the Pope associated with the basilica named after Saint Peter?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop3__862_846_326964_7713",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.3333,
+      "tokens": 9751,
+      "gold": "about 400 years",
+      "prediction": "5000 years ago",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What is the headquarters location of Yaxing Coach?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which city did the Yongle emperor greet the person from Zhengzhou, Henan, China?",
+          "gold_rank": null
+        },
+        {
+          "query": "How long was the city Xinzheng in existence?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop2__93066_88342_90766",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 11226,
+      "gold": "1981",
+      "prediction": "2018",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Who won the American League East in 2017?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the event that occurs after the MLB MVP award is given out?",
+          "gold_rank": null
+        },
+        {
+          "query": "In which year did Boston Red Sox and the Los Angeles Dodgers meet in World Series Most Valuable Player Award?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__846600_153080_33897_81096",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 11240,
+      "gold": "Mario Andretti",
+      "prediction": "Simon Pagenaud",
+      "n_queries": 4,
+      "gold_hit_topk": true,
+      "best_gold_rank": 11,
+      "query_hits": [
+        {
+          "query": "Who is the performer of A Modern Jazz Symposium of Music and Poetry?",
+          "gold_rank": null
+        },
+        {
+          "query": "What state is Charles Mingus from?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the largest populated city in Arizona?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who won the Indy car race in Phoenix?",
+          "gold_rank": 11
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__140345_2053_5289",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.5,
+      "tokens": 9649,
+      "gold": "Oriole Records.",
+      "prediction": "CBS Records",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 29,
+      "query_hits": [
+        {
+          "query": "Which network aired Law of the Plainsman?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the other major broadcaster based in NY along with ABC and NBC television network?",
+          "gold_rank": null
+        },
+        {
+          "query": "What label was bought by CBS?",
+          "gold_rank": 29
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop3__794915_466199_695123_72134",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 12469,
+      "gold": "1839",
+      "prediction": "Springfield, Ohio was never the capital of Pennsylvania",
+      "n_queries": 5,
+      "gold_hit_topk": true,
+      "best_gold_rank": 12,
+      "query_hits": [
+        {
+          "query": "In which state is Ward Township located?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which town is WIZE licensed in?",
+          "gold_rank": null
+        },
+        {
+          "query": "When did Springfield, Ohio become the capital of Pennsylvania?",
+          "gold_rank": 12
+        },
+        {
+          "query": "Did Springfield, Ohio ever serve as the capital of Pennsylvania?",
+          "gold_rank": 12
+        },
+        {
+          "query": "Was Springfield, Ohio ever the capital of Pennsylvania, and if so, when?",
+          "gold_rank": 20
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__617062_127905_48717",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 10861,
+      "gold": "Josh Beckett",
+      "prediction": "Jason Repko",
+      "n_queries": 4,
+      "gold_hit_topk": true,
+      "best_gold_rank": 23,
+      "query_hits": [
+        {
+          "query": "Which league did Jim Wilson play in?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who was the second pick in the 1999 draft of Major League Baseball?",
+          "gold_rank": 23
+        },
+        {
+          "query": "Who was selected as the second overall pick in the 1999 Major League Baseball draft?",
+          "gold_rank": 27
+        },
+        {
+          "query": "Who was the second overall selection in the 1999 MLB draft?",
+          "gold_rank": 36
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__445963_6098",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 10876,
+      "gold": "800",
+      "prediction": "20,000",
+      "n_queries": 4,
+      "gold_hit_topk": true,
+      "best_gold_rank": 5,
+      "query_hits": [
+        {
+          "query": "Where was Francis Watson born?",
+          "gold_rank": null
+        },
+        {
+          "query": "Birthplace of Francis Watson",
+          "gold_rank": null
+        },
+        {
+          "query": "Birthplace of Francis Watson evidence",
+          "gold_rank": null
+        },
+        {
+          "query": "How many slaves were emancipated in on a ship in the bay at Saint Helena?",
+          "gold_rank": 5
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__131820_59747_43101",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 9508,
+      "gold": "October 7, 2008",
+      "prediction": "October 7, 2008",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "What state is WEKL located in?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the largest city in Georgia?",
+          "gold_rank": null
+        },
+        {
+          "query": "When did the Real Housewives series from Atlanta start?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__194532_57594",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 7641,
+      "gold": "LeMat revolver",
+      "prediction": "Harris Gunworks M-96",
+      "n_queries": 2,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Who directed the movie Pollock?",
+          "gold_rank": null
+        },
+        {
+          "query": "What gun does Harris use in Westworld?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop3__175072_88460_30152_20999",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 13475,
+      "gold": "The dynasty regrouped and defeated the Portuguese",
+      "prediction": "Mekong expedition of 1866–1868",
+      "n_queries": 5,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Which country is Setthathirath a citizen of?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who did the Somali Muslim Ajuran Empire declare independence from?",
+          "gold_rank": null
+        },
+        {
+          "query": "What organization did the Somali Muslim Ajuran Empire declare independence from?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the natural boundary between Thailand and Lan Xang?",
+          "gold_rank": null
+        },
+        {
+          "query": "How were the people from Somali Muslim sultanate expelled from the the Mekong rapids at Khong Island boundary?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__58323_375563_161848_61344",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 7523,
+      "gold": "submerged continent of Zealandia",
+      "prediction": "Oceania",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "What is the country of citizenship of The Book Thief's author?",
+          "gold_rank": null
+        },
+        {
+          "query": "What continent is Australian part of?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__742464_15840_36002",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.1176,
+      "tokens": 10664,
+      "gold": "built on 16-bit architectures and offered improved graphics and sound",
+      "prediction": "bigger levels, tougher enemies, and a well-regarded soundtrack",
+      "n_queries": 4,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What platform was Robodemons released on?",
+          "gold_rank": null
+        },
+        {
+          "query": "What were the advantages of the Sega Genesis over Nintendo Entertainment System?",
+          "gold_rank": null
+        },
+        {
+          "query": "What specific features or games made the Sega Genesis more appealing to adolescents compared to the Nintendo Entertainment System?",
+          "gold_rank": null
+        },
+        {
+          "query": "What specific technical features or marketing strategies gave the Sega Genesis an edge over the Nintendo Entertainment System?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop2__851134_326964_7713",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9784,
+      "gold": "about 400 years",
+      "prediction": "Nanjing, China",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 38,
+      "query_hits": [
+        {
+          "query": "What is the headquarters location of Pfrang Association?",
+          "gold_rank": null
+        },
+        {
+          "query": "How long has Nanjing, China been the capitol city of Yaxing Coach's headquarters location?",
+          "gold_rank": 38
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__73615_42173",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 8159,
+      "gold": "1599",
+      "prediction": "31 December 1600",
+      "n_queries": 2,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Which company abolished the dual system of government in Bengal?",
+          "gold_rank": null
+        },
+        {
+          "query": "When was British East India Company established?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__66167_72467",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9130,
+      "gold": "Seattle SuperSonics",
+      "prediction": "1",
+      "n_queries": 3,
+      "gold_hit_topk": true,
+      "best_gold_rank": 34,
+      "query_hits": [
+        {
+          "query": "Who scored the most points in a single NBA season?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where was Wilt Chamberlain selected in the NBA Draft?",
+          "gold_rank": 34
+        },
+        {
+          "query": "What was Wilt Chamberlain's draft pick in the NBA?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_4hop1__668178_378185_282674_759393",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 13450,
+      "gold": "Green Bay",
+      "prediction": "Appleton, Wisconsin",
+      "n_queries": 5,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Where was Don Werner born?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which counties share a border with Appleton, Wisconsin?",
+          "gold_rank": 1
+        },
+        {
+          "query": "Counties bordering Appleton, Wisconsin",
+          "gold_rank": 1
+        },
+        {
+          "query": "Counties that border Appleton, Wisconsin",
+          "gold_rank": 1
+        },
+        {
+          "query": "What is the capital of Outagamie, Calumet, and Winnebago?",
+          "gold_rank": 2
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop2__326964_7707_7713",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 16671,
+      "gold": "about 400 years",
+      "prediction": "Taipei",
+      "n_queries": 7,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What is the nominal capital of the Republic of China?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where is Yaxing Coach's headquarters located?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the location of Yaxing Coach's headquarters?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the address of Yaxing Coach's headquarters?",
+          "gold_rank": null
+        },
+        {
+          "query": "How long has Taipei been the headquarters location of Yaxing Coach?",
+          "gold_rank": null
+        },
+        {
+          "query": "When was Yaxing Coach established in Taipei?",
+          "gold_rank": null
+        },
+        {
+          "query": "Year Yaxing Coach started operating from Taipei",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__640171_228453_10972",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 11111,
+      "gold": "1970s",
+      "prediction": "Sazerac Company",
+      "n_queries": 5,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Who is the manufacturer of Blanton's?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where is the headquarters of Sazerac Company?",
+          "gold_rank": null
+        },
+        {
+          "query": "When did Louisville, Kentucky elect its first black mayor?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who was Louisville, Kentucky's first black mayor and when was he elected?",
+          "gold_rank": null
+        },
+        {
+          "query": "When was the first African American mayor elected in Louisville, Kentucky?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__403712_793210",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 7894,
+      "gold": "Sir Francis Baring, 1st Baronet",
+      "prediction": "Sir Francis Baring, 1st Baronet",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Who is the father of Edward Baring, 1st Baron Revelstoke?",
+          "gold_rank": 1
+        },
+        {
+          "query": "Who is the father of Henry Baring",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__818302_25719",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 14370,
+      "gold": "406",
+      "prediction": "155 BC",
+      "n_queries": 6,
+      "gold_hit_topk": true,
+      "best_gold_rank": 44,
+      "query_hits": [
+        {
+          "query": "Which tribes are associated with Lusatia?",
+          "gold_rank": null
+        },
+        {
+          "query": "When did Lusici invade the Roman Empire?",
+          "gold_rank": 44
+        },
+        {
+          "query": "When did the Lusici attack the Roman Empire?",
+          "gold_rank": null
+        },
+        {
+          "query": "What year did the Lusici invade the Roman Empire?",
+          "gold_rank": null
+        },
+        {
+          "query": "What year is 155 BC?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the numerical value of 155 BC?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__79039_131926_90707",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 8002,
+      "gold": "at the city of Cairo, Illinois",
+      "prediction": "Ohio River",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 7,
+      "query_hits": [
+        {
+          "query": "Which city is home to both the Juicy Lucy and the Ohio River?",
+          "gold_rank": 7
+        },
+        {
+          "query": "Where does the body of water near Evansville meet another body of water?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop2__132957_51933_40768",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 8335,
+      "gold": "1981",
+      "prediction": "2014",
+      "n_queries": 1,
+      "gold_hit_topk": true,
+      "best_gold_rank": 11,
+      "query_hits": [
+        {
+          "query": "When did the maker of the Acura Legend, the largest auto company in the world, and Nissan open US assembly plants?",
+          "gold_rank": 11
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__462125_538202_84283",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 9216,
+      "gold": "Warner Music Group",
+      "prediction": "Michael Johnston and Adam Thurston",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "Who is the performer of Days of Our Lives?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which record label is Casey Deidrick associated with?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who owns Audiotree?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__49236_89752_54221",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 14802,
+      "gold": "5am",
+      "prediction": "11 AM",
+      "n_queries": 7,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What region is the fictional Gilead located in The Handmaid's Tale?",
+          "gold_rank": null
+        },
+        {
+          "query": "What U.S. state is the fictional Gilead located in The Handmaid's Tale?",
+          "gold_rank": null
+        },
+        {
+          "query": "What U.S. state is Gilead located in The Handmaid's Tale?",
+          "gold_rank": null
+        },
+        {
+          "query": "What is the largest state in the United States of America?",
+          "gold_rank": null
+        },
+        {
+          "query": "What time do alcohol sales begin in Alaska?",
+          "gold_rank": null
+        },
+        {
+          "query": "What time do alcohol sales start in Alaska?",
+          "gold_rank": null
+        },
+        {
+          "query": "What time do alcohol sales start in Alaska? evidence",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__426806_42197_18397",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.0,
+      "tokens": 10217,
+      "gold": "the Politburo",
+      "prediction": "the Asahi Shimbun",
+      "n_queries": 3,
+      "gold_hit_topk": false,
+      "best_gold_rank": null,
+      "query_hits": [
+        {
+          "query": "What is the country of citizenship of Victor Denisov?",
+          "gold_rank": null
+        },
+        {
+          "query": "Who argued that Russia had become an imperialist power and would intervene in the Korean conflict?",
+          "gold_rank": null
+        },
+        {
+          "query": "Where did Akira Fujiwara make this argument?",
+          "gold_rank": null
+        }
+      ]
+    },
+    {
+      "id": "musique_3hop1__857_846_7887",
+      "dataset": "musique",
+      "em": 1.0,
+      "f1": 1.0,
+      "tokens": 13951,
+      "gold": "thousands",
+      "prediction": "thousands",
+      "n_queries": 6,
+      "gold_hit_topk": true,
+      "best_gold_rank": 1,
+      "query_hits": [
+        {
+          "query": "Which city is associated with the Yongle Emperor greeting the person mentioned in a preserved edict?",
+          "gold_rank": null
+        },
+        {
+          "query": "Which city is mentioned in a preserved edict related to the Yongle Emperor greeting someone?",
+          "gold_rank": 16
+        },
+        {
+          "query": "Which city is mentioned in the preserved edict where the Yongle Emperor greeted someone?",
+          "gold_rank": 10
+        },
+        {
+          "query": "How many tourists visit Nanjing annually?",
+          "gold_rank": 1
+        },
+        {
+          "query": "What is the annual number of tourists visiting Nanjing?",
+          "gold_rank": 1
+        },
+        {
+          "query": "What is the exact annual number of tourists visiting Nanjing?",
+          "gold_rank": 1
+        }
+      ]
+    },
+    {
+      "id": "musique_2hop__124592_402641",
+      "dataset": "musique",
+      "em": 0.0,
+      "f1": 0.5,
+      "tokens": 9568,
+      "gold": "Chiang Hsiao-wu",
+      "prediction": "Chiang Hsiao-yen",
+      "n_queries": 2,
+      "gold_hit_topk": true,
+      "best_gold_rank": 2,
+      "query_hits": [
+        {
+          "query": "Who is Chian Hsiao-chang's father?",
+          "gold_rank": 9
+        },
+        {
+          "query": "Who is the other child of Chiang Ching-kuo besides Chian Hsiao-chang?",
+          "gold_rank": 2
+        }
+      ]
+    }
+  ]
+}

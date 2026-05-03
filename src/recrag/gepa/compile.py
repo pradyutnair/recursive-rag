@@ -37,6 +37,26 @@ def _load_oracle(args: argparse.Namespace) -> OracleLookup | None:
     return OracleLookup.from_paths(paths)
 
 
+def _load_prompts(path: str | None) -> dict[str, str]:
+    if not path:
+        return {}
+    obj = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(obj, dict):
+        return {}
+    raw_prompts = obj.get("prompts")
+    if isinstance(raw_prompts, dict):
+        return {str(k): str(v) for k, v in raw_prompts.items()}
+    prompts: dict[str, str] = {}
+    for name, value in obj.items():
+        if isinstance(value, str):
+            prompts[str(name)] = value
+        elif isinstance(value, dict):
+            sig = value.get("signature")
+            if isinstance(sig, dict) and isinstance(sig.get("instructions"), str):
+                prompts[str(name)] = sig["instructions"]
+    return prompts
+
+
 def compile_gepa(args: argparse.Namespace) -> None:
     train_rows = json.loads(Path(args.questions).read_text(encoding="utf-8"))
     val_rows = json.loads(Path(args.valset).read_text(encoding="utf-8")) if args.valset else None
@@ -48,6 +68,7 @@ def compile_gepa(args: argparse.Namespace) -> None:
     root_lm = make_lm(args.root_lm, max_tokens=args.root_max_tokens)
     sub_lm = make_lm(args.sub_lm, max_tokens=args.sub_max_tokens)
     retriever = Retriever(args.retriever_url)
+    seed_prompts = _load_prompts(args.seed_program)
 
     if args.program == "react":
         pipeline = ReactRagPipeline(root_lm, sub_lm, retriever, PipelineConfig(max_iters=args.max_iters, experience_library=args.experience_library))
@@ -60,6 +81,13 @@ def compile_gepa(args: argparse.Namespace) -> None:
                 max_recursion_depth=args.max_recursion,
                 tau_recurse=args.tau_recurse,
                 experience_library=args.experience_library,
+                budget_hint=args.budget_hint,
+                max_critic_retries=args.max_critic_retries,
+                max_searches=args.max_searches,
+                router_instructions=seed_prompts.get("router", AdaptiveConfig.router_instructions),
+                planner_instructions=seed_prompts.get("planner", AdaptiveConfig.planner_instructions),
+                synth_instructions=seed_prompts.get("synthesizer", AdaptiveConfig.synth_instructions),
+                critic_instructions=seed_prompts.get("critic", AdaptiveConfig.critic_instructions),
             ),
         )
         program = AdaptiveProgram(pipeline)
@@ -78,7 +106,8 @@ def compile_gepa(args: argparse.Namespace) -> None:
                 answer=str(q.get("answer", "")),
                 id=str(q.get("id", "")),
                 dataset=str(q.get("dataset", "")),
-            ).with_inputs("question")
+                budget_hint=str(q.get("budget_hint", args.budget_hint)),
+            ).with_inputs("question", "budget_hint")
             out.append(ex)
         return out
 
@@ -116,18 +145,22 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--n-val", type=int, default=0, help="0 = use all rows in --valset")
     p.add_argument("--oracle-naive-dir", default="compiled/oracle")
     p.add_argument("--oracle-datasets", default="musique,2wikimultihop,hotpotqa")
-    p.add_argument("--root-lm", default="qwen14b-think")
+    p.add_argument("--root-lm", default="qwen14b-nothink")
     p.add_argument("--sub-lm", default="qwen14b-nothink")
-    p.add_argument("--root-max-tokens", type=int, default=4096)
+    p.add_argument("--root-max-tokens", type=int, default=768)
     p.add_argument("--sub-max-tokens", type=int, default=512)
-    p.add_argument("--reflection-lm", default="qwen14b-think")
+    p.add_argument("--reflection-lm", default="qwen14b-nothink")
     p.add_argument("--reflection-max-tokens", type=int, default=2048)
     p.add_argument("--retriever-url", default="http://node408:8003")
     p.add_argument("--experience-library")
+    p.add_argument("--seed-program", default="", help="JSON prompts file used to initialize router/planner/synthesizer/critic")
     p.add_argument("--max-iters", type=int, default=15)
     p.add_argument("--max-nodes", type=int, default=6)
-    p.add_argument("--max-recursion", type=int, default=1)
+    p.add_argument("--max-recursion", type=int, default=0)
+    p.add_argument("--max-critic-retries", type=int, default=0)
+    p.add_argument("--max-searches", type=int, default=3)
     p.add_argument("--tau-recurse", type=float, default=0.5)
+    p.add_argument("--budget-hint", choices=["tight", "normal", "rich"], default="normal")
     p.add_argument("--auto", choices=["light", "medium", "heavy"], default="medium")
     p.add_argument("--max-metric-calls", type=int, default=0, help="If >0 overrides auto")
     p.add_argument("--log-dir", default="", help="If set, GEPA writes detailed logs and supports resume from this dir")

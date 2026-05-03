@@ -50,9 +50,9 @@ def make_mini_lm(cfg: LMConfig | None = None, temperature: float | None = None, 
 def make_lm(name: str, *, replica_idx: int = 0, temperature: float | None = None, max_tokens: int | None = None) -> dspy.LM:
     cfg = LMConfig()
     key = name.lower().strip()
-    if key in {"qwen-think", "qwen14b-think", "root"}:
+    if key in {"qwen-think", "qwen14b-think"}:
         return _qwen(cfg=cfg, replica_idx=replica_idx, thinking=True, temperature=temperature, max_tokens=max_tokens)
-    if key in {"qwen-nothink", "qwen14b-nothink", "sub"}:
+    if key in {"qwen-nothink", "qwen14b-nothink", "root", "sub"}:
         return _qwen(cfg=cfg, replica_idx=replica_idx, thinking=False, temperature=0.0 if temperature is None else temperature, max_tokens=max_tokens)
     if key in {"qwen8b-think"}:
         return _qwen(cfg=cfg, replica_idx=replica_idx, thinking=True, temperature=temperature, max_tokens=max_tokens, model_name="Qwen/Qwen3-8B")

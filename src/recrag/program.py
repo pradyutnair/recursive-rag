@@ -45,18 +45,20 @@ class AdaptiveProgram(dspy.Module):
     def __init__(self, pipeline: SyncAdaptivePipeline):
         super().__init__()
         self.pipeline = pipeline
+        self.router = pipeline.route_predict
         self.planner = pipeline.plan_predict
         self.synthesizer = pipeline.synth_predict
         self.critic = pipeline.critic_predict
 
     def _sync(self) -> None:
+        self.pipeline.route_predict = self.router
         self.pipeline.plan_predict = self.planner
         self.pipeline.synth_predict = self.synthesizer
         self.pipeline.critic_predict = self.critic
 
-    def forward(self, question: str) -> dspy.Prediction:
+    def forward(self, question: str, budget_hint: str = "normal") -> dspy.Prediction:
         self._sync()
-        result = self.pipeline.run(question)
+        result = self.pipeline.run(question, budget_hint=budget_hint)
         return dspy.Prediction(
             answer=result.get("answer", ""),
             trajectory=result.get("trajectory", {}),
@@ -70,16 +72,18 @@ class AsyncAdaptiveProgram(dspy.Module):
     def __init__(self, pipeline: AdaptiveRecursivePipeline):
         super().__init__()
         self.pipeline = pipeline
+        self.router = pipeline.route_predict
         self.planner = pipeline.plan_predict
         self.synthesizer = pipeline.synth_predict
 
     def _sync(self) -> None:
+        self.pipeline.route_predict = self.router
         self.pipeline.plan_predict = self.planner
         self.pipeline.synth_predict = self.synthesizer
 
-    def forward(self, question: str) -> dspy.Prediction:
+    def forward(self, question: str, budget_hint: str = "normal") -> dspy.Prediction:
         self._sync()
-        result = _run_async(self.pipeline.run(question))
+        result = _run_async(self.pipeline.run(question, budget_hint=budget_hint))
         return dspy.Prediction(
             answer=result.get("answer", ""),
             trajectory=result.get("trajectory", {}),

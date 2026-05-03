@@ -1,0 +1,39 @@
+{
+  "hotpotqa": {
+    "n": 100,
+    "norm_em": 0.34,
+    "token_f1": 0.4561,
+    "contain": 0.39,
+    "mean_quality": 1.1683,
+    "mean_efficiency": 0.463,
+    "mean_composite": 0.9233,
+    "mean_tokens": 6823.6,
+    "mean_elapsed_s": 15.7,
+    "mean_nodes": 1.81,
+    "route_dist": {
+      "easy": 26,
+      "hard": 74
+    },
+    "topology_dist": {
+      "easy_lane": 26,
+      "dag_n2": 46,
+      "dag_n3": 13,
+      "single_hop": 12,
+      "dag_n4": 3
+    },
+    "profile_dist": {
+      "bridge_2hop": 47,
+      "yes_no": 8,
+      "temporal": 7,
+      "parallel_compare": 8,
+      "one_hop": 18,
+      "bridge_3hop_plus": 9,
+      "numeric": 3
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 0.26,
+    "easy_route_norm_em": 0.4231,
+    "easy_route_mean_tokens": 2307.0,
+    "wall_clock_s": 158.15
+  }
+}

@@ -122,14 +122,14 @@ def composite_reward(
     contain = _contain(pred, gold)
     grounded = _grounding(pred, findings)
     shape = _shape_match(pred, expected_type)
-    quality = 1.0 * em + 0.5 * f1 + 0.3 * contain + 0.4 * grounded + 0.2 * shape
+    quality = 1.0 * f1 + 0.3 * contain + 0.4 * grounded + 0.2 * shape
     efficiency = math.exp(-max(0, total_tokens) / token_T)
     composite = quality * (efficiency ** alpha)
     return RewardBreakdown(em, f1, contain, grounded, shape, quality, efficiency, composite, int(total_tokens))
 
 
 def oracle_bonus(
-    em: float,
+    correctness: float,
     topology: str,
     total_tokens: int,
     *,
@@ -140,19 +140,21 @@ def oracle_bonus(
 
     Returns (bonus, reason) where reason is a short string for GEPA feedback.
     """
-    is_single = topology == "single_hop"
+    is_single = topology in {"single_hop", "easy_lane"}
+    solved = correctness >= 0.8
+    failed = correctness < 0.5
     if oracle_easy:
-        if is_single and em == 1.0:
-            return 0.5, f"oracle=easy: cheap single_hop recovery (+0.5)"
-        if em == 0.0:
+        if is_single and solved:
+            return 0.5, f"oracle=easy: cheap high-F1 single_hop recovery (+0.5)"
+        if failed:
             return -0.5, f"oracle=easy: regression vs SAS (which solved this in {naive_tokens} tokens) (-0.5)"
-        if naive_tokens > 0 and total_tokens > 3 * naive_tokens:
+        if solved and naive_tokens > 0 and total_tokens > 3 * naive_tokens:
             return -0.3, f"oracle=easy: correct but {total_tokens} tokens vs SAS's {naive_tokens} (-0.3)"
         return 0.0, "oracle=easy: neutral"
     # oracle_hard: SAS failed
-    if em == 1.0:
-        return 0.8, f"oracle=hard: MAS recovery of an SAS failure (+0.8)"
-    if is_single and em == 0.0:
+    if solved:
+        return 0.8, f"oracle=hard: high-F1 MAS recovery of an SAS failure (+0.8)"
+    if is_single and failed:
         return -0.4, f"oracle=hard: chose single_hop and copied SAS's failure (-0.4)"
     return 0.0, "oracle=hard: tried but missed (neutral)"
 
@@ -173,15 +175,15 @@ def composite_reward_with_oracle(
     rb = composite_reward(pred, gold, findings, total_tokens, expected_type, token_T=token_T, alpha=alpha)
     if oracle_easy is None:
         return rb, rb.composite, ""
-    bonus, reason = oracle_bonus(rb.em, topology, total_tokens, oracle_easy=bool(oracle_easy), naive_tokens=int(naive_tokens or 0))
+    bonus, reason = oracle_bonus(rb.f1, topology, total_tokens, oracle_easy=bool(oracle_easy), naive_tokens=int(naive_tokens or 0))
     return rb, rb.composite + bonus, reason
 
 
 def feedback_text(rb: RewardBreakdown, traj_summary: str = "") -> str:
     """Natural-language feedback for GEPA reflection."""
     parts: list[str] = []
-    if rb.em == 1.0:
-        parts.append("Correct.")
+    if rb.f1 >= 0.8:
+        parts.append("High-F1 answer.")
     elif rb.contain == 1.0:
         parts.append("Answer contains gold but is verbose; tighten the final span.")
     elif rb.f1 >= 0.5:

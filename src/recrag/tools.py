@@ -16,6 +16,7 @@ from .retriever import Retriever
 CONF_THRESHOLD = 0.65
 MAX_ATTEMPTS = 3
 MAX_SPAN_WORDS = 10
+RETRIEVE_TOPK = 5
 
 _DATE_RE = re.compile(r"\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\b|\b\d{1,2},\s*\d{4}\b|\b(?:1[6-9]\d{2}|20\d{2})\b", re.IGNORECASE)
 _NUMBER_RE = re.compile(r"\b\d+(?:,\d{3})*(?:\.\d+)?\b|\b(?:one|two|three|four|five|six|seven|eight|nine|ten|hundred|thousand|million|billion)\b", re.IGNORECASE)
@@ -216,7 +217,7 @@ async def _extract(sub_lm: dspy.LM, question: str, expected_answer_type: str, ch
         conf = min(conf, 0.4)
     if answer and not _shape_ok(answer, question, expected_answer_type):
         conf = min(conf, 0.35)
-    if answer and conf > 0.4 and not _grounded(answer, ev, chunks):
+    if answer and conf > 0.4 and expected_answer_type != "yes_no" and not _grounded(answer, ev, chunks):
         conf = min(conf, 0.4)
     return HopFinding(answer=answer, evidence_chunk_id=ev, confidence=conf, expected_answer_type=_clean_answer_type(expected_answer_type)), tokens
 
@@ -239,7 +240,15 @@ async def _rewrite(sub_lm: dspy.LM, question: str, expected_answer_type: str, qu
     return rewritten or f"{question} answer", _model_tokens(sub_lm, start)
 
 
-async def _hop_async(question: str, expected_answer_type: str, retriever: Retriever, sub_lm: dspy.LM, state: ToolRuntime) -> str:
+async def _hop_async(
+    question: str,
+    expected_answer_type: str,
+    retriever: Retriever,
+    sub_lm: dspy.LM,
+    state: ToolRuntime,
+    max_attempts: int | None = None,
+    initial_query: str | None = None,
+) -> str:
     question = str(question or "").strip()
     expected_answer_type = _clean_answer_type(expected_answer_type)
     if not question:
@@ -250,17 +259,18 @@ async def _hop_async(question: str, expected_answer_type: str, retriever: Retrie
     queries: list[str] = []
     seen_chunk_sets: list[set[str]] = []
     best = HopFinding(confidence=0.0)
-    for attempt in range(MAX_ATTEMPTS):
-        query = question if attempt == 0 else (await _rewrite(sub_lm, question, expected_answer_type, queries, best))[0]
+    attempts = max(1, int(max_attempts or MAX_ATTEMPTS))
+    for attempt in range(attempts):
+        query = (initial_query or question) if attempt == 0 else (await _rewrite(sub_lm, question, expected_answer_type, queries, best))[0]
         if query in queries:
             query = f"{query} evidence"
         queries.append(query)
-        chunks = await retriever.retrieve(query, k=5)
+        chunks = await retriever.retrieve(query, k=RETRIEVE_TOPK)
         chunk_ids = {c.chunk_id for c in chunks}
         for chunk in chunks:
             state.chunks_by_id[chunk.chunk_id] = chunk
         if seen_chunk_sets and chunk_ids == seen_chunk_sets[-1]:
-            if attempt < MAX_ATTEMPTS - 1:
+            if attempt < attempts - 1:
                 continue
         seen_chunk_sets.append(chunk_ids)
         finding, _tokens = await _extract(sub_lm, question, expected_answer_type, chunks)

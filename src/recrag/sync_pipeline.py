@@ -22,6 +22,7 @@ from .dag import (
     PlanDAGSig,
     PlanRun,
     PlannedNode,
+    RouteQuestionSig,
     SynthesizeFinalSig,
     parse_plan,
     substitute_tags,
@@ -36,6 +37,7 @@ from .tools import (
     CONF_THRESHOLD,
     MAX_ATTEMPTS,
     MAX_SPAN_WORDS,
+    RETRIEVE_TOPK,
     ExtractAnswerSpan,
     ProposeQueryRewrite,
     ToolRuntime,
@@ -110,6 +112,36 @@ DEFAULT_CRITIC_INSTRUCTIONS = (
     "skip the final target. Return strict JSON only."
 )
 
+DEFAULT_ROUTER_INSTRUCTIONS = (
+    "You are a resource-aware router for open-domain multi-hop QA. Return "
+    "STRICT JSON only: {\"route\":\"easy|hard\",\"reason\":\"...\"}.\n"
+    "Use easy only when one investigator with retrieve/extract/rewrite retries "
+    "can directly answer the final target. Prefer hard for bridge chains, "
+    "unnamed bridge entities, nested of/that/which/who dependencies, "
+    "comparisons, intersections, temporal ordering, arithmetic, numeric "
+    "lookups through another entity, or ambiguity. Route hard when the question "
+    "contains phrases like 'where X is located', 'city where', 'country where', "
+    "'alma mater of', 'composer of', 'director of', or asks for a quantity after "
+    "resolving another entity. Route yes/no questions easy only when both "
+    "entities are explicitly named and the relation can be checked directly. "
+    "\nFew-shot routing examples from fresh SAS-oracle training data:\n"
+    "Q: Are Nicholas Irving and David Ridgway (Scholar) from the same country?\n"
+    "{\"route\":\"easy\",\"reason\":\"Both entities are named and the final answer is a direct yes/no relation.\"}\n"
+    "Q: Musicality features covers of songs from a jukebox musical written by who?\n"
+    "{\"route\":\"easy\",\"reason\":\"One named work leads to one recoverable author attribute.\"}\n"
+    "Q: The organization which sets the standards for ISO 10006 is headquartered in what city?\n"
+    "{\"route\":\"easy\",\"reason\":\"A single named organization can be resolved by retrieval rewrites.\"}\n"
+    "Q: Who is the spouse of the director of film Son Of Samson?\n"
+    "{\"route\":\"hard\",\"reason\":\"Requires resolving a director bridge before spouse lookup.\"}\n"
+    "Q: Which portion of the Nile runs from the nation descendants of African Americans migrated from, to the country where Hay Al-Arab is found?\n"
+    "{\"route\":\"hard\",\"reason\":\"Nested bridges over nations and locations require planned decomposition.\"}\n"
+    "Q: The 17th Premier of Nova Scotia and leader of the federal Progressive Conservative Party of Canada Robert Stanfield fought a few times and lost in general elections against which politician who is currently one of the longest-serving Prime Minister in Canadian history?\n"
+    "{\"route\":\"hard\",\"reason\":\"Long temporal/entity chain with distractors; use the DAG lane.\"}\n"
+    "Budget hints adjust caution: tight may route simple named-subject "
+    "attribute questions to easy; rich should route borderline bridge questions "
+    "to hard."
+)
+
 
 @dataclass
 class AdaptiveConfig:
@@ -119,10 +151,16 @@ class AdaptiveConfig:
     experience_library: str | None = None
     use_dag: bool = True
     planner_instructions: str = DEFAULT_PLANNER_INSTRUCTIONS
+    router_instructions: str = DEFAULT_ROUTER_INSTRUCTIONS
     synth_instructions: str = DEFAULT_SYNTH_INSTRUCTIONS
     critic_instructions: str = DEFAULT_CRITIC_INSTRUCTIONS
     use_critic: bool = True
-    max_critic_retries: int = 1
+    use_router: bool = True
+    force_route: str | None = None
+    budget_hint: str = "normal"
+    max_critic_retries: int = 0
+    tau_skip_critic: float = 0.7
+    max_searches: int = 3
 
 
 def _tokens_since(lm: dspy.LM, start_idx: int) -> int:
@@ -158,6 +196,8 @@ def _hop_sync(
     retriever: Retriever,
     sub_lm: dspy.LM,
     state: ToolRuntime,
+    max_attempts: int | None = None,
+    initial_query: str | None = None,
 ) -> dict:
     """Synchronous mirror of tools._hop_async (retrieve + extract + rewrite + retry)."""
     question = str(question or "").strip()
@@ -170,9 +210,10 @@ def _hop_sync(
     queries: list[str] = []
     seen_chunk_sets: list[set[str]] = []
     best = HopFinding(confidence=0.0)
-    for attempt in range(MAX_ATTEMPTS):
+    attempts = max(1, int(max_attempts or MAX_ATTEMPTS))
+    for attempt in range(attempts):
         if attempt == 0:
-            query = question
+            query = str(initial_query or question).strip()
         else:
             try:
                 with dspy.context(lm=sub_lm):
@@ -188,13 +229,13 @@ def _hop_sync(
         if query in queries:
             query = f"{query} evidence"
         queries.append(query)
-        chunks = retriever._retrieve_batch_sync([query], k=5)
+        chunks = retriever._retrieve_batch_sync([query], k=RETRIEVE_TOPK)
         chunks = chunks[0] if chunks else []
         chunk_ids = {c.chunk_id for c in chunks}
         for chunk in chunks:
             state.chunks_by_id[chunk.chunk_id] = chunk
         if seen_chunk_sets and chunk_ids == seen_chunk_sets[-1]:
-            if attempt < MAX_ATTEMPTS - 1:
+            if attempt < attempts - 1:
                 continue
         seen_chunk_sets.append(chunk_ids)
         finding = _extract_sync(sub_lm, question, expected_answer_type, chunks)
@@ -240,13 +281,13 @@ def _extract_sync(sub_lm: dspy.LM, question: str, expected_answer_type: str, chu
         conf = min(conf, 0.4)
     if answer and not _shape_ok(answer, question, expected_answer_type):
         conf = min(conf, 0.35)
-    if answer and conf > 0.4 and not _grounded(answer, ev, chunks):
+    if answer and conf > 0.4 and _clean_answer_type(expected_answer_type) != "yes_no" and not _grounded(answer, ev, chunks):
         conf = min(conf, 0.4)
     return HopFinding(answer=answer, evidence_chunk_id=ev, confidence=conf, expected_answer_type=_clean_answer_type(expected_answer_type))
 
 
-def _run_node_sync(node: PlannedNode, retriever: Retriever, sub_lm: dspy.LM, state: ToolRuntime) -> None:
-    data = _hop_sync(node.question, node.expected_type, retriever, sub_lm, state)
+def _run_node_sync(node: PlannedNode, retriever: Retriever, sub_lm: dspy.LM, state: ToolRuntime, max_searches: int = 3) -> None:
+    data = _hop_sync(node.question, node.expected_type, retriever, sub_lm, state, max_attempts=max_searches, initial_query=node.retrieval_query or None)
     node.answer = str(data.get("answer", ""))
     node.confidence = float(data.get("confidence", 0.0) or 0.0)
     node.chunk_id = str(data.get("evidence_chunk_id", ""))
@@ -268,10 +309,12 @@ def _execute_plan_sync(
         for nid in layer:
             n = plan.nodes[nid]
             n.question = substitute_tags(n.raw_question, resolved)
+            if n.retrieval_query:
+                n.retrieval_query = substitute_tags(n.retrieval_query, resolved)
         if len(layer) == 1:
-            _run_node_sync(plan.nodes[layer[0]], retriever, sub_lm, state)
+            _run_node_sync(plan.nodes[layer[0]], retriever, sub_lm, state, config.max_searches if config else 3)
         else:
-            futures = [_LAYER_EXECUTOR.submit(_run_node_sync, plan.nodes[nid], retriever, sub_lm, state) for nid in layer]
+            futures = [_LAYER_EXECUTOR.submit(_run_node_sync, plan.nodes[nid], retriever, sub_lm, state, config.max_searches if config else 3) for nid in layer]
             for fut in futures:
                 fut.result()
         # Recursion expansion (sequential - rare path)
@@ -316,21 +359,56 @@ class SyncAdaptivePipeline:
         self.config = config
         self.tool_state = ToolRuntime()
         self.library = _load_library(config.experience_library)
+        self.route_sig = RouteQuestionSig.with_instructions(config.router_instructions)
         self.plan_sig = PlanDAGSig.with_instructions(config.planner_instructions)
         self.synth_sig = SynthesizeFinalSig.with_instructions(config.synth_instructions)
         self.critic_sig = CritiqueFinalSig.with_instructions(config.critic_instructions)
+        self.route_predict = dspy.Predict(self.route_sig)
         self.plan_predict = dspy.Predict(self.plan_sig)
         self.synth_predict = dspy.Predict(self.synth_sig)
         self.critic_predict = dspy.Predict(self.critic_sig)
 
-    def _plan_one(self, question: str, expected_type: str = "auto", note: str = "") -> PlanRun | None:
-        prof = classify(question)
+    def _experience(self, prof: str, note: str = "") -> str:
         exp = self.library.to_text(profile=prof, top_k=4) if self.library.entries else ""
         if note:
             exp = (exp + ("\n" if exp else "") + note).strip()
+        return exp
+
+    def _norm_budget_hint(self, budget_hint: str | None) -> str:
+        hint = str(budget_hint or self.config.budget_hint or "normal").strip().lower()
+        return hint if hint in {"tight", "normal", "rich"} else "normal"
+
+    def _route(self, question: str, prof: str, budget_hint: str) -> tuple[str, str]:
+        forced = str(self.config.force_route or "").strip().lower()
+        if forced in {"easy", "hard"}:
+            return forced, f"forced_{forced}"
+        if not self.config.use_router:
+            return "hard", "router disabled"
+        try:
+            with dspy.context(lm=self.sub_lm):
+                pred = self.route_predict(
+                    question=question,
+                    profile=prof,
+                    experience=self._experience(prof),
+                    budget_hint=budget_hint,
+                )
+            obj = _parse_json_obj(str(getattr(pred, "route_json", "")))
+            route = str(obj.get("route", "")).strip().lower()
+            reason = str(obj.get("reason", "")).strip()
+            if route in {"easy", "hard"}:
+                return route, reason
+        except Exception as exc:
+            self.tool_state.tool_errors.append(f"router error: {exc}")
+        if prof == "one_hop":
+            return "easy", "fallback one_hop"
+        return "hard", "fallback non-one_hop"
+
+    def _plan_one(self, question: str, expected_type: str = "auto", note: str = "", budget_hint: str = "normal") -> PlanRun | None:
+        prof = classify(question)
+        exp = self._experience(prof, note)
         try:
             with dspy.context(lm=self.root_lm):
-                pred = self.plan_predict(question=question, profile=prof, experience=exp)
+                pred = self.plan_predict(question=question, profile=prof, experience=exp, budget_hint=budget_hint)
             return parse_plan(getattr(pred, "plan_json", ""))
         except Exception as exc:
             self.tool_state.tool_errors.append(f"plan error: {exc}")
@@ -344,21 +422,39 @@ class SyncAdaptivePipeline:
                 "id": n.id, "question": n.question, "answer": n.answer,
                 "confidence": round(n.confidence, 3), "chunk_id": n.chunk_id,
                 "expected_type": n.expected_type, "depth": n.depth,
+                "retrieval_query": n.retrieval_query,
             })
         return json.dumps(trace, ensure_ascii=False)
 
-    def _synth(self, question: str, expected_type: str, plan: PlanRun) -> tuple[str, str]:
+    def _synth(self, question: str, expected_type: str, plan: PlanRun, budget_hint: str) -> tuple[str, str]:
         try:
-            with dspy.context(lm=self.root_lm):
-                pred = self.synth_predict(question=question, expected_type=expected_type, trace_json=self._trace_json(plan))
+            with dspy.context(lm=self.sub_lm):
+                pred = self.synth_predict(
+                    question=question,
+                    expected_type=expected_type,
+                    trace_json=self._trace_json(plan),
+                    budget_hint=budget_hint,
+                )
             return str(getattr(pred, "final_answer", "")).strip(), str(getattr(pred, "support_ids", "")).strip()
         except Exception as exc:
             self.tool_state.tool_errors.append(f"synth error: {exc}")
             return "", ""
 
+    def _prefer_final_node_answer(self, plan: PlanRun, synth_ans: str, synth_ids: str) -> tuple[str, str, bool]:
+        final_node = plan.nodes.get(plan.final_node)
+        if not final_node or not final_node.answer.strip():
+            return synth_ans, synth_ids, False
+        if final_node.confidence < 0.75 or not final_node.chunk_id:
+            return synth_ans, synth_ids, False
+        ans_norm = normalize_answer(synth_ans)
+        node_norm = normalize_answer(final_node.answer)
+        if ans_norm and (ans_norm in node_norm or node_norm in ans_norm):
+            return synth_ans, synth_ids, False
+        return final_node.answer, final_node.chunk_id, True
+
     def _critic(self, question: str, expected_type: str, plan: PlanRun, answer: str) -> dict[str, str]:
         try:
-            with dspy.context(lm=self.root_lm):
+            with dspy.context(lm=self.sub_lm):
                 pred = self.critic_predict(
                     question=question,
                     expected_type=expected_type,
@@ -422,11 +518,12 @@ class SyncAdaptivePipeline:
         plan = PlanRun(nodes={}, final_node="Q1.1")
         node = PlannedNode(id="Q1.1", question=question, raw_question=question, expected_type=expected_type, depends_on=[])
         plan.nodes["Q1.1"] = node
-        _run_node_sync(node, self.retriever, self.sub_lm, self.tool_state)
+        _run_node_sync(node, self.retriever, self.sub_lm, self.tool_state, self.config.max_searches)
         return plan
 
-    def run(self, question: str) -> dict[str, Any]:
+    def run(self, question: str, budget_hint: str | None = None) -> dict[str, Any]:
         self.tool_state.reset()
+        budget_hint = self._norm_budget_hint(budget_hint)
         t0 = time.time()
         root_start = len(getattr(self.root_lm, "history", []))
         sub_start = len(getattr(self.sub_lm, "history", []))
@@ -434,18 +531,41 @@ class SyncAdaptivePipeline:
         expected_type = self._expected_type_hint(question)
         prof = classify(question)
 
+        route, route_reason = self._route(question, prof, budget_hint)
         plan: PlanRun | None = None
-        if self.config.use_dag:
-            plan = self._plan_one(question, expected_type)
-        if plan is None or not plan.nodes:
+        if route == "hard" and self.config.use_dag:
+            plan = self._plan_one(question, expected_type, budget_hint=budget_hint)
+        if route == "easy" or plan is None or not plan.nodes:
             plan = self._direct_path(question, expected_type)
         else:
-            _execute_plan_sync(plan, self.retriever, self.sub_lm, self.tool_state, self._plan_one, self.config, 0)
+            plan_one = lambda q, et, n: self._plan_one(q, et, n, budget_hint)
+            _execute_plan_sync(plan, self.retriever, self.sub_lm, self.tool_state, plan_one, self.config, 0)
 
-        synth_ans, synth_ids = self._synth(question, expected_type, plan)
+        direct_easy_answer = False
+        best_easy = max(self.tool_state.findings, key=lambda f: f.confidence, default=None)
+        if route == "easy" and best_easy and best_easy.confidence >= 0.7 and best_easy.answer.strip() and best_easy.evidence_chunk_id:
+            synth_ans = best_easy.answer
+            synth_ids = best_easy.evidence_chunk_id
+            used_final_node_answer = False
+            direct_easy_answer = True
+        else:
+            synth_ans, synth_ids = self._synth(question, expected_type, plan, budget_hint)
+            synth_ans, synth_ids, used_final_node_answer = self._prefer_final_node_answer(plan, synth_ans, synth_ids)
         critic_trace: list[dict[str, str]] = []
         topology_mutated = False
-        if self.config.use_critic:
+        min_conf = min((f.confidence for f in self.tool_state.findings), default=0.0)
+        skip_critic = (
+            direct_easy_answer
+            or (
+                prof == "one_hop"
+                and route == "easy"
+                and len(plan.nodes) == 1
+                and min_conf >= self.config.tau_skip_critic
+                and bool(synth_ans.strip())
+            )
+        )
+        critic_skipped_reason = "direct_easy_high_confidence" if direct_easy_answer else ("easy_high_confidence_single_hop" if skip_critic else "")
+        if self.config.use_critic and not skip_critic:
             verdict = self._critic(question, expected_type, plan, synth_ans)
             critic_trace.append(verdict)
             if verdict["verdict"] == "flag" and self.config.max_critic_retries > 0:
@@ -454,12 +574,15 @@ class SyncAdaptivePipeline:
                     "Topology mutation: re-plan the DAG to resolve the missing final target. "
                     "Add or refine a bridge_resolver node if the current answer is only an intermediate entity."
                 )
-                mutated = self._plan_one(question, expected_type, hint)
+                mutated = self._plan_one(question, expected_type, hint, budget_hint)
                 if mutated and mutated.nodes:
                     topology_mutated = True
-                    _execute_plan_sync(mutated, self.retriever, self.sub_lm, self.tool_state, self._plan_one, self.config, 0)
+                    plan_one = lambda q, et, n: self._plan_one(q, et, n, budget_hint)
+                    _execute_plan_sync(mutated, self.retriever, self.sub_lm, self.tool_state, plan_one, self.config, 0)
                     plan = mutated
-                    synth_ans, synth_ids = self._synth(question, expected_type, plan)
+                    route = "hard"
+                    synth_ans, synth_ids = self._synth(question, expected_type, plan, budget_hint)
+                    synth_ans, synth_ids, used_final_node_answer = self._prefer_final_node_answer(plan, synth_ans, synth_ids)
                     critic_trace.append(self._critic(question, expected_type, plan, synth_ans))
 
         accepted, used_ids = self._citation_check(synth_ans, synth_ids)
@@ -480,7 +603,8 @@ class SyncAdaptivePipeline:
         elapsed = time.time() - t0
         node_dicts = [plan.nodes[nid].as_dict() for nid in sorted(plan.nodes)]
         topology = (
-            "single_hop" if len(plan.nodes) == 1
+            "easy_lane" if route == "easy"
+            else "single_hop" if len(plan.nodes) == 1
             else "parallel_compare" if all(not plan.nodes[nid].depends_on for nid in plan.nodes) and len(plan.nodes) >= 2
             else f"dag_n{len(plan.nodes)}"
         )
@@ -494,6 +618,9 @@ class SyncAdaptivePipeline:
             "tool_errors": list(self.tool_state.tool_errors),
             "findings": [f.as_dict() for f in self.tool_state.findings],
             "profile": prof,
+            "budget_hint": budget_hint,
+            "route": route,
+            "router_reason": route_reason,
             "expected_type": expected_type,
             "topology": topology,
             "n_nodes": len(plan.nodes),
@@ -502,7 +629,10 @@ class SyncAdaptivePipeline:
             "citation_accepted": accepted,
             "expected_hops_for_profile": expected_hops(prof),
             "critic": critic_trace,
+            "critic_skipped_reason": critic_skipped_reason,
             "topology_mutated": topology_mutated,
+            "used_final_node_answer": used_final_node_answer,
+            "direct_easy_answer": direct_easy_answer,
         }
         readable = _readable_dag_trace_sync(question, plan, final_answer, used_ids)
         return {
