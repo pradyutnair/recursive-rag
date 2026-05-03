@@ -37,15 +37,22 @@ Plus a per-question-type ablation answering Q1 and Q2: which components (router,
 - API keys at `/local/yzheng/pnair/.env`. `OPENAI_API_KEY` is set; use `openai/gpt-5` for GEPA reflection (~$0.50-1 per full run, ~10x faster than local think reflection).
 - DSPy cache: set `DSPY_CACHEDIR=/local/yzheng/pnair/workspace/recursive-rag/.dspy_cache`.
 
-## Existing assets (do not redo)
+## Existing assets
 
-- **Pipeline scaffold** at `/local/yzheng/pnair/workspace/recursive-rag/src/recrag/`: profile classifier (heuristic, 7 buckets), Plan*RAG-style DAG planner with `<A.I.J>` tag substitution, async executor with parallel within-layer execution, per-node investigator with retrieve+extract+rewrite (existing `_hop_async`, `MAX_ATTEMPTS=3`), synthesizer, critic, topology mutation, citation gate. Sync mirror for GEPA threading.
-- **GEPA driver** in `src/recrag/gepa/compile.py`: supports `--reflection-lm openai/gpt-5`, `--max-metric-calls`, `--log-dir` checkpointing, `--oracle-naive-dir`, `--oracle-datasets`. Patched dspy `gepa.proposer.merge.find_common_ancestor_pair` for the zero-weight crash bug; preserve this patch.
-- **TF-GRPO driver** in `src/recrag/grpo/compile.py` with HERA-style ADD/MERGE/PRUNE/KEEP experience library at `src/recrag/grpo/library.py`, profile|difficulty tagged.
-- **Oracle on 1500 fresh questions** in `compiled/oracle/{musique,2wikimultihop,hotpotqa}_fresh_naive/predictions.jsonl`. Per-dataset SAS EM: musique 0.07, 2wiki 0.354, hotpot 0.362. Mean tokens 2325. These are SAS-mode runs (single agent, max 3 retrieve-extract-rewrite cycles) on fresh questions verified to have zero ID overlap with test sets.
-- **Stratified train/val** in `data/multidataset/train_v3.json` (240q, 80 per dataset, balanced across dataset × oracle_easy × profile) and `val_v3.json` (30q).
-- **Recovered GEPA-evolved program** at `compiled/gepa_v3_recovered_cand13.json` — yesterday's GEPA winner, val EM 0.433 on val_v3. Use as seed for planner/synthesizer/critic prompts.
-- **Baselines rescored on exact 1000q test ids**: `results/diagnostics/baselines_rescored.json` with `(method, dataset, norm_em, token_f1, contain, mean_tokens)` for {naive_rag, IRCoT, OPERA, MA-RAG} × {musique, 2wikimultihop, hotpotqa, bamboogle}.
+Two categories below: **stable assets** (data, oracle, splits, baselines) that you should reuse as-is, and **first-draft components** (the GEPA + TF-GRPO drivers, the experience library shape, and the recovered program) which exist as starting points but are explicitly open for redesign — see the "Optimization layer" section further down.
+
+**Stable assets (reuse as-is):**
+
+- **Pipeline scaffold** at `/local/yzheng/pnair/workspace/recursive-rag/src/recrag/`: profile classifier (heuristic, 7 buckets), Plan*RAG-style DAG planner with `<A.I.J>` tag substitution, async executor with parallel within-layer execution, per-node investigator with retrieve+extract+rewrite (existing `_hop_async`, `MAX_ATTEMPTS=3`), synthesizer, critic, topology mutation, citation gate. Sync mirror for GEPA threading. The scaffold is correct; extend it (add the Router lane and `budget_hint` field) rather than rebuild it.
+- **Oracle on 1500 fresh questions** in `compiled/oracle/{musique,2wikimultihop,hotpotqa}_fresh_naive/predictions.jsonl`. Per-dataset SAS EM: musique 0.07, 2wiki 0.354, hotpot 0.362. Mean tokens 2325. These are SAS-mode runs (single agent, max 3 retrieve-extract-rewrite cycles) on fresh questions verified to have zero ID overlap with test sets. Use directly.
+- **Stratified train/val** in `data/multidataset/train_v3.json` (240q, 80 per dataset, balanced across dataset × oracle_easy × profile) and `val_v3.json` (30q). Use directly.
+- **Baselines rescored on exact 1000q test ids**: `results/diagnostics/baselines_rescored.json` with `(method, dataset, norm_em, token_f1, contain, mean_tokens)` for {naive_rag, IRCoT, OPERA, MA-RAG} × {musique, 2wikimultihop, hotpotqa, bamboogle}. Use as the comparison points; do not re-run.
+
+**First-draft components (open for redesign):**
+
+- **GEPA driver** in `src/recrag/gepa/compile.py` and **GEPA metric** in `src/recrag/gepa/metric.py`: supports `--reflection-lm openai/gpt-5`, `--max-metric-calls`, `--log-dir` checkpointing, `--oracle-naive-dir`, `--oracle-datasets`. Patched dspy `gepa.proposer.merge.find_common_ancestor_pair` for the zero-weight crash bug; preserve this patch. Replace or rewrite the driver if it does not deliver the numeric targets.
+- **TF-GRPO driver** in `src/recrag/grpo/compile.py`, with HERA-style ADD/MERGE/PRUNE/KEEP experience library at `src/recrag/grpo/library.py` (profile|difficulty tagged) and signatures at `src/recrag/grpo/signatures.py`. Library structure, group composition, retrieval rule, and ops vocabulary are all open for redesign.
+- **Recovered GEPA-evolved program** at `compiled/gepa_v3_recovered_cand13.json` — yesterday's GEPA winner reconstructed from a crashed run's log, val EM 0.433 on val_v3 (30q stratified). Useful as a seed for planner/synthesizer/critic prompts when starting a new GEPA run, but not load-bearing; if you redesign the GEPA driver or change the module set, regenerate the seed from defaults.
 
 ## Test sets (fixed; never train on these)
 
@@ -146,6 +153,45 @@ What it is missing:
 3. **GEPA wired to optimize four named predictors**, not three: `router`, `planner`, `synthesizer`, `critic`. Use `compiled/gepa_v3_recovered_cand13.json` as seed for planner/synth/critic; hand-write the seed router prompt in the spirit of HERA's chain-disambiguation rules (named entity vs unnamed bridge, nested-of chains, comparisons → hard; single named subject + one missing attribute → easy).
 
 4. **HERA-style token-aware reflection** — the GEPA reflection prompt for the orchestrator/router must include both `F1` and `tokens` per trajectory, sorted by `(F1↓, tokens↑)`. Already partly done in `src/recrag/grpo/signatures.py`; extend to GEPA reflection too.
+
+## Optimization layer (GEPA + TF-GRPO): treat as open for redesign, not as fixed scaffolding
+
+The current GEPA driver (`src/recrag/gepa/compile.py` + `src/recrag/gepa/metric.py`) and TF-GRPO driver (`src/recrag/grpo/compile.py` + `src/recrag/grpo/library.py` + `src/recrag/grpo/signatures.py`) are **first drafts**, not load-bearing infrastructure. Treat them as starting points to redesign or replace if they don't deliver the numeric targets. The metric, signatures, library shape, group composition, candidate-selection policy, reflection prompts, and reward weighting are all open. The only invariants are:
+
+- The reward must include both quality (EM/F1/contain/grounded/shape) and a token-cost term, weighted such that a +1 EM trade for a 2× token increase is roughly neutral. Current weights (`alpha=0.3`, `token_T=8000`) are a starting guess; sweep them.
+- The oracle-routing bonus must be present in some form (otherwise contribution 1 has nothing to ablate against). Current bonus values (+0.5 / -0.5 / -0.3 / +0.8 / -0.4) are starting guesses; sweep them.
+- The budget-conditioning hint must reach all module prompts, and the metric must reward respecting it.
+- Modules to optimize: at minimum router, planner, synthesizer, critic, plus the per-node investigator's extractor and rewriter prompts if you decide they are load-bearing.
+
+Things in the current GEPA driver that you should reconsider:
+
+- **Reflection LM**. Current default is local Qwen3-14B-think. Switch to `openai/gpt-5` for stronger prompt rewrites. If the gpt-5 budget is tight, `gpt-5-mini` is fine. If you want pure homogeneity for purity reasons, stay on local think but expect noisier evolution.
+- **Pareto tracking valset size**. Current `val_v3.json` has 30 questions. If GEPA collapses to local optima, reduce to 20 or stratify differently. dspy's own docs note "smallest valset that matches downstream distribution".
+- **Metric calls budget**. Current 800 is arbitrary. Plot val score vs metric-calls used and stop when it plateaus.
+- **Module independence**. Current driver lets GEPA edit router / planner / synth / critic independently. Consider co-evolving router + planner as a single unit since their decisions are coupled; or fix critic + synth and only evolve router + planner; or evolve in stages (router first, then planner, then synth, then critic).
+- **Seed program diversity**. Currently seeded from `compiled/gepa_v3_recovered_cand13.json` only. Consider seeding GEPA with multiple distinct candidates (e.g., a "verbose careful" planner and a "minimal terse" planner) so the Pareto frontier has more starting diversity.
+- **Merge proposer**. The patched dspy merge proposer is fine but uniform-weight fallback may not be optimal. If you observe poor merges, replace the merge logic with a custom one (e.g., always merge the highest-aggregate-score program with the highest-Pareto-coverage program).
+
+Things in the current TF-GRPO driver that you should reconsider:
+
+- **Group size G**. Currently 4. Larger G (6-8) gives more discrimination signal at higher cost. Smaller G (2-3) is cheaper and may be enough if individual rollouts are already sharply different.
+- **Library structure**. Current Profile-Insight-Utility entries are flat strings tagged `[easy|profile]`. Consider structured entries: `{condition_pattern, action_template, expected_outcome, utility, uses, last_updated}`. Or hierarchical libraries (per-agent libraries instead of a single shared library). Or separate libraries for "what topology to choose" vs "what query rewrite to use".
+- **Retrieval at runtime**. Current retrieval is `(profile match boost + utility/uses) with token-overlap diversity`. Try BM25 over insight text, or learned embedding over insights, or oracle-style retrieval (use the question to predict which library entries help, then GEPA-evolve that prediction prompt).
+- **Library size cap**. Currently uncapped. Set a max (e.g., 30 entries) to force pruning and prevent unbounded growth.
+- **Update frequency**. Currently after every batch of 10 questions. Try after every question (more responsive but noisier) or after every epoch (more stable but slower).
+- **Group composition rule**. HERA only updates from groups with mixed outcomes (some win, some lose). The current driver inherits that. Consider relaxing to also use uniformly-failing groups for "what NOT to do" insights.
+- **Ops vocabulary**. Currently ADD/MODIFY/DELETE/KEEP. HERA also has MERGE/PRUNE. Add those if the library accumulates redundant entries.
+
+Things to consider that are NOT in the current driver and may need to be added:
+
+- **Joint reward shaping**. Currently `composite + oracle_bonus`. Consider also adding a bonus for matching the oracle's recommended topology, or a curriculum that increases token-penalty weight over training.
+- **Trust-region constraint on prompt edits**. dspy GEPA does not enforce small-step prompt edits; if you observe wild prompt swings (the recovered cand13 was 3000+ chars vs the seed's 1500), consider adding a length penalty or a token-edit-distance penalty between successive candidates.
+- **Multi-objective Pareto explicit selection**. dspy GEPA tracks a Pareto frontier internally but reports a single "best" candidate by aggregate score. Override the candidate-selection logic to return the program at a chosen point on the EM-vs-tokens frontier (e.g., highest EM with mean_tokens ≤ 8000), not the highest-aggregate-score program.
+- **Online TF-GRPO rather than batch**. Current driver runs G rollouts per question in a fixed loop. A streaming variant that updates the library after each question and then uses the updated library for the next question's rollouts is closer to true online RL and may converge faster.
+- **Budget-aware library lookups**. Library entries should themselves be budget-tagged (e.g., `[easy|profile|cheap]` vs `[hard|profile|expensive]`) so retrieval at runtime can match the runtime budget hint.
+- **Failure-mode mining**. The recovered cand13's planner over-collapsed to single_hop on bridge questions. A separate optimization pass that targets only the questions where the planner emitted the wrong topology (using the oracle as ground truth for "right" topology) could fix this faster than blanket GEPA.
+
+If after a serious attempt the driver-as-shipped does not hit the numeric targets, redesign or replace it. The thesis claim is the empirical result, not the optimization mechanism. As long as the optimization is gradient-free, training-time-only, and uses a defensible reward, the thesis works. You are explicitly authorized to swap GEPA for a custom evolutionary loop, replace TF-GRPO with a different rollout-and-distill pipeline, or remove either entirely if the other suffices to hit targets.
 
 ## Things that wasted prior time — avoid these
 
