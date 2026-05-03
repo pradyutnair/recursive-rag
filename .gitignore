@@ -12,3 +12,5 @@ data/**/sentence_index.pkl
 .venv/
 .dspy_cache/
 cache.db
+
+*.pid
