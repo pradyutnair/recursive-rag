@@ -1,0 +1,7 @@
+{
+  "dataset": "hotpotqa",
+  "n": 500,
+  "em": 0.362,
+  "mean_tokens": 2033.4,
+  "wall_clock_s": 229.1
+}

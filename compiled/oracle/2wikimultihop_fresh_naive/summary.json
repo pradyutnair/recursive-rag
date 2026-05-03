@@ -1,0 +1,7 @@
+{
+  "dataset": "2wikimultihop",
+  "n": 500,
+  "em": 0.354,
+  "mean_tokens": 2543.3,
+  "wall_clock_s": 275.8
+}

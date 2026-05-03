@@ -28,18 +28,9 @@ from recrag.profile import classify
 NAIVE_BASE = ROOT / "results/baselines/wiki18-corpus/qwen3-14b-no-think/qwen3_14b_nothink_top5_node408"
 
 DATASETS = {
-    "musique": {
-        "questions": "data/musique/stratified_100.json",
-        "naive": "naive_musique",
-    },
-    "2wikimultihop": {
-        "questions": "data/2wikimultihop/questions_1000_seed42.json",
-        "naive": "naive_2wiki",
-    },
-    "hotpotqa": {
-        "questions": "data/hotpotqa/questions_1000_seed42.json",
-        "naive": "naive_hotpotqa",
-    },
+    "musique": {"questions": "data/multidataset/fresh_pool/musique.json", "naive": "musique_fresh_naive"},
+    "2wikimultihop": {"questions": "data/multidataset/fresh_pool/2wikimultihop.json", "naive": "2wikimultihop_fresh_naive"},
+    "hotpotqa": {"questions": "data/multidataset/fresh_pool/hotpotqa.json", "naive": "hotpotqa_fresh_naive"},
 }
 
 
@@ -102,15 +93,27 @@ def build(args) -> None:
     train: list[dict] = []
     val: list[dict] = []
     per_ds = max(1, args.train_per_dataset)
+    val_per_ds = max(0, args.val_per_dataset)
     val_share = max(0.0, min(0.5, args.val_share))
     stats = {}
+    oracle_base = ROOT / args.oracle_dir
     for ds, cfg in DATASETS.items():
         rows = json.loads((ROOT / cfg["questions"]).read_text())
-        oracle = OracleLookup.from_paths([NAIVE_BASE / cfg["naive"] / "predictions.jsonl"])
-        n_target = int(per_ds * (1 + val_share))
+        oracle = OracleLookup.from_paths([
+            oracle_base / f"{ds}_fresh_naive.jsonl",
+            oracle_base / cfg["naive"] / "predictions.jsonl",
+            NAIVE_BASE / cfg["naive"] / "predictions.jsonl",
+        ])
+        if val_per_ds > 0:
+            n_target = per_ds + val_per_ds
+        else:
+            n_target = int(per_ds * (1 + val_share))
         sampled = stratified_sample(rows, oracle, n=n_target, seed=args.seed + hash(ds) % 1000)
         rng.shuffle(sampled)
-        n_val = int(round(len(sampled) * val_share))
+        if val_per_ds > 0:
+            n_val = min(val_per_ds, len(sampled))
+        else:
+            n_val = int(round(len(sampled) * val_share))
         ds_val = sampled[:n_val]
         ds_train = sampled[n_val:]
         for r in ds_train:
@@ -148,7 +151,9 @@ def build(args) -> None:
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--out-dir", default="data/multidataset")
+    p.add_argument("--oracle-dir", default="compiled/oracle")
     p.add_argument("--train-per-dataset", type=int, default=20)
+    p.add_argument("--val-per-dataset", type=int, default=0, help="If >0, use absolute val count per dataset (overrides --val-share)")
     p.add_argument("--val-share", type=float, default=0.4)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--tag", default="v1")

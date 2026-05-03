@@ -63,5 +63,9 @@ def make_lm(name: str, *, replica_idx: int = 0, temperature: float | None = None
     if key.startswith("openai/"):
         if not os.environ.get("OPENAI_API_KEY"):
             raise RuntimeError("OPENAI_API_KEY is not set")
+        # OpenAI reasoning models (gpt-5, o-series) require temperature=1.0 and max_tokens >= 16000
+        is_reasoning = any(x in key for x in ("gpt-5", "o1", "o3", "o4"))
+        if is_reasoning:
+            return dspy.LM(model=key, temperature=1.0, max_tokens=max(max_tokens or 0, 16000), cache=False)
         return dspy.LM(model=key, temperature=temperature or 0.0, max_tokens=max_tokens or 1024, cache=False)
     raise ValueError(f"Unknown LM name: {name}")

@@ -33,6 +33,7 @@ from .aio import to_thread as aio_to_thread
 from .contracts import CitationCheck, HopFinding, normalize_answer
 from .dag import (
     AdaptiveDAGRunner,
+    CritiqueFinalSig,
     PlanDAGSig,
     PlanRun,
     PlannedNode,
@@ -96,6 +97,15 @@ DEFAULT_SYNTH_INSTRUCTIONS = (
     "refusal. Cite the chunk_ids used as support (CSV)."
 )
 
+DEFAULT_CRITIC_INSTRUCTIONS = (
+    "You are a strict verifier for multi-hop QA. Given the original question, "
+    "the resolved DAG trace, and the proposed final answer, decide if the "
+    "answer directly resolves the final target. Accept only when the answer is "
+    "supported by the trace and has the expected type. Flag bridge-only "
+    "answers, unsupported answers, contradictions, wrong type, or answers that "
+    "skip the final target. Return strict JSON only."
+)
+
 
 @dataclass
 class AdaptiveConfig:
@@ -106,6 +116,11 @@ class AdaptiveConfig:
     use_dag: bool = True
     planner_instructions: str = DEFAULT_PLANNER_INSTRUCTIONS
     synth_instructions: str = DEFAULT_SYNTH_INSTRUCTIONS
+    critic_instructions: str = DEFAULT_CRITIC_INSTRUCTIONS
+    use_critic: bool = True
+    max_critic_retries: int = 1
+    # Adaptive critic: skip critic when easy (n_nodes==1 AND min_finding_confidence >= tau_skip_critic)
+    tau_skip_critic: float = 0.7
 
 
 def _tokens_since(lm: dspy.LM, start_idx: int) -> int:
@@ -139,9 +154,13 @@ def _load_library(path: str | None) -> ExperienceLibrary:
 class AdaptiveRecursivePipeline:
     """DAG-first adaptive recursive RAG pipeline."""
 
-    def __init__(self, root_lm: dspy.LM, sub_lm: dspy.LM, retriever: Retriever, config: AdaptiveConfig):
+    def __init__(self, root_lm: dspy.LM, sub_lm: dspy.LM, retriever: Retriever, config: AdaptiveConfig, *,
+                 synth_lm: dspy.LM | None = None, critic_lm: dspy.LM | None = None):
         self.root_lm = root_lm
         self.sub_lm = sub_lm
+        # synth and critic default to sub_lm (no-think) for speed; planner stays root_lm (think)
+        self.synth_lm = synth_lm or sub_lm
+        self.critic_lm = critic_lm or sub_lm
         self.retriever = retriever
         self.config = config
         self.tool_state = ToolRuntime()
@@ -150,8 +169,10 @@ class AdaptiveRecursivePipeline:
         # Build module signatures with current instructions
         self.plan_sig = PlanDAGSig.with_instructions(config.planner_instructions)
         self.synth_sig = SynthesizeFinalSig.with_instructions(config.synth_instructions)
+        self.critic_sig = CritiqueFinalSig.with_instructions(config.critic_instructions)
         self.plan_predict = dspy.Predict(self.plan_sig)
         self.synth_predict = dspy.Predict(self.synth_sig)
+        self.critic_predict = dspy.Predict(self.critic_sig)
 
     async def _plan_one(self, question: str, expected_type: str = "auto", note: str = "") -> PlanRun | None:
         prof = classify(question)
@@ -169,8 +190,7 @@ class AdaptiveRecursivePipeline:
             self.tool_state.tool_errors.append(f"plan error: {exc}")
             return None
 
-    async def _synth(self, question: str, expected_type: str, plan: PlanRun) -> tuple[str, str]:
-        # Build resolved trace JSON for the synthesizer
+    def _trace_json(self, plan: PlanRun) -> str:
         trace = []
         for nid in sorted(plan.nodes):
             n = plan.nodes[nid]
@@ -183,10 +203,13 @@ class AdaptiveRecursivePipeline:
                 "expected_type": n.expected_type,
                 "depth": n.depth,
             })
-        trace_json = json.dumps(trace, ensure_ascii=False)
+        return json.dumps(trace, ensure_ascii=False)
+
+    async def _synth(self, question: str, expected_type: str, plan: PlanRun) -> tuple[str, str]:
+        trace_json = self._trace_json(plan)
         try:
             def _call():
-                with dspy.context(lm=self.root_lm):
+                with dspy.context(lm=self.synth_lm):
                     return self.synth_predict(
                         question=question,
                         expected_type=expected_type,
@@ -200,6 +223,45 @@ class AdaptiveRecursivePipeline:
             answer = ""
             ids = ""
         return answer, ids
+
+    async def _critic(self, question: str, expected_type: str, plan: PlanRun, answer: str) -> dict[str, str]:
+        try:
+            def _call():
+                with dspy.context(lm=self.critic_lm):
+                    return self.critic_predict(
+                        question=question,
+                        expected_type=expected_type,
+                        trace_json=self._trace_json(plan),
+                        final_answer=answer,
+                    )
+            pred = await aio_to_thread(_call)
+            raw = str(getattr(pred, "verdict_json", "")).strip()
+            obj = _parse_json_obj(raw)
+            verdict = str(obj.get("verdict", "flag")).strip().lower()
+            reason = str(obj.get("reason", "")).strip()
+            if verdict not in {"accept", "flag"}:
+                verdict = "flag"
+            return {"verdict": verdict, "reason": reason or "critic returned no reason"}
+        except Exception as exc:
+            self.tool_state.tool_errors.append(f"critic error: {exc}")
+            return {"verdict": "accept", "reason": "critic unavailable"}
+
+    async def _execute(self, question: str, expected_type: str, note: str = "") -> PlanRun:
+        plan: PlanRun | None = None
+        if self.config.use_dag:
+            plan = await self._plan_one(question, expected_type, note)
+        if plan is None or not plan.nodes:
+            return await self._direct_path(question, expected_type)
+        runner = AdaptiveDAGRunner(
+            retriever=self.retriever,
+            sub_lm=self.sub_lm,
+            state=self.tool_state,
+            max_nodes=self.config.max_nodes,
+            max_recursion_depth=self.config.max_recursion_depth,
+            tau_recurse=self.config.tau_recurse,
+        )
+        await execute_plan(plan, runner, self._plan_one if self.config.max_recursion_depth > 0 else None, recursion_depth=0)
+        return plan
 
     def _citation_check(self, answer: str, support_ids_raw: str) -> tuple[bool, list[str]]:
         ids = [x.strip() for x in re.split(r"[,\n]", support_ids_raw) if x.strip()]
@@ -262,24 +324,45 @@ class AdaptiveRecursivePipeline:
         expected_type = self._expected_type_hint(question)
         prof = classify(question)
 
-        plan: PlanRun | None = None
-        if self.config.use_dag:
-            plan = await self._plan_one(question, expected_type)
-        if plan is None or not plan.nodes:
-            plan = await self._direct_path(question, expected_type)
-        else:
-            runner = AdaptiveDAGRunner(
-                retriever=self.retriever,
-                sub_lm=self.sub_lm,
-                state=self.tool_state,
-                max_nodes=self.config.max_nodes,
-                max_recursion_depth=self.config.max_recursion_depth,
-                tau_recurse=self.config.tau_recurse,
-            )
-            await execute_plan(plan, runner, self._plan_one if self.config.max_recursion_depth > 0 else None, recursion_depth=0)
+        plan = await self._execute(question, expected_type)
 
         # Synthesize final answer + citations
         synth_ans, synth_ids = await self._synth(question, expected_type, plan)
+        critic_trace: list[dict[str, str]] = []
+        topology_mutated = False
+        # Adaptive critic: skip on confidently-easy questions (single-node plan with high-conf finding)
+        min_conf = min((f.confidence for f in self.tool_state.findings), default=0.0)
+        skip_critic = (
+            len(plan.nodes) == 1
+            and min_conf >= self.config.tau_skip_critic
+            and bool(synth_ans.strip())
+        )
+        critic_skipped_reason = "easy_high_confidence_single_hop" if skip_critic else ""
+        if self.config.use_critic and not skip_critic:
+            verdict = await self._critic(question, expected_type, plan, synth_ans)
+            critic_trace.append(verdict)
+            if verdict["verdict"] == "flag" and self.config.max_critic_retries > 0:
+                hint = (
+                    "CRITIC FLAG: "
+                    f"{verdict['reason']}\n"
+                    "Topology mutation: re-plan the DAG to resolve the missing final target. "
+                    "Add or refine a bridge_resolver node if the current answer is only an intermediate entity."
+                )
+                mutated = await self._plan_one(question, expected_type, hint)
+                if mutated and mutated.nodes:
+                    topology_mutated = True
+                    runner = AdaptiveDAGRunner(
+                        retriever=self.retriever,
+                        sub_lm=self.sub_lm,
+                        state=self.tool_state,
+                        max_nodes=self.config.max_nodes,
+                        max_recursion_depth=self.config.max_recursion_depth,
+                        tau_recurse=self.config.tau_recurse,
+                    )
+                    await execute_plan(mutated, runner, self._plan_one if self.config.max_recursion_depth > 0 else None, recursion_depth=0)
+                    plan = mutated
+                    synth_ans, synth_ids = await self._synth(question, expected_type, plan)
+                    critic_trace.append(await self._critic(question, expected_type, plan, synth_ans))
 
         # Citation gate; if rejected, try a backup that picks the highest-confidence finding
         accepted, used_ids = self._citation_check(synth_ans, synth_ids)
@@ -299,6 +382,10 @@ class AdaptiveRecursivePipeline:
 
         root_tokens = _tokens_since(self.root_lm, root_start)
         sub_tokens = _tokens_since(self.sub_lm, sub_start)
+        # If synth/critic LMs differ from sub_lm, also include their tokens
+        synth_tokens = 0
+        if self.synth_lm is not self.sub_lm and self.synth_lm is not self.root_lm:
+            synth_tokens = _tokens_since(self.synth_lm, len(getattr(self.synth_lm, "history", [])) - max(1, len(getattr(self.synth_lm, "history", []))))
         elapsed = time.time() - t0
 
         # Build a serializable trace
@@ -326,12 +413,15 @@ class AdaptiveRecursivePipeline:
             "support_ids": used_ids,
             "citation_accepted": accepted,
             "expected_hops_for_profile": expected_hops(prof),
+            "critic": critic_trace,
+            "critic_skipped_reason": critic_skipped_reason,
+            "topology_mutated": topology_mutated,
         }
         return {
             "question": question,
             "predicted_answer": final_answer,
             "answer": final_answer,
-            "trajectory": {"plan_nodes": node_dicts, "synth_answer_raw": synth_ans},
+            "trajectory": {"plan_nodes": node_dicts, "synth_answer_raw": synth_ans, "critic": critic_trace},
             "metadata": metadata,
             "readable_trace": _readable_dag_trace(question, plan, final_answer, used_ids),
         }
@@ -349,3 +439,20 @@ def _readable_dag_trace(question: str, plan: PlanRun, answer: str, support_ids: 
                 lines.append(f"        recursed-into={n.expanded_into}")
     lines.append(f"FINAL: {answer!r} support={support_ids}")
     return "\n".join(lines)
+
+
+def _parse_json_obj(text: str) -> dict[str, Any]:
+    raw = str(text or "").strip()
+    try:
+        obj = json.loads(raw)
+        return obj if isinstance(obj, dict) else {}
+    except Exception:
+        pass
+    m = re.search(r"\{.*\}", raw, re.DOTALL)
+    if not m:
+        return {}
+    try:
+        obj = json.loads(m.group(0))
+        return obj if isinstance(obj, dict) else {}
+    except Exception:
+        return {}

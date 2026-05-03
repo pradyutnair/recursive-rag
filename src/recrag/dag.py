@@ -152,6 +152,23 @@ class SynthesizeFinalSig(dspy.Signature):
     support_ids: str = dspy.OutputField(desc="CSV of chunk_ids cited")
 
 
+class CritiqueFinalSig(dspy.Signature):
+    """Verify whether the final answer directly resolves the original question.
+
+    Return strict JSON:
+    {"verdict":"accept|flag","reason":"short actionable reason"}
+
+    Flag answers that are only bridge entities, have the wrong answer type, are
+    unsupported by the trace, contradict the trace, or skip the final target.
+    """
+
+    question: str = dspy.InputField()
+    expected_type: str = dspy.InputField()
+    trace_json: str = dspy.InputField(desc="JSON list of resolved DAG nodes")
+    final_answer: str = dspy.InputField(desc="Synthesized final answer")
+    verdict_json: str = dspy.OutputField(desc="Strict JSON verdict")
+
+
 def _safe_parse_json(text: str) -> dict[str, Any] | None:
     if not text:
         return None

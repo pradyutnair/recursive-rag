@@ -18,6 +18,7 @@ import dspy
 
 from .contracts import HopFinding, RetrievedChunk, normalize_answer
 from .dag import (
+    CritiqueFinalSig,
     PlanDAGSig,
     PlanRun,
     PlannedNode,
@@ -100,6 +101,15 @@ DEFAULT_SYNTH_INSTRUCTIONS = (
     "refusal. Cite the chunk_ids used as support (CSV)."
 )
 
+DEFAULT_CRITIC_INSTRUCTIONS = (
+    "You are a strict verifier for multi-hop QA. Given the original question, "
+    "the resolved DAG trace, and the proposed final answer, decide if the "
+    "answer directly resolves the final target. Accept only when the answer is "
+    "supported by the trace and has the expected type. Flag bridge-only "
+    "answers, unsupported answers, contradictions, wrong type, or answers that "
+    "skip the final target. Return strict JSON only."
+)
+
 
 @dataclass
 class AdaptiveConfig:
@@ -110,6 +120,9 @@ class AdaptiveConfig:
     use_dag: bool = True
     planner_instructions: str = DEFAULT_PLANNER_INSTRUCTIONS
     synth_instructions: str = DEFAULT_SYNTH_INSTRUCTIONS
+    critic_instructions: str = DEFAULT_CRITIC_INSTRUCTIONS
+    use_critic: bool = True
+    max_critic_retries: int = 1
 
 
 def _tokens_since(lm: dspy.LM, start_idx: int) -> int:
@@ -305,8 +318,10 @@ class SyncAdaptivePipeline:
         self.library = _load_library(config.experience_library)
         self.plan_sig = PlanDAGSig.with_instructions(config.planner_instructions)
         self.synth_sig = SynthesizeFinalSig.with_instructions(config.synth_instructions)
+        self.critic_sig = CritiqueFinalSig.with_instructions(config.critic_instructions)
         self.plan_predict = dspy.Predict(self.plan_sig)
         self.synth_predict = dspy.Predict(self.synth_sig)
+        self.critic_predict = dspy.Predict(self.critic_sig)
 
     def _plan_one(self, question: str, expected_type: str = "auto", note: str = "") -> PlanRun | None:
         prof = classify(question)
@@ -321,7 +336,7 @@ class SyncAdaptivePipeline:
             self.tool_state.tool_errors.append(f"plan error: {exc}")
             return None
 
-    def _synth(self, question: str, expected_type: str, plan: PlanRun) -> tuple[str, str]:
+    def _trace_json(self, plan: PlanRun) -> str:
         trace = []
         for nid in sorted(plan.nodes):
             n = plan.nodes[nid]
@@ -330,14 +345,36 @@ class SyncAdaptivePipeline:
                 "confidence": round(n.confidence, 3), "chunk_id": n.chunk_id,
                 "expected_type": n.expected_type, "depth": n.depth,
             })
-        trace_json = json.dumps(trace, ensure_ascii=False)
+        return json.dumps(trace, ensure_ascii=False)
+
+    def _synth(self, question: str, expected_type: str, plan: PlanRun) -> tuple[str, str]:
         try:
             with dspy.context(lm=self.root_lm):
-                pred = self.synth_predict(question=question, expected_type=expected_type, trace_json=trace_json)
+                pred = self.synth_predict(question=question, expected_type=expected_type, trace_json=self._trace_json(plan))
             return str(getattr(pred, "final_answer", "")).strip(), str(getattr(pred, "support_ids", "")).strip()
         except Exception as exc:
             self.tool_state.tool_errors.append(f"synth error: {exc}")
             return "", ""
+
+    def _critic(self, question: str, expected_type: str, plan: PlanRun, answer: str) -> dict[str, str]:
+        try:
+            with dspy.context(lm=self.root_lm):
+                pred = self.critic_predict(
+                    question=question,
+                    expected_type=expected_type,
+                    trace_json=self._trace_json(plan),
+                    final_answer=answer,
+                )
+            raw = str(getattr(pred, "verdict_json", "")).strip()
+            obj = _parse_json_obj(raw)
+            verdict = str(obj.get("verdict", "flag")).strip().lower()
+            reason = str(obj.get("reason", "")).strip()
+            if verdict not in {"accept", "flag"}:
+                verdict = "flag"
+            return {"verdict": verdict, "reason": reason or "critic returned no reason"}
+        except Exception as exc:
+            self.tool_state.tool_errors.append(f"critic error: {exc}")
+            return {"verdict": "accept", "reason": "critic unavailable"}
 
     def _citation_check(self, answer: str, support_ids_raw: str) -> tuple[bool, list[str]]:
         ids = [x.strip() for x in re.split(r"[,\n]", support_ids_raw) if x.strip()][:6]
@@ -406,6 +443,25 @@ class SyncAdaptivePipeline:
             _execute_plan_sync(plan, self.retriever, self.sub_lm, self.tool_state, self._plan_one, self.config, 0)
 
         synth_ans, synth_ids = self._synth(question, expected_type, plan)
+        critic_trace: list[dict[str, str]] = []
+        topology_mutated = False
+        if self.config.use_critic:
+            verdict = self._critic(question, expected_type, plan, synth_ans)
+            critic_trace.append(verdict)
+            if verdict["verdict"] == "flag" and self.config.max_critic_retries > 0:
+                hint = (
+                    "CRITIC FLAG: " + verdict["reason"] + "\n"
+                    "Topology mutation: re-plan the DAG to resolve the missing final target. "
+                    "Add or refine a bridge_resolver node if the current answer is only an intermediate entity."
+                )
+                mutated = self._plan_one(question, expected_type, hint)
+                if mutated and mutated.nodes:
+                    topology_mutated = True
+                    _execute_plan_sync(mutated, self.retriever, self.sub_lm, self.tool_state, self._plan_one, self.config, 0)
+                    plan = mutated
+                    synth_ans, synth_ids = self._synth(question, expected_type, plan)
+                    critic_trace.append(self._critic(question, expected_type, plan, synth_ans))
+
         accepted, used_ids = self._citation_check(synth_ans, synth_ids)
         if not accepted:
             best = None
@@ -445,16 +501,35 @@ class SyncAdaptivePipeline:
             "support_ids": used_ids,
             "citation_accepted": accepted,
             "expected_hops_for_profile": expected_hops(prof),
+            "critic": critic_trace,
+            "topology_mutated": topology_mutated,
         }
         readable = _readable_dag_trace_sync(question, plan, final_answer, used_ids)
         return {
             "question": question,
             "predicted_answer": final_answer,
             "answer": final_answer,
-            "trajectory": {"plan_nodes": node_dicts, "synth_answer_raw": synth_ans},
+            "trajectory": {"plan_nodes": node_dicts, "synth_answer_raw": synth_ans, "critic": critic_trace},
             "metadata": metadata,
             "readable_trace": readable,
         }
+
+
+def _parse_json_obj(text: str) -> dict[str, Any]:
+    raw = str(text or "").strip()
+    try:
+        obj = json.loads(raw)
+        return obj if isinstance(obj, dict) else {}
+    except Exception:
+        pass
+    m = re.search(r"\{.*\}", raw, re.DOTALL)
+    if m:
+        try:
+            obj = json.loads(m.group(0))
+            return obj if isinstance(obj, dict) else {}
+        except Exception:
+            return {}
+    return {}
 
 
 def _readable_dag_trace_sync(question: str, plan: PlanRun, answer: str, support_ids: list[str]) -> str:

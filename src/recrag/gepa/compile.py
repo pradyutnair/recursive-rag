@@ -25,11 +25,13 @@ def _load_oracle(args: argparse.Namespace) -> OracleLookup | None:
         ds = ds.strip()
         if not ds:
             continue
-        # Map our dataset names to naive_<name> directories
-        alias = {"2wikimultihop": "2wiki", "hotpotqa": "hotpotqa", "musique": "musique", "bamboogle": "bamboogle"}.get(ds, ds)
-        p = base / f"naive_{alias}" / "predictions.jsonl"
-        if p.exists():
-            paths.append(p)
+        # Try fresh SAS-mode oracle first, then the legacy FlashRAG naive baselines
+        for candidate in (base / f"{ds}_fresh_naive" / "predictions.jsonl",
+                          base / f"naive_{ds}" / "predictions.jsonl",
+                          base / f"naive_{ {'2wikimultihop': '2wiki'}.get(ds, ds) }" / "predictions.jsonl"):
+            if candidate.exists():
+                paths.append(candidate)
+                break
     if not paths:
         return None
     return OracleLookup.from_paths(paths)
@@ -88,7 +90,11 @@ def compile_gepa(args: argparse.Namespace) -> None:
         print(f"[oracle] loaded {len(oracle)} entries; stats={oracle.stats()}")
     metric_fn = make_metric(oracle=oracle) if oracle else default_metric
 
-    gepa_kwargs = {"metric": metric_fn, "reflection_lm": make_lm(args.reflection_lm, max_tokens=args.reflection_max_tokens), "num_threads": args.num_threads}
+    gepa_kwargs = {"metric": metric_fn, "reflection_lm": make_lm(args.reflection_lm, max_tokens=args.reflection_max_tokens), "num_threads": args.num_threads, "track_stats": True}
+    if args.log_dir:
+        log_path = Path(args.log_dir)
+        log_path.mkdir(parents=True, exist_ok=True)
+        gepa_kwargs["log_dir"] = str(log_path)
     if args.max_metric_calls and args.max_metric_calls > 0:
         gepa_kwargs["max_metric_calls"] = args.max_metric_calls
     else:
@@ -108,7 +114,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--valset", default="data/multidataset/val_v1.json")
     p.add_argument("--n-train", type=int, default=0, help="0 = use all rows in --questions")
     p.add_argument("--n-val", type=int, default=0, help="0 = use all rows in --valset")
-    p.add_argument("--oracle-naive-dir", default="results/baselines/wiki18-corpus/qwen3-14b-no-think/qwen3_14b_nothink_top5_node408")
+    p.add_argument("--oracle-naive-dir", default="compiled/oracle")
     p.add_argument("--oracle-datasets", default="musique,2wikimultihop,hotpotqa")
     p.add_argument("--root-lm", default="qwen14b-think")
     p.add_argument("--sub-lm", default="qwen14b-nothink")
@@ -124,6 +130,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--tau-recurse", type=float, default=0.5)
     p.add_argument("--auto", choices=["light", "medium", "heavy"], default="medium")
     p.add_argument("--max-metric-calls", type=int, default=0, help="If >0 overrides auto")
+    p.add_argument("--log-dir", default="", help="If set, GEPA writes detailed logs and supports resume from this dir")
     p.add_argument("--num-threads", type=int, default=6)
     p.add_argument("--out", default="compiled/gepa_adaptive_v1.json")
     return p

@@ -65,10 +65,12 @@ def _load_oracle(args: argparse.Namespace) -> OracleLookup | None:
         ds = ds.strip()
         if not ds:
             continue
-        alias = {"2wikimultihop": "2wiki"}.get(ds, ds)
-        p = base / f"naive_{alias}" / "predictions.jsonl"
-        if p.exists():
-            paths.append(p)
+        for candidate in (base / f"{ds}_fresh_naive" / "predictions.jsonl",
+                          base / f"naive_{ds}" / "predictions.jsonl",
+                          base / f"naive_{ {'2wikimultihop': '2wiki'}.get(ds, ds) }" / "predictions.jsonl"):
+            if candidate.exists():
+                paths.append(candidate)
+                break
     if not paths:
         return None
     return OracleLookup.from_paths(paths)
@@ -189,7 +191,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser()
     p.add_argument("--questions", default="data/multidataset/train_v1.json")
     p.add_argument("--n-train", type=int, default=0, help="0 = use all rows")
-    p.add_argument("--oracle-naive-dir", default="results/baselines/wiki18-corpus/qwen3-14b-no-think/qwen3_14b_nothink_top5_node408")
+    p.add_argument("--oracle-naive-dir", default="compiled/oracle")
     p.add_argument("--oracle-datasets", default="musique,2wikimultihop,hotpotqa")
     p.add_argument("--epochs", type=int, default=2)
     p.add_argument("--group-size", type=int, default=4)
