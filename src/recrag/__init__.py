@@ -1,5 +1,10 @@
 """Recursive adaptive RAG."""
 
+import os
+from pathlib import Path
+
+os.environ.setdefault("DSPY_CACHEDIR", str(Path.cwd() / ".dspy_cache"))
+
 from .adaptive_pipeline import AdaptiveConfig, AdaptiveRecursivePipeline
 from .contracts import CitationCheck, HopFinding, RetrievedChunk, normalize_answer
 from .metric import RewardBreakdown, composite_reward, feedback_text

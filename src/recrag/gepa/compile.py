@@ -1,9 +1,12 @@
-"""GEPA optimizer over the AdaptiveProgram (planner + synthesizer modules)."""
+"""GEPA optimizer over router, planner, synthesizer, and critic."""
 from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
+
+os.environ.setdefault("DSPY_CACHEDIR", str(Path.cwd() / ".dspy_cache"))
 
 import dspy
 
@@ -14,6 +17,8 @@ from recrag.pipeline import PipelineConfig, ReactRagPipeline
 from recrag.program import AdaptiveProgram, ReactProgram
 from recrag.retriever import Retriever
 from recrag.sync_pipeline import AdaptiveConfig, SyncAdaptivePipeline
+from recrag.wandb_utils import artifact as wandb_artifact
+from recrag.wandb_utils import init_wandb
 
 
 def _load_oracle(args: argparse.Namespace) -> OracleLookup | None:
@@ -69,6 +74,13 @@ def compile_gepa(args: argparse.Namespace) -> None:
     sub_lm = make_lm(args.sub_lm, max_tokens=args.sub_max_tokens)
     retriever = Retriever(args.retriever_url)
     seed_prompts = _load_prompts(args.seed_program)
+    wandb_run = init_wandb(
+        project=args.wandb_project,
+        name=args.run_name or out_name_from_path(args.out),
+        config=vars(args),
+        enabled=not args.no_wandb,
+        mode=args.wandb_mode or None,
+    )
 
     if args.program == "react":
         pipeline = ReactRagPipeline(root_lm, sub_lm, retriever, PipelineConfig(max_iters=args.max_iters, experience_library=args.experience_library))
@@ -117,7 +129,7 @@ def compile_gepa(args: argparse.Namespace) -> None:
     oracle = _load_oracle(args)
     if oracle:
         print(f"[oracle] loaded {len(oracle)} entries; stats={oracle.stats()}")
-    metric_fn = make_metric(oracle=oracle) if oracle else default_metric
+    metric_fn = make_metric(oracle=oracle, wandb_run=wandb_run) if oracle else make_metric(wandb_run=wandb_run)
 
     gepa_kwargs = {"metric": metric_fn, "reflection_lm": make_lm(args.reflection_lm, max_tokens=args.reflection_max_tokens), "num_threads": args.num_threads, "track_stats": True}
     if args.log_dir:
@@ -134,13 +146,23 @@ def compile_gepa(args: argparse.Namespace) -> None:
         compiled.save(str(out))
     except Exception:
         out.write_text(json.dumps({"status": "compiled", "note": "compiled object has no save()"}, indent=2), encoding="utf-8")
+    wandb_artifact(wandb_run, out, name=out.stem, type_="gepa-program")
+    if wandb_run is not None:
+        try:
+            wandb_run.finish()
+        except Exception:
+            pass
+
+
+def out_name_from_path(path: str) -> str:
+    return Path(path).stem or "gepa"
 
 
 def build_arg_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser()
     p.add_argument("--program", choices=["adaptive", "react"], default="adaptive")
-    p.add_argument("--questions", default="data/multidataset/train_v1.json")
-    p.add_argument("--valset", default="data/multidataset/val_v1.json")
+    p.add_argument("--questions", default="data/multidataset/train_v3.json")
+    p.add_argument("--valset", default="data/multidataset/val_v3.json")
     p.add_argument("--n-train", type=int, default=0, help="0 = use all rows in --questions")
     p.add_argument("--n-val", type=int, default=0, help="0 = use all rows in --valset")
     p.add_argument("--oracle-naive-dir", default="compiled/oracle")
@@ -149,8 +171,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--sub-lm", default="qwen14b-nothink")
     p.add_argument("--root-max-tokens", type=int, default=768)
     p.add_argument("--sub-max-tokens", type=int, default=512)
-    p.add_argument("--reflection-lm", default="qwen14b-nothink")
-    p.add_argument("--reflection-max-tokens", type=int, default=2048)
+    p.add_argument("--reflection-lm", default="openai/gpt-5")
+    p.add_argument("--reflection-max-tokens", type=int, default=16000)
     p.add_argument("--retriever-url", default="http://node408:8003")
     p.add_argument("--experience-library")
     p.add_argument("--seed-program", default="", help="JSON prompts file used to initialize router/planner/synthesizer/critic")
@@ -162,10 +184,14 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--tau-recurse", type=float, default=0.5)
     p.add_argument("--budget-hint", choices=["tight", "normal", "rich"], default="normal")
     p.add_argument("--auto", choices=["light", "medium", "heavy"], default="medium")
-    p.add_argument("--max-metric-calls", type=int, default=0, help="If >0 overrides auto")
+    p.add_argument("--max-metric-calls", type=int, default=800, help="If >0 overrides auto")
     p.add_argument("--log-dir", default="", help="If set, GEPA writes detailed logs and supports resume from this dir")
     p.add_argument("--num-threads", type=int, default=6)
-    p.add_argument("--out", default="compiled/gepa_adaptive_v1.json")
+    p.add_argument("--wandb-project", default="recrag-gepa")
+    p.add_argument("--wandb-mode", default="")
+    p.add_argument("--run-name", default="")
+    p.add_argument("--no-wandb", action="store_true")
+    p.add_argument("--out", default="compiled/gepa_v4.json")
     return p
 
 

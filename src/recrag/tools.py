@@ -157,6 +157,18 @@ _FILLER_PREFIX = re.compile(
 )
 _TRAILING_JUNK = re.compile(r"[.,;:!?]+$")
 _SENTENCE_LIKE = re.compile(r"\b(?:is|was|were|are|has|had|have|who|which|that|the .+ of)\b", re.IGNORECASE)
+_YEAR_ONLY_RE = re.compile(r"\b(1[0-9]{3}|20[0-9]{2})\b")
+_ASKS_YEAR = re.compile(r"\b(?:what|which|in what|in which)\s+year\b", re.IGNORECASE)
+
+
+def _coerce_granularity(answer: str, question: str) -> str:
+    """Narrow answer granularity to match the question. E.g. extract just the
+    year from a full date when the question asks 'what year'."""
+    if _ASKS_YEAR.search(question):
+        m = _YEAR_ONLY_RE.search(answer)
+        if m:
+            return m.group(1)
+    return answer
 
 
 def _trim_answer(answer: str, expected_type: str) -> str:
@@ -207,6 +219,7 @@ async def _extract(sub_lm: dspy.LM, question: str, expected_answer_type: str, ch
     conf = max(0.0, min(1.0, conf))
 
     answer = _trim_answer(raw_answer, _clean_answer_type(expected_answer_type))
+    answer = _coerce_granularity(answer, question)
 
     word_count = len(answer.split())
     if answer and word_count > MAX_SPAN_WORDS:

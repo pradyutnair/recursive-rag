@@ -140,16 +140,17 @@ class RouteQuestionSig(dspy.Signature):
     Return strict JSON only:
     {"route":"easy|hard","reason":"short reason"}
 
-    Choose easy only when a single investigator with retrieval rewrites should
-    answer the final target directly. Choose hard for bridge chains, unnamed
-    bridge entities, nested "of/that/which/who" dependencies, comparisons,
-    intersections, temporal reasoning, arithmetic, or any ambiguity.
+    Choose easy only when the question subject is a specific named entity
+    (proper noun) and the answer is a single direct attribute. Choose hard
+    when the subject is descriptive/superlative ("the fastest X", "the largest X",
+    "the first X"), when there are bridge chains, nested dependencies, comparisons,
+    temporal reasoning, or when the answer requires resolving an intermediate
+    entity first.
     """
 
     question: str = dspy.InputField()
     profile: str = dspy.InputField(desc="Heuristic profile")
     experience: str = dspy.InputField(desc="Profile-conditioned routing hints")
-    budget_hint: str = dspy.InputField(desc="Runtime budget: tight, normal, or rich")
     route_json: str = dspy.OutputField(desc='Strict JSON: {"route":"easy|hard","reason":"..."}')
 
 
@@ -409,6 +410,15 @@ async def execute_plan(
             n.question = substitute_tags(n.raw_question, resolved)
             if n.retrieval_query:
                 n.retrieval_query = substitute_tags(n.retrieval_query, resolved)
+            # For child nodes, augment retrieval query with parent context so the
+            # retriever can disambiguate (e.g. "Euclid" the mathematician vs city).
+            if n.depends_on and not n.retrieval_query:
+                parent_ctx = "; ".join(
+                    f"{plan.nodes[dep].question} -> {plan.nodes[dep].answer}"
+                    for dep in n.depends_on if dep in plan.nodes and plan.nodes[dep].answer
+                )
+                if parent_ctx:
+                    n.retrieval_query = f"{n.question} (given: {parent_ctx})"
         await asyncio.gather(*[runner.run_node(plan.nodes[nid]) for nid in layer])
         if plan_one is not None:
             # After running the layer, attempt recursion for low-conf bridge nodes

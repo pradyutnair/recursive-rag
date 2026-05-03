@@ -86,7 +86,13 @@ DEFAULT_PLANNER_INSTRUCTIONS = (
     "Q: What is the capital of France?\n"
     "{\"nodes\":[{\"id\":\"Q1.1\",\"question\":\"What is the capital of "
     "France?\",\"expected_type\":\"place\",\"depends_on\":[]}],"
-    "\"final_node\":\"Q1.1\"}"
+    "\"final_node\":\"Q1.1\"}\n\n"
+    "Q: What is the tallest building in Europe named after?\n"
+    "{\"nodes\":[{\"id\":\"Q1.1\",\"question\":\"What is the tallest "
+    "building in Europe?\",\"expected_type\":\"entity\","
+    "\"depends_on\":[]},{\"id\":\"Q2.1\",\"question\":\"What is <A1.1> "
+    "named after?\",\"expected_type\":\"entity\","
+    "\"depends_on\":[\"Q1.1\"]}],\"final_node\":\"Q2.1\"}"
 )
 
 DEFAULT_SYNTH_INSTRUCTIONS = (
@@ -94,7 +100,9 @@ DEFAULT_SYNTH_INSTRUCTIONS = (
     "and the resolved DAG trace. Produce ONE concise final span that DIRECTLY "
     "answers the user question (not an intermediate bridge entity). Preserve "
     "full canonical names, full dates, full award/category names, and acronym "
-    "expansions when supported. Output 1-10 words, no explanation, no "
+    "expansions when supported. Match the answer granularity to the question: "
+    "if the question asks 'what year', give the year; if it asks for a name, "
+    "give the full name. Output 1-10 words, no explanation, no "
     "refusal. Cite the chunk_ids used as support (CSV)."
 )
 
@@ -110,31 +118,24 @@ DEFAULT_CRITIC_INSTRUCTIONS = (
 DEFAULT_ROUTER_INSTRUCTIONS = (
     "You are a resource-aware router for open-domain multi-hop QA. Return "
     "STRICT JSON only: {\"route\":\"easy|hard\",\"reason\":\"...\"}.\n"
-    "Use easy only when one investigator with retrieve/extract/rewrite retries "
+    "Use easy when one investigator with retrieve/extract/rewrite retries "
     "can directly answer the final target. Prefer hard for bridge chains, "
-    "unnamed bridge entities, nested of/that/which/who dependencies, "
+    "unnamed bridge entities (descriptive/superlative subjects like 'the "
+    "fastest X', 'the largest X'), nested of/that/which/who dependencies, "
     "comparisons, intersections, temporal ordering, arithmetic, numeric "
-    "lookups through another entity, or ambiguity. Route hard when the question "
-    "contains phrases like 'where X is located', 'city where', 'country where', "
-    "'alma mater of', 'composer of', 'director of', or asks for a quantity after "
-    "resolving another entity. Route yes/no questions easy only when both "
-    "entities are explicitly named and the relation can be checked directly. "
-    "\nFew-shot routing examples from fresh SAS-oracle training data:\n"
+    "lookups through another entity, property-of-property questions "
+    "('made out of', 'named after', 'derived from'), or ambiguity.\n"
+    "\nFew-shot routing examples:\n"
     "Q: Are Nicholas Irving and David Ridgway (Scholar) from the same country?\n"
-    "{\"route\":\"easy\",\"reason\":\"Both entities are named and the final answer is a direct yes/no relation.\"}\n"
-    "Q: Musicality features covers of songs from a jukebox musical written by who?\n"
-    "{\"route\":\"easy\",\"reason\":\"One named work leads to one recoverable author attribute.\"}\n"
+    "{\"route\":\"easy\",\"reason\":\"Both entities are named; direct relation check.\"}\n"
     "Q: The organization which sets the standards for ISO 10006 is headquartered in what city?\n"
-    "{\"route\":\"easy\",\"reason\":\"A single named organization can be resolved by retrieval rewrites.\"}\n"
+    "{\"route\":\"easy\",\"reason\":\"A single named organization resolved by retrieval.\"}\n"
+    "Q: What is the fastest air-breathing manned aircraft mostly made out of?\n"
+    "{\"route\":\"hard\",\"reason\":\"'Fastest air-breathing manned aircraft' is unnamed; must resolve then find material.\"}\n"
+    "Q: Who is the largest aircraft carrier in the world named after?\n"
+    "{\"route\":\"hard\",\"reason\":\"'Largest aircraft carrier' is unnamed; must resolve then find namesake.\"}\n"
     "Q: Who is the spouse of the director of film Son Of Samson?\n"
-    "{\"route\":\"hard\",\"reason\":\"Requires resolving a director bridge before spouse lookup.\"}\n"
-    "Q: Which portion of the Nile runs from the nation descendants of African Americans migrated from, to the country where Hay Al-Arab is found?\n"
-    "{\"route\":\"hard\",\"reason\":\"Nested bridges over nations and locations require planned decomposition.\"}\n"
-    "Q: The 17th Premier of Nova Scotia and leader of the federal Progressive Conservative Party of Canada Robert Stanfield fought a few times and lost in general elections against which politician who is currently one of the longest-serving Prime Minister in Canadian history?\n"
-    "{\"route\":\"hard\",\"reason\":\"Long temporal/entity chain with distractors; use the DAG lane.\"}\n"
-    "Budget hints adjust caution: tight may route simple named-subject "
-    "attribute questions to easy; rich should route borderline bridge questions "
-    "to hard."
+    "{\"route\":\"hard\",\"reason\":\"Requires resolving director bridge before spouse lookup.\"}\n"
 )
 
 
@@ -236,7 +237,6 @@ class AdaptiveRecursivePipeline:
                         question=question,
                         profile=prof,
                         experience=self._experience(prof),
-                        budget_hint=budget_hint,
                     )
             pred = await aio_to_thread(_call)
             obj = _parse_json_obj(str(getattr(pred, "route_json", "")))

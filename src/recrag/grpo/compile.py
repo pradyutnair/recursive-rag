@@ -19,9 +19,12 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import os
 import random
 from pathlib import Path
 from typing import Any
+
+os.environ.setdefault("DSPY_CACHEDIR", str(Path.cwd() / ".dspy_cache"))
 
 import dspy
 
@@ -33,6 +36,8 @@ from recrag.metric import composite_reward, oracle_bonus
 from recrag.oracle import OracleLookup
 from recrag.profile import classify
 from recrag.retriever import Retriever
+from recrag.wandb_utils import artifact as wandb_artifact
+from recrag.wandb_utils import init_wandb, log as wandb_log
 
 
 def _loads_ops(text: str) -> list[dict[str, Any]]:
@@ -83,9 +88,19 @@ async def compile_grpo(args: argparse.Namespace) -> ExperienceLibrary:
     random.Random(args.seed).shuffle(questions)
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
+    checkpoint_dir = Path(args.checkpoint_dir)
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
     trace_path = out_dir / "compile_trace.jsonl"
     lib = ExperienceLibrary.load(args.seed_library) if args.seed_library else ExperienceLibrary()
+    lib.max_entries = args.library_cap
     reflection_lm = make_lm(args.reflection_lm, temperature=0.0, max_tokens=args.reflection_max_tokens)
+    wandb_run = init_wandb(
+        project=args.wandb_project,
+        name=args.run_name or Path(args.out_json).stem,
+        config=vars(args),
+        enabled=not args.no_wandb,
+        mode=args.wandb_mode or None,
+    )
     oracle = _load_oracle(args)
     if oracle:
         print(f"[oracle] loaded {len(oracle)} entries; stats={oracle.stats()}")
@@ -158,7 +173,19 @@ async def compile_grpo(args: argparse.Namespace) -> ExperienceLibrary:
                         # store augmented score into the rollout for group-spread check
                         r["oracle_score"] = oracle_score
                     rewards = [rr["oracle_score"] for rr in rollouts]
-                    if max(rewards) - min(rewards) < 0.2:
+                    spread = max(rewards) - min(rewards)
+                    wandb_log(wandb_run, {
+                        "question_id": qid,
+                        "profile": profile,
+                        "difficulty": difficulty_tag,
+                        "group_size": args.group_size,
+                        "rewards": rewards,
+                        "best_reward": max(rewards),
+                        "worst_reward": min(rewards),
+                        "spread": spread,
+                        "has_mixed_outcomes": spread >= 0.2,
+                    })
+                    if spread < 0.2:
                         proposal_texts.append(lib.to_text())
                         continue
                     with dspy.context(lm=reflection_lm):
@@ -182,18 +209,34 @@ async def compile_grpo(args: argparse.Namespace) -> ExperienceLibrary:
                             current_library=lib.to_text(),
                         ).merged_library
                     lib.merge_text(str(merged))
+                lib.max_entries = args.library_cap
+                lib.prune()
                 lib.save_text(args.out_txt)
                 lib.save_json(args.out_json)
+                ckpt = checkpoint_dir / f"epoch_{epoch}_batch_{start // args.batch_size}.json"
+                lib.save_json(ckpt)
+                wandb_log(wandb_run, {
+                    "epoch": epoch,
+                    "batch_idx": start // args.batch_size,
+                    "library_size": len(lib.entries),
+                    "ops_applied": len(proposal_texts),
+                })
+                wandb_artifact(wandb_run, ckpt, name=f"{Path(args.out_json).stem}-e{epoch}-b{start // args.batch_size}", type_="grpo-library")
+    if wandb_run is not None:
+        try:
+            wandb_run.finish()
+        except Exception:
+            pass
     return lib
 
 
 def build_arg_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser()
-    p.add_argument("--questions", default="data/multidataset/train_v1.json")
+    p.add_argument("--questions", default="data/multidataset/train_v3.json")
     p.add_argument("--n-train", type=int, default=0, help="0 = use all rows")
     p.add_argument("--oracle-naive-dir", default="compiled/oracle")
     p.add_argument("--oracle-datasets", default="musique,2wikimultihop,hotpotqa")
-    p.add_argument("--epochs", type=int, default=2)
+    p.add_argument("--epochs", type=int, default=3)
     p.add_argument("--group-size", type=int, default=4)
     p.add_argument("--batch-size", type=int, default=10)
     p.add_argument("--temperature", type=float, default=0.7)
@@ -202,8 +245,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--sub-lm", default="qwen14b-nothink")
     p.add_argument("--root-max-tokens", type=int, default=768)
     p.add_argument("--sub-max-tokens", type=int, default=512)
-    p.add_argument("--reflection-lm", default="qwen14b-nothink")
-    p.add_argument("--reflection-max-tokens", type=int, default=2048)
+    p.add_argument("--reflection-lm", default="openai/gpt-5")
+    p.add_argument("--reflection-max-tokens", type=int, default=16000)
     p.add_argument("--retriever-url", default="http://node408:8003")
     p.add_argument("--max-iters", type=int, default=15)
     p.add_argument("--max-nodes", type=int, default=6)
@@ -212,9 +255,15 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--token-T", type=float, default=8000.0)
     p.add_argument("--alpha", type=float, default=0.3)
     p.add_argument("--seed-library")
-    p.add_argument("--out-dir", default="results/grpo_logs/v2")
-    p.add_argument("--out-txt", default="compiled/grpo_v2_E.txt")
-    p.add_argument("--out-json", default="compiled/grpo_v2_E.json")
+    p.add_argument("--library-cap", type=int, default=30)
+    p.add_argument("--checkpoint-dir", default="compiled/grpo_v4_E")
+    p.add_argument("--wandb-project", default="recrag-grpo")
+    p.add_argument("--wandb-mode", default="")
+    p.add_argument("--run-name", default="")
+    p.add_argument("--no-wandb", action="store_true")
+    p.add_argument("--out-dir", default="results/grpo_logs/v4")
+    p.add_argument("--out-txt", default="compiled/grpo_v4_E.txt")
+    p.add_argument("--out-json", default="compiled/grpo_v4_E.json")
     return p
 
 

@@ -1,0 +1,40 @@
+{
+  "musique": {
+    "n": 100,
+    "norm_em": 0.25,
+    "token_f1": 0.3073,
+    "contain": 0.27,
+    "mean_quality": 0.9727,
+    "mean_efficiency": 0.4221,
+    "mean_composite": 0.7552,
+    "mean_tokens": 7355.7,
+    "mean_elapsed_s": 22.16,
+    "mean_nodes": 2.74,
+    "route_dist": {
+      "hard": 97,
+      "easy": 3
+    },
+    "topology_dist": {
+      "dag_n2": 49,
+      "dag_n3": 23,
+      "dag_n5": 5,
+      "dag_n4": 18,
+      "easy_lane": 3,
+      "single_hop": 1,
+      "dag_n6": 1
+    },
+    "profile_dist": {
+      "temporal": 31,
+      "one_hop": 9,
+      "bridge_3hop_plus": 16,
+      "numeric": 10,
+      "bridge_2hop": 33,
+      "parallel_compare": 1
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 0.03,
+    "easy_route_norm_em": 0.0,
+    "easy_route_mean_tokens": 2044.0,
+    "wall_clock_s": 300.63
+  }
+}

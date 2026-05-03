@@ -1,0 +1,131 @@
+{
+    "answer": "6,700",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Who owns the gold spike in the home of the World Series of Poker?",
+                "expected_type": "person",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Tony Hsieh",
+                "confidence": 0.9,
+                "chunk_id": "18079835",
+                "queries_used": [
+                    "Who owns the gold spike in the home of the World Series of Poker?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Who owns the gold spike in the home of the World Series of Poker?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "What is the alma mater of Tony Hsieh?",
+                "expected_type": "organization",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "Harvard University",
+                "confidence": 0.8,
+                "chunk_id": "18096947",
+                "queries_used": [
+                    "What is the alma mater of Tony Hsieh?"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the alma mater of <A1.1>?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q3.1",
+                "question": "What is the undergraduate enrollment at Harvard University?",
+                "expected_type": "number",
+                "depends_on": [
+                    "Q2.1"
+                ],
+                "depth": 2,
+                "answer": "6,700",
+                "confidence": 0.9,
+                "chunk_id": "1752479",
+                "queries_used": [
+                    "What is the undergraduate enrollment at Harvard University?",
+                    "What is the current undergraduate student population at Harvard University?",
+                    "What is the most recent undergraduate enrollment number for Harvard University?"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the undergraduate enrollment at <A2.1>?",
+                "retrieval_query": ""
+            }
+        ],
+        "synth_answer_raw": "6,700",
+        "critic": [
+            {
+                "verdict": "flag",
+                "reason": "mismatch"
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 1394,
+        "sub_tokens": 10318,
+        "total_tokens": 11712,
+        "elapsed_s": 25.975,
+        "hops": 3,
+        "retries": 2,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "Tony Hsieh",
+                "evidence_chunk_id": "18079835",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who owns the gold spike in the home of the World Series of Poker?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "Harvard University",
+                "evidence_chunk_id": "18096947",
+                "confidence": 0.8,
+                "queries_used": [
+                    "What is the alma mater of Tony Hsieh?"
+                ],
+                "expected_answer_type": "organization"
+            },
+            {
+                "answer": "6,700",
+                "evidence_chunk_id": "1752479",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is the undergraduate enrollment at Harvard University?",
+                    "What is the current undergraduate student population at Harvard University?",
+                    "What is the most recent undergraduate enrollment number for Harvard University?"
+                ],
+                "expected_answer_type": "number"
+            }
+        ],
+        "profile": "bridge_3hop_plus",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question involves multiple bridges: identifying the man who owns the gold spike, determining his alma mater, and then retrieving the undergraduate enrollment of that institution. This requires a multi-step resolution process.",
+        "expected_type": "entity",
+        "topology": "dag_n3",
+        "n_nodes": 3,
+        "final_node": "Q3.1",
+        "support_ids": [
+            "1752479"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 3,
+        "critic": [
+            {
+                "verdict": "flag",
+                "reason": "mismatch"
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": true,
+        "direct_easy_answer": false
+    }
+}

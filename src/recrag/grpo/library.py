@@ -15,7 +15,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
-VALID_PROFILES = (
+BASE_PROFILES = (
     "any",
     "one_hop",
     "yes_no",
@@ -25,6 +25,8 @@ VALID_PROFILES = (
     "temporal",
     "numeric",
 )
+VALID_DIFFICULTIES = ("easy", "hard", "unknown")
+VALID_BUDGETS = ("tight", "normal", "rich")
 
 
 @dataclass
@@ -41,6 +43,7 @@ class ExperienceEntry:
 class ExperienceLibrary:
     entries: list[ExperienceEntry] = field(default_factory=list)
     next_num: int = 1
+    max_entries: int = 30
 
     @classmethod
     def load(cls, path: str | Path) -> "ExperienceLibrary":
@@ -60,7 +63,7 @@ class ExperienceLibrary:
             if "uses" not in x:
                 x["uses"] = 0
             entries.append(ExperienceEntry(**{k: v for k, v in x.items() if k in ExperienceEntry.__dataclass_fields__}))
-        lib = cls(entries=entries, next_num=int(data.get("next_num", 1)))
+        lib = cls(entries=entries, next_num=int(data.get("next_num", 1)), max_entries=int(data.get("max_entries", 30)))
         if entries:
             try:
                 lib.next_num = max(lib.next_num, max(int(e.id.split("-")[-1]) for e in entries) + 1)
@@ -71,7 +74,8 @@ class ExperienceLibrary:
     def save_json(self, path: str | Path) -> None:
         p = Path(path)
         p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(json.dumps({"next_num": self.next_num, "entries": [asdict(e) for e in self.entries]}, indent=2, ensure_ascii=False), encoding="utf-8")
+        self.prune()
+        p.write_text(json.dumps({"next_num": self.next_num, "max_entries": self.max_entries, "entries": [asdict(e) for e in self.entries]}, indent=2, ensure_ascii=False), encoding="utf-8")
 
     def save_text(self, path: str | Path) -> None:
         p = Path(path)
@@ -79,7 +83,7 @@ class ExperienceLibrary:
         p.write_text(self.to_text(), encoding="utf-8")
 
     def to_dict(self) -> dict[str, Any]:
-        return {"next_num": self.next_num, "entries": [asdict(e) for e in self.entries]}
+        return {"next_num": self.next_num, "max_entries": self.max_entries, "entries": [asdict(e) for e in self.entries]}
 
     def to_text(self, profile: str | None = None, top_k: int | None = None) -> str:
         rows = self.retrieve(profile, top_k=top_k) if profile else list(self.entries)
@@ -89,10 +93,11 @@ class ExperienceLibrary:
         text = text.strip()
         if not text:
             return ""
-        prof = profile if profile in VALID_PROFILES else "any"
+        prof = _normalize_profile(profile)
         eid = f"E-{self.next_num:03d}"
         self.next_num += 1
         self.entries.append(ExperienceEntry(id=eid, text=text, rationale=rationale.strip(), profile=prof))
+        self.prune()
         return eid
 
     def modify(self, eid: str, text: str = "", rationale: str = "", profile: str | None = None) -> None:
@@ -102,8 +107,9 @@ class ExperienceLibrary:
                     e.text = text.strip()
                 if rationale.strip():
                     e.rationale = rationale.strip()
-                if profile and profile in VALID_PROFILES:
-                    e.profile = profile
+                if profile:
+                    e.profile = _normalize_profile(profile)
+                self.prune()
                 return
 
     def delete(self, eid: str) -> None:
@@ -126,7 +132,7 @@ class ExperienceLibrary:
         prof = profile or "any"
 
         def score(e: ExperienceEntry) -> float:
-            match_boost = 2.0 if e.profile == prof else (1.0 if e.profile == "any" else 0.0)
+            match_boost = _profile_match_score(e.profile, prof)
             util = e.utility / max(1, e.uses or 1)
             return match_boost + util
 
@@ -165,7 +171,51 @@ class ExperienceLibrary:
                 self.modify(str(op.get("id", "")), str(op.get("text", "")), str(op.get("rationale", "")), str(op.get("profile", "")) or None)
             elif kind == "DELETE":
                 self.delete(str(op.get("id", "")))
+            elif kind == "MERGE":
+                ids = [str(x) for x in op.get("ids", []) if str(x)]
+                text = str(op.get("text", "")).strip()
+                rationale = str(op.get("rationale", "")).strip()
+                profile = str(op.get("profile", "any"))
+                if len(ids) >= 2 and text:
+                    for eid in ids:
+                        self.delete(eid)
+                    self.add(text, rationale, profile)
+            elif kind == "PRUNE":
+                self.prune()
+        self.prune()
+
+    def prune(self) -> None:
+        if self.max_entries <= 0 or len(self.entries) <= self.max_entries:
+            return
+        self.entries.sort(key=lambda e: (e.utility / max(1, e.uses or 1), e.utility, -e.uses), reverse=True)
+        self.entries = self.entries[: self.max_entries]
 
     @staticmethod
     def _canon(text: str) -> str:
         return re.sub(r"\s+", " ", text.lower()).strip()
+
+
+def _normalize_profile(profile: str | None) -> str:
+    parts = [p.strip() for p in str(profile or "any").split("|") if p.strip()]
+    if not parts:
+        return "any"
+    base = parts[0] if parts[0] in BASE_PROFILES else "any"
+    tags = []
+    for p in parts[1:]:
+        if p in VALID_DIFFICULTIES or p in VALID_BUDGETS:
+            tags.append(p)
+    return "|".join([base, *tags]) if tags else base
+
+
+def _profile_match_score(entry_profile: str, query_profile: str | None) -> float:
+    ep = _normalize_profile(entry_profile).split("|")
+    qp = _normalize_profile(query_profile).split("|")
+    if ep[0] == "any":
+        return 1.0
+    if ep[0] != qp[0]:
+        return 0.0
+    score = 2.0
+    if len(ep) > 1:
+        score += sum(0.5 for tag in ep[1:] if tag in qp[1:])
+        score -= sum(0.25 for tag in ep[1:] if tag not in qp[1:])
+    return score

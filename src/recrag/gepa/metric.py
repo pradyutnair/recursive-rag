@@ -2,12 +2,14 @@
 from __future__ import annotations
 
 import json
+import threading
 from typing import Any, Callable
 
 import dspy
 
 from recrag.metric import composite_reward_with_oracle, feedback_text
 from recrag.oracle import OracleEntry, OracleLookup
+from recrag.wandb_utils import log as wandb_log
 
 
 def _oracle_feedback(entry: OracleEntry | None, f1: float, topology: str, total_tokens: int, reason: str) -> str:
@@ -21,10 +23,16 @@ def _oracle_feedback(entry: OracleEntry | None, f1: float, topology: str, total_
     )
 
 
-def make_metric(oracle: OracleLookup | None = None) -> Callable:
+def make_metric(oracle: OracleLookup | None = None, wandb_run: Any | None = None) -> Callable:
     """Build a GEPA metric closure with optional oracle-routing reward shaping."""
+    lock = threading.Lock()
+    call_idx = 0
 
     def metric(gold: Any, pred: Any, trace: Any = None, pred_name: str | None = None, pred_trace: Any = None):
+        nonlocal call_idx
+        with lock:
+            call_idx += 1
+            cur_call_idx = call_idx
         gold_answer = str(getattr(gold, "answer", "") if not isinstance(gold, dict) else gold.get("answer", ""))
         gold_id = str(getattr(gold, "id", "") if not isinstance(gold, dict) else gold.get("id", ""))
         gold_dataset = str(getattr(gold, "dataset", "") if not isinstance(gold, dict) else gold.get("dataset", ""))
@@ -48,8 +56,10 @@ def make_metric(oracle: OracleLookup | None = None) -> Callable:
         )
         budget_targets = {"tight": 4000, "normal": 8000, "rich": 12000}
         budget_target = budget_targets.get(budget_hint, 8000)
+        budget_bonus = 0.0
         if total_tokens <= budget_target:
-            score += 0.3
+            budget_bonus = 0.3
+            score += budget_bonus
 
         # Build feedback
         fb_parts: list[str] = [feedback_text(rb)]
@@ -83,6 +93,27 @@ def make_metric(oracle: OracleLookup | None = None) -> Callable:
             fb_parts.append(oracle_str)
         if gold_dataset:
             fb_parts.append(f"[dataset={gold_dataset}]")
+
+        wandb_log(wandb_run, {
+            "call_idx": cur_call_idx,
+            "question_id": gold_id,
+            "dataset": gold_dataset,
+            "profile": meta.get("profile", ""),
+            "route": meta.get("route", ""),
+            "topology": topology,
+            "em": rb.em,
+            "f1": rb.f1,
+            "contain": rb.contain,
+            "grounded": rb.grounded,
+            "shape_match": rb.shape,
+            "total_tokens": total_tokens,
+            "composite_reward": rb.composite,
+            "oracle_bonus": score - rb.composite - budget_bonus,
+            "budget_bonus": budget_bonus,
+            "final_reward": score,
+            "budget_hint": budget_hint,
+            "pred_name": pred_name or "",
+        }, step=cur_call_idx)
 
         return dspy.Prediction(score=float(score), feedback=" ".join(fb_parts))
 
