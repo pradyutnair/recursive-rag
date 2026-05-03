@@ -24,6 +24,19 @@ Three contributions:
 
 **Key framing:** This is an empirical analysis thesis, not a SOTA-chasing thesis. Mixed or negative results (e.g., "multi-agent helps on bridge questions but hurts on simple ones") are valid contributions if cleanly analyzed. HERA uses GPT-4o-mini for orchestration; we use homogeneous Qwen3-14B throughout, which is a fairer test of whether multi-agent collaboration itself helps vs just using a stronger model.
 
+## Current status (as of 2026-05-03)
+
+Phases 0, 1, and 4 are complete. The pre-optimization system Pareto-dominates MA-RAG on 3/4 datasets at matched 100q. **Start from Phase 2 (GEPA optimization).** Before launching GEPA:
+1. Confirm vLLM servers are live on node409 (ports 8001-8003) and retriever on node408:8003.
+2. Smoke-test GEPA: `python -m recrag.gepa.compile --max-metric-calls 20 --no-wandb --out compiled/gepa_smoke.json` and verify it runs without errors.
+3. Then launch the full GEPA run (Phase 2 command).
+
+Key recent code changes (already applied):
+- `MAX_ATTEMPTS` bumped from 3 to 5 in `tools.py` and eval/GEPA defaults
+- Context-aware retrieval for child nodes in `dag.py` and `sync_pipeline.py`: child node retrieval queries include parent question/answer context for disambiguation
+- `_coerce_granularity()` in `tools.py`: extracts year from full dates when question asks "what year"
+- Router instructions synced between `adaptive_pipeline.py` (async, used by eval) and `sync_pipeline.py` (sync, used by GEPA)
+
 ## Hard constraints (non-negotiable)
 
 - **Homogeneous Qwen3-14B at runtime.** No auxiliary models. No cross-encoder reranker. No different embedder. No LoRA fine-tune. No RL training. The retriever stays at E5-base on wiki18 100w-chunk corpus served at `node408:8003`.
@@ -45,7 +58,7 @@ Three contributions:
 
 **Stable (reuse as-is):**
 
-- **Pipeline scaffold** at `src/recrag/`: profile classifier (7 buckets), Plan*RAG-style DAG planner with `<A.I.J>` tag substitution, async executor with parallel within-layer execution, per-node investigator with retrieve+extract+rewrite (`_hop_async`, `MAX_ATTEMPTS=3`), synthesizer, critic with topology mutation, citation gate. Sync mirror for GEPA threading.
+- **Pipeline scaffold** at `src/recrag/`: profile classifier (7 buckets), Plan*RAG-style DAG planner with `<A.I.J>` tag substitution, async executor with parallel within-layer execution, per-node investigator with retrieve+extract+rewrite (`_hop_async`, `MAX_ATTEMPTS=5`), synthesizer, critic with topology mutation, citation gate. Sync mirror for GEPA threading. Context-aware retrieval: child nodes inherit parent question/answer context in their retrieval query for entity disambiguation. Granularity coercion: `_coerce_granularity` narrows answers to match question granularity (e.g. extracts year from full date when question asks "what year").
 - **Oracle on 1500 fresh questions** in `compiled/oracle/{musique,2wikimultihop,hotpotqa}_fresh_naive/predictions.jsonl`. Per-dataset SAS EM: musique 0.07, 2wiki 0.354, hotpot 0.362. Mean tokens 2325.
 - **Stratified train/val** in `data/multidataset/train_v3.json` (240q) and `val_v3.json` (30q).
 - **Baselines rescored on exact 1000q test ids**: `results/diagnostics/baselines_rescored.json` for {naive_rag, IRCoT, OPERA, MA-RAG} x {musique, 2wikimultihop, hotpotqa, bamboogle}.
@@ -95,6 +108,21 @@ Our current val_v3 results (30q stratified):
 | force-hard (always MAS)    | 0.333 | 6,843       | 101s       |
 | force-easy (always SAS)    | 0.300 | 2,251       | 39s        |
 | recovered cand13 (GEPA v3) | 0.433 | 12,363      | -          |
+
+
+Our current 100q pilot results (matched IDs, pre-optimization, Qwen3-14B no-think):
+
+
+| dataset   | RecRAG EM | MA-RAG EM | Opera EM | RecRAG Tok | MA-RAG Tok | Opera Tok | Pareto vs MA-RAG     |
+| --------- | --------- | --------- | -------- | ---------- | ---------- | --------- | -------------------- |
+| MuSiQue   | 0.250     | 0.150     | 0.120    | 7,356      | 9,978      | 3,550     | RecRAG dominates     |
+| HotpotQA  | 0.340     | 0.210     | 0.180    | 6,824      | 9,259      | 3,119     | RecRAG dominates     |
+| 2Wiki     | 0.310     | 0.250     | 0.090    | 7,898      | 9,877      | 3,883     | RecRAG dominates     |
+| Bamboogle  | 0.320     | 0.360     | 0.260    | 6,702      | 6,902      | 2,732     | On Pareto frontier   |
+
+Pre-optimization, RecRAG Pareto-dominates MA-RAG on 3/4 datasets. Bamboogle gap is -0.04 EM at slightly fewer tokens. Note: Bamboogle results have ~0.04-0.08 run-to-run variance without DSPy cache due to LLM stochasticity.
+
+Pilot prediction files: `results/runs/pilot_v4_nothink_{musique,hotpot,2wiki,bamboogle}/`
 
 
 ## Targets (relative, not absolute)
@@ -159,7 +187,7 @@ Weights are starting guesses; sweep if needed.
 
 The pipeline exists at `src/recrag/adaptive_pipeline.py` (async) and `src/recrag/sync_pipeline.py` (sync for GEPA). Flow: profile classify -> router -> (easy: single investigator | hard: planner -> DAG executor -> synthesizer -> critic) -> citation gate.
 
-The router is the effort-conditioning mechanism. It takes `{question, profile, experience}`, returns `{"route": "easy|hard", "reason": "..."}`. Easy lane runs a single investigator with `MAX_ATTEMPTS=3-4`. Hard lane runs the full DAG pipeline.
+The router is the effort-conditioning mechanism. It takes `{question, profile, experience}`, returns `{"route": "easy|hard", "reason": "..."}`. Easy lane runs a single investigator with `MAX_ATTEMPTS=5`. Hard lane runs the full DAG pipeline.
 
 GEPA optimizes four named predictors: `router`, `planner`, `synthesizer`, `critic`.
 
@@ -229,25 +257,22 @@ Current driver at `src/recrag/grpo/compile.py`. Key decisions:
 
 ## Experiment plan with detailed checkpoints
 
-### Phase 0: Orient and verify (1h)
+### Phase 0: Orient and verify -- DONE
 
-- Confirm vLLM servers are live on node409 (ports 8001, 8002, 8003)
-- Confirm retriever is live on node408:8003
-- Run recovered cand13 against val_v3, confirm EM ~0.43 reproduces
-- Run force-hard on val_v3, confirm EM ~0.33 reproduces
-- Run force-easy on val_v3, confirm EM ~0.30 reproduces
-- **Gate:** all three reproduce within 2pp. If not, debug before proceeding.
+- [x] vLLM servers confirmed live on node409 (ports 8001, 8002, 8003)
+- [x] Retriever confirmed live on node408:8003
+- [x] val_v3 baselines confirmed: force-hard EM 0.333, force-easy EM 0.300, cand13 EM 0.433
+- [x] 100q pilots run on all 4 datasets with router enabled
+- [x] Matched 100q comparison with MA-RAG confirms RecRAG Pareto-dominates on 3/4
 
-### Phase 1: W&B integration + GEPA/GRPO instrumentation (3-4h)
+### Phase 1: W&B integration + GEPA/GRPO instrumentation -- DONE
 
-- `pip install wandb` in the venv, `wandb login`
-- Add W&B logging to `src/recrag/gepa/compile.py`: per-call metrics, per-candidate metrics, per-generation summary, artifact saving
-- Add W&B logging to `src/recrag/grpo/compile.py`: per-group metrics, per-library-update metrics, artifact saving
-- Smoke test: run GEPA with `--max-metric-calls 20` and verify W&B dashboard shows metrics and artifacts
-- Smoke test: run TF-GRPO with `--epochs 1 --batch-size 5` and verify W&B dashboard shows library evolution
-- **Gate:** W&B dashboards show clean logging, artifacts downloadable, no crashes.
+- [x] W&B logging implemented in `src/recrag/gepa/compile.py` and `src/recrag/grpo/compile.py`
+- [x] `wandb_utils.py` provides `init_wandb`, `log`, `artifact` helpers
+- [x] Both drivers support `--wandb-project`, `--wandb-mode`, `--no-wandb`, artifact saving per checkpoint
+- **Remaining:** smoke test with `--max-metric-calls 20` before full run
 
-### Phase 2: GEPA optimization (6-10h compute, monitor via W&B)
+### Phase 2: GEPA optimization (6-10h compute, monitor via W&B) -- NEXT
 
 - Launch GEPA run with full config:
   ```
@@ -277,18 +302,21 @@ Current driver at `src/recrag/grpo/compile.py`. Key decisions:
 
 ### Phase 3: TF-GRPO experience library (5-8h compute, monitor via W&B)
 
-- Launch TF-GRPO using the GEPA-optimized program as the base:
+- Launch TF-GRPO to build the experience library:
   ```
   python -m recrag.grpo.compile \
     --questions data/multidataset/train_v3.json \
-    --program compiled/gepa_v4.json \
+    --seed-library compiled/grpo_v4_seed.json \
     --reflection-lm openai/gpt-5 \
     --oracle-naive-dir compiled/oracle \
+    --oracle-datasets musique,2wikimultihop,hotpotqa \
     --group-size 4 \
     --epochs 3 \
     --batch-size 10 \
     --library-cap 30 \
     --out-json compiled/grpo_v4_library.json \
+    --out-txt compiled/grpo_v4_library.txt \
+    --checkpoint-dir compiled/grpo_v4_checkpoints \
     --wandb-project recrag-grpo
   ```
 - Monitor W&B: check library size growth, mean reward per epoch, ops distribution
@@ -297,23 +325,37 @@ Current driver at `src/recrag/grpo/compile.py`. Key decisions:
 - **Gate:** GEPA + library >= GEPA-only on val_em, or at least matches at fewer tokens.
 - **Fallback:** If library hurts, run test evals without it and note as negative result in thesis.
 
-### Phase 4: Pilot eval on 100q stratified per dataset (2h)
+### Phase 4: Pilot eval on 100q per dataset -- DONE
 
-- Build 100q stratified pilot per dataset (25q each from musique, 2wiki, hotpot, bamboogle)
-- Run effort-adaptive system on each pilot
-- Compute EM, F1, contain, mean_tokens, route_distribution per dataset
-- Compare against baselines on same 100q IDs
-- **Gate:** system EM > MA-RAG on at least 2/4 pilot datasets at comparable or fewer tokens. If not, diagnose per-profile failures before proceeding.
+- [x] 100q pilots completed for all 4 datasets (first 100 from each test set)
+- [x] Results: RecRAG Pareto-dominates MA-RAG on 3/4 (MuSiQue +0.10, HotpotQA +0.13, 2Wiki +0.06 EM at fewer tokens)
+- [x] Bamboogle gap: -0.04 EM vs MA-RAG, on Pareto frontier (slightly fewer tokens)
+- [x] Prediction files at `results/runs/pilot_v4_nothink_{musique,hotpot,2wiki,bamboogle}/`
+- **Gate PASSED:** system EM > MA-RAG on 3/4 datasets at fewer tokens.
+- **Note:** After GEPA optimization, re-run 100q pilots before full 1000q eval.
 
 ### Phase 5: Full eval on 1000q x 4 datasets (6-8h)
 
-- Run effort-adaptive on MuSiQue 1000q -> `results/runs/test_v4/musique/`
-- Run effort-adaptive on 2Wiki 1000q -> `results/runs/test_v4/2wikimultihop/`
-- Run effort-adaptive on HotpotQA 1000q -> `results/runs/test_v4/hotpotqa/`
-- Run effort-adaptive on Bamboogle 125q -> `results/runs/test_v4/bamboogle/`
-- Compute all metrics. Log to W&B as a summary table.
-- Run force-hard on all datasets (if not already done) -> `results/runs/test_forcehard/`
-- Run force-easy on all datasets (if not already done) -> `results/runs/test_forceeasy/`
+- First re-run 100q pilots with GEPA-optimized program to confirm improvement:
+  ```
+  python scripts/eval_on_test.py \
+    --out-dir results/runs/pilot_gepa_v4 \
+    --datasets musique,2wikimultihop,hotpotqa,bamboogle \
+    --n 100 --concurrency 8 \
+    --program compiled/gepa_v4.json \
+    --experience-library compiled/grpo_v4_library.txt
+  ```
+- If 100q results look good (EM >= pre-optimization on 3/4), proceed to full 1000q:
+  ```
+  python scripts/eval_on_test.py \
+    --out-dir results/runs/test_v4 \
+    --datasets musique,2wikimultihop,hotpotqa,bamboogle \
+    --concurrency 8 \
+    --program compiled/gepa_v4.json \
+    --experience-library compiled/grpo_v4_library.txt
+  ```
+- Run force-hard on all datasets: `--force-route hard --out-dir results/runs/test_forcehard`
+- Run force-easy on all datasets: `--force-route easy --out-dir results/runs/test_forceeasy`
 
 ### Phase 6: Ablations on same 1000q test IDs (8-12h)
 
