@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import random
 from collections import defaultdict
 from pathlib import Path
 from statistics import mean
@@ -23,6 +24,7 @@ DEFAULT_RUNS = {
     "force_hard": "results/runs/test_forcehard_20260504",
     "no_critic": "results/runs/test_nocritic_20260504",
     "force_hard_no_critic": "results/runs/test_forcehard_nocritic_20260504",
+    "force_hard_no_critic_ms3": "results/runs/test_forcehard_nocritic_ms3_20260504",
     "random_route": "results/runs/test_randomroute_20260504",
     "no_oracle_gepa": "results/runs/test_nooracle_gepa_20260504",
 }
@@ -46,6 +48,27 @@ def tok(row: dict[str, Any]) -> float:
 
 def profile(row: dict[str, Any]) -> str:
     return str(row.get("source_profile") or row.get("metadata", {}).get("profile") or "unknown")
+
+
+def paired_delta_ci(a: list[dict[str, Any]], b: list[dict[str, Any]], *, n_boot: int = 2000, seed: int = 17) -> dict[str, Any]:
+    by_a = {str(r.get("id")): r for r in a}
+    by_b = {str(r.get("id")): r for r in b}
+    ids = sorted(set(by_a) & set(by_b))
+    n = len(ids)
+    if n == 0:
+        return {"n": 0}
+    delta = mean(em(by_a[i]) - em(by_b[i]) for i in ids)
+    rng = random.Random(seed)
+    samples: list[float] = []
+    for _ in range(n_boot):
+        draw = [ids[rng.randrange(n)] for _ in range(n)]
+        samples.append(mean(em(by_a[i]) - em(by_b[i]) for i in draw))
+    samples.sort()
+    return {
+        "n": n,
+        "delta_em": round(delta, 4),
+        "ci95": [round(samples[int(0.025 * (n_boot - 1))], 4), round(samples[int(0.975 * (n_boot - 1))], 4)],
+    }
 
 
 def collect_runs(root: Path) -> list[dict[str, Any]]:
@@ -178,7 +201,75 @@ def profile_table(root: Path) -> dict[str, Any]:
     return out
 
 
-def write_markdown(path: Path, rows: list[dict[str, Any]], route: dict[str, Any], scale: dict[str, Any]) -> None:
+def profile_ablation_table(root: Path) -> dict[str, Any]:
+    contrasts = {
+        "parallel_mas_minus_sas": ("force_hard_no_critic", "force_easy"),
+        "adaptive_minus_sas": ("adaptive_default", "force_easy"),
+        "adaptive_minus_always_mas": ("adaptive_default", "force_hard_no_critic"),
+        "critic_effect_default_minus_nocritic": ("adaptive_default", "no_critic"),
+        "router_minus_random": ("adaptive_default", "random_route"),
+        "oracle_gepa_minus_nooracle_gepa": ("adaptive_default", "no_oracle_gepa"),
+        "ms3_minus_ms5_no_critic": ("force_hard_no_critic_ms3", "force_hard_no_critic"),
+    }
+    out: dict[str, Any] = {}
+    for ds in DATASETS:
+        out[ds] = {}
+        for name, (a_label, b_label) in contrasts.items():
+            a_path = root / DEFAULT_RUNS[a_label] / ds / "predictions.jsonl"
+            b_path = root / DEFAULT_RUNS[b_label] / ds / "predictions.jsonl"
+            if not (a_path.exists() and b_path.exists()):
+                continue
+            a_rows = read_jsonl(a_path)
+            b_rows = read_jsonl(b_path)
+            profiles = sorted({profile(r) for r in a_rows} | {profile(r) for r in b_rows})
+            out[ds][name] = {}
+            for prof in profiles:
+                aa = [r for r in a_rows if profile(r) == prof]
+                bb = [r for r in b_rows if profile(r) == prof]
+                stats = paired_delta_ci(aa, bb)
+                if stats["n"]:
+                    stats["a"] = a_label
+                    stats["b"] = b_label
+                    out[ds][name][prof] = stats
+    return out
+
+
+def routing_confusion(root: Path) -> dict[str, Any]:
+    out: dict[str, Any] = {}
+    run_root = root / DEFAULT_RUNS["adaptive_default"]
+    easy_root = root / DEFAULT_RUNS["force_easy"]
+    for ds in DATASETS:
+        pred = run_root / ds / "predictions.jsonl"
+        if not pred.exists():
+            continue
+        easy_pred = easy_root / ds / "predictions.jsonl"
+        easy_by_id = {str(r.get("id")): r for r in read_jsonl(easy_pred)} if easy_pred.exists() else {}
+        rows = read_jsonl(pred)
+        matrix: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+        bucket_rows: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for r in rows:
+            if r.get("oracle_easy") is True:
+                oracle = "oracle_easy"
+            elif r.get("oracle_easy") is False:
+                oracle = "oracle_hard"
+            else:
+                force_easy_row = easy_by_id.get(str(r.get("id")))
+                oracle = "oracle_easy" if force_easy_row and em(force_easy_row) == 1.0 else "oracle_hard" if force_easy_row else "oracle_unknown"
+            route = str(r.get("metadata", {}).get("route", "unknown"))
+            matrix[oracle][route] += 1
+            bucket_rows[f"{oracle}__route_{route}"].append(r)
+        out[ds] = {
+            "matrix": {k: dict(v) for k, v in matrix.items()},
+            "bucket_em": {
+                k: {"n": len(v), "em": round(mean(em(r) for r in v), 4), "mean_tokens": round(mean(tok(r) for r in v), 1)}
+                for k, v in sorted(bucket_rows.items())
+            },
+            "oracle_source": "row.oracle_easy if present else force_easy EM on same test id",
+        }
+    return out
+
+
+def write_markdown(path: Path, rows: list[dict[str, Any]], route: dict[str, Any], scale: dict[str, Any], ablations: dict[str, Any]) -> None:
     lines = ["# Thesis Results Snapshot", ""]
     baseline_methods = {"naive", "ircot", "opera", "ma-rag"}
     ours_methods = {"adaptive_default", "no_critic", "force_hard_no_critic", "force_hard", "force_easy"}
@@ -210,6 +301,11 @@ def write_markdown(path: Path, rows: list[dict[str, Any]], route: dict[str, Any]
                 )
         if ds in scale:
             lines += ["", f"Scaling slope log(EM)~log(tokens): `{scale[ds]['slope_log_em_vs_log_tokens']}`"]
+        if ds in ablations and ablations[ds]:
+            lines += ["", "| profile contrast | profile | n | delta EM | 95% CI |", "|---|---|---:|---:|---|"]
+            for contrast, profs in sorted(ablations[ds].items()):
+                for prof, r in sorted(profs.items()):
+                    lines.append(f"| {contrast} | {prof} | {r['n']} | {r['delta_em']:.3f} | [{r['ci95'][0]:.3f}, {r['ci95'][1]:.3f}] |")
         lines.append("")
     path.write_text("\n".join(lines), encoding="utf-8")
 
@@ -320,13 +416,15 @@ def main() -> None:
     rows = collect_runs(root)
     route = route_impact(root)
     profiles = profile_table(root)
+    ablations = profile_ablation_table(root)
+    routing = routing_confusion(root)
     scale = scaling(rows)
-    out = {"runs": rows, "route_impact": route, "profiles": profiles, "scaling": scale}
+    out = {"runs": rows, "route_impact": route, "profiles": profiles, "profile_ablations": ablations, "routing_confusion": routing, "scaling": scale}
     out_json = root / args.out_json
     out_md = root / args.out_md
     out_json.parent.mkdir(parents=True, exist_ok=True)
     out_json.write_text(json.dumps(out, indent=2), encoding="utf-8")
-    write_markdown(out_md, rows, route, scale)
+    write_markdown(out_md, rows, route, scale, ablations)
     plot_dir = root / args.plot_dir
     write_pareto_svgs(root, rows, plot_dir)
     write_scaling_svg(root, rows, plot_dir / "scaling_snapshot.svg")

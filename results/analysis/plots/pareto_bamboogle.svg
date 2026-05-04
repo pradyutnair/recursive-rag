@@ -41,8 +41,10 @@
 <text x="512.1" y="190.7" font-family="Arial" font-size="11">adaptive_default</text>
 <circle cx="216.5" cy="308.8" r="6" fill="#2ca02c" stroke="none" stroke-width="2"/>
 <text x="224.5" y="300.8" font-family="Arial" font-size="11">force_easy</text>
-<circle cx="513.4" cy="163.9" r="6" fill="#9467bd" stroke="#111111" stroke-width="2"/>
+<circle cx="513.4" cy="163.9" r="6" fill="#9467bd" stroke="none" stroke-width="2"/>
 <text x="521.4" y="155.9" font-family="Arial" font-size="11">force_hard</text>
 <circle cx="469.1" cy="198.7" r="6" fill="#e377c2" stroke="none" stroke-width="2"/>
 <text x="477.1" y="190.7" font-family="Arial" font-size="11">no_critic</text>
+<circle cx="465.2" cy="163.9" r="6" fill="#bcbd22" stroke="#111111" stroke-width="2"/>
+<text x="473.2" y="155.9" font-family="Arial" font-size="11">force_hard_no_critic</text>
 </svg>

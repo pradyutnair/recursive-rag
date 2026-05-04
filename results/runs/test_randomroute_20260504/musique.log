@@ -1,0 +1,85 @@
+{"ds": "musique", "done": 25, "n": 1000, "em_running": 0.4, "wall_s": 75.2}
+{"ds": "musique", "done": 50, "n": 1000, "em_running": 0.28, "wall_s": 132.9}
+{"ds": "musique", "done": 75, "n": 1000, "em_running": 0.2133, "wall_s": 193.6}
+{"ds": "musique", "done": 100, "n": 1000, "em_running": 0.22, "wall_s": 289.4}
+{"ds": "musique", "done": 125, "n": 1000, "em_running": 0.176, "wall_s": 326.2}
+{"ds": "musique", "done": 150, "n": 1000, "em_running": 0.18, "wall_s": 413.7}
+{"ds": "musique", "done": 175, "n": 1000, "em_running": 0.1714, "wall_s": 472.2}
+{"ds": "musique", "done": 200, "n": 1000, "em_running": 0.155, "wall_s": 508.1}
+{"ds": "musique", "done": 225, "n": 1000, "em_running": 0.16, "wall_s": 576.5}
+{"ds": "musique", "done": 250, "n": 1000, "em_running": 0.156, "wall_s": 641.4}
+{"ds": "musique", "done": 275, "n": 1000, "em_running": 0.1636, "wall_s": 715.3}
+{"ds": "musique", "done": 300, "n": 1000, "em_running": 0.1667, "wall_s": 789.5}
+{"ds": "musique", "done": 325, "n": 1000, "em_running": 0.1692, "wall_s": 835.4}
+{"ds": "musique", "done": 350, "n": 1000, "em_running": 0.1714, "wall_s": 903.0}
+{"ds": "musique", "done": 375, "n": 1000, "em_running": 0.168, "wall_s": 957.8}
+{"ds": "musique", "done": 400, "n": 1000, "em_running": 0.1625, "wall_s": 1023.1}
+{"ds": "musique", "done": 425, "n": 1000, "em_running": 0.1671, "wall_s": 1082.3}
+{"ds": "musique", "done": 450, "n": 1000, "em_running": 0.1733, "wall_s": 1182.3}
+{"ds": "musique", "done": 475, "n": 1000, "em_running": 0.1684, "wall_s": 1225.5}
+{"ds": "musique", "done": 500, "n": 1000, "em_running": 0.166, "wall_s": 1285.7}
+{"ds": "musique", "done": 525, "n": 1000, "em_running": 0.1581, "wall_s": 1342.8}
+{"ds": "musique", "done": 550, "n": 1000, "em_running": 0.16, "wall_s": 1392.2}
+{"ds": "musique", "done": 575, "n": 1000, "em_running": 0.1617, "wall_s": 1446.5}
+{"ds": "musique", "done": 600, "n": 1000, "em_running": 0.1633, "wall_s": 1509.7}
+{"ds": "musique", "done": 625, "n": 1000, "em_running": 0.1648, "wall_s": 1596.0}
+{"ds": "musique", "done": 650, "n": 1000, "em_running": 0.16, "wall_s": 1664.0}
+{"ds": "musique", "done": 675, "n": 1000, "em_running": 0.16, "wall_s": 1753.7}
+{"ds": "musique", "done": 700, "n": 1000, "em_running": 0.1557, "wall_s": 1787.2}
+{"ds": "musique", "done": 725, "n": 1000, "em_running": 0.1545, "wall_s": 1879.3}
+{"ds": "musique", "done": 750, "n": 1000, "em_running": 0.152, "wall_s": 1963.3}
+{"ds": "musique", "done": 775, "n": 1000, "em_running": 0.1484, "wall_s": 2017.9}
+{"ds": "musique", "done": 800, "n": 1000, "em_running": 0.1575, "wall_s": 2104.7}
+{"ds": "musique", "done": 825, "n": 1000, "em_running": 0.1564, "wall_s": 2154.8}
+{"ds": "musique", "done": 850, "n": 1000, "em_running": 0.1576, "wall_s": 2222.4}
+{"ds": "musique", "done": 875, "n": 1000, "em_running": 0.16, "wall_s": 2293.3}
+{"ds": "musique", "done": 900, "n": 1000, "em_running": 0.1611, "wall_s": 2367.5}
+{"ds": "musique", "done": 925, "n": 1000, "em_running": 0.1589, "wall_s": 2417.5}
+{"ds": "musique", "done": 950, "n": 1000, "em_running": 0.1611, "wall_s": 2494.3}
+{"ds": "musique", "done": 975, "n": 1000, "em_running": 0.1621, "wall_s": 2558.8}
+{"ds": "musique", "done": 1000, "n": 1000, "em_running": 0.161, "wall_s": 2613.5}
+[done] musique: {"n": 1000, "norm_em": 0.162, "token_f1": 0.2363, "contain": 0.186, "mean_quality": 0.878, "mean_efficiency": 0.4472, "mean_composite": 0.6879, "mean_tokens": 7293.8, "mean_elapsed_s": 20.9, "mean_nodes": 2.57, "route_dist": {"hard": 933, "easy": 67}, "topology_dist": {"dag_n2": 492, "dag_n5": 36, "dag_n4": 133, "dag_n3": 231, "easy_lane": 67, "single_hop": 27, "dag_n6": 10, "dag_n8": 1, "dag_n7": 3}, "profile_dist": {"temporal": 242, "one_hop": 86, "bridge_3hop_plus": 212, "numeric": 68, "bridge_2hop": 379, "parallel_compare": 12, "yes_no": 1}, "topology_mutated_rate": 0.0, "easy_route_fraction": 0.067, "easy_route_norm_em": 0.0149, "easy_route_mean_tokens": 2133.6, "wall_clock_s": 2631.21}
+
+ALL: {
+  "musique": {
+    "n": 1000,
+    "norm_em": 0.162,
+    "token_f1": 0.2363,
+    "contain": 0.186,
+    "mean_quality": 0.878,
+    "mean_efficiency": 0.4472,
+    "mean_composite": 0.6879,
+    "mean_tokens": 7293.8,
+    "mean_elapsed_s": 20.9,
+    "mean_nodes": 2.57,
+    "route_dist": {
+      "hard": 933,
+      "easy": 67
+    },
+    "topology_dist": {
+      "dag_n2": 492,
+      "dag_n5": 36,
+      "dag_n4": 133,
+      "dag_n3": 231,
+      "easy_lane": 67,
+      "single_hop": 27,
+      "dag_n6": 10,
+      "dag_n8": 1,
+      "dag_n7": 3
+    },
+    "profile_dist": {
+      "temporal": 242,
+      "one_hop": 86,
+      "bridge_3hop_plus": 212,
+      "numeric": 68,
+      "bridge_2hop": 379,
+      "parallel_compare": 12,
+      "yes_no": 1
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 0.067,
+    "easy_route_norm_em": 0.0149,
+    "easy_route_mean_tokens": 2133.6,
+    "wall_clock_s": 2631.21
+  }
+}

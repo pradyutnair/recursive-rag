@@ -1,0 +1,183 @@
+{
+  "runs": {
+    "forcehard_nocritic": {
+      "n": 1000,
+      "em": 0.308,
+      "f1": 0.3703,
+      "mean_tokens": 8137.9,
+      "easy_route_fraction": 0.0,
+      "easy_route_em": 0.0,
+      "easy_route_mean_tokens": 0.0,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 427,
+          "em": 0.2342,
+          "mean_tokens": 7240.8,
+          "easy_route_fraction": 0.0
+        },
+        "bridge_3hop_plus": {
+          "n": 109,
+          "em": 0.3211,
+          "mean_tokens": 6132.9,
+          "easy_route_fraction": 0.0
+        },
+        "numeric": {
+          "n": 8,
+          "em": 0.375,
+          "mean_tokens": 5607.8,
+          "easy_route_fraction": 0.0
+        },
+        "one_hop": {
+          "n": 256,
+          "em": 0.3984,
+          "mean_tokens": 9614.1,
+          "easy_route_fraction": 0.0
+        },
+        "parallel_compare": {
+          "n": 69,
+          "em": 0.2464,
+          "mean_tokens": 13092.5,
+          "easy_route_fraction": 0.0
+        },
+        "temporal": {
+          "n": 16,
+          "em": 0.3125,
+          "mean_tokens": 5624.7,
+          "easy_route_fraction": 0.0
+        },
+        "yes_no": {
+          "n": 115,
+          "em": 0.4,
+          "mean_tokens": 7636.5,
+          "easy_route_fraction": 0.0
+        }
+      }
+    },
+    "forcehard": {
+      "n": 1000,
+      "em": 0.305,
+      "f1": 0.3681,
+      "mean_tokens": 8852.2,
+      "easy_route_fraction": 0.0,
+      "easy_route_em": 0.0,
+      "easy_route_mean_tokens": 0.0,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 427,
+          "em": 0.2342,
+          "mean_tokens": 7880.4,
+          "easy_route_fraction": 0.0
+        },
+        "bridge_3hop_plus": {
+          "n": 109,
+          "em": 0.3211,
+          "mean_tokens": 6776.1,
+          "easy_route_fraction": 0.0
+        },
+        "numeric": {
+          "n": 8,
+          "em": 0.375,
+          "mean_tokens": 6604.1,
+          "easy_route_fraction": 0.0
+        },
+        "one_hop": {
+          "n": 256,
+          "em": 0.3945,
+          "mean_tokens": 10419.0,
+          "easy_route_fraction": 0.0
+        },
+        "parallel_compare": {
+          "n": 69,
+          "em": 0.2319,
+          "mean_tokens": 14124.6,
+          "easy_route_fraction": 0.0
+        },
+        "temporal": {
+          "n": 16,
+          "em": 0.3125,
+          "mean_tokens": 6200.4,
+          "easy_route_fraction": 0.0
+        },
+        "yes_no": {
+          "n": 115,
+          "em": 0.3913,
+          "mean_tokens": 8302.0,
+          "easy_route_fraction": 0.0
+        }
+      }
+    },
+    "no_critic": {
+      "n": 1000,
+      "em": 0.268,
+      "f1": 0.3294,
+      "mean_tokens": 6846.3,
+      "easy_route_fraction": 0.308,
+      "easy_route_em": 0.3474,
+      "easy_route_mean_tokens": 2751.6,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 427,
+          "em": 0.2225,
+          "mean_tokens": 7277.8,
+          "easy_route_fraction": 0.1007
+        },
+        "bridge_3hop_plus": {
+          "n": 109,
+          "em": 0.3211,
+          "mean_tokens": 6635.2,
+          "easy_route_fraction": 0.0183
+        },
+        "numeric": {
+          "n": 8,
+          "em": 0.375,
+          "mean_tokens": 6006.0,
+          "easy_route_fraction": 0.125
+        },
+        "one_hop": {
+          "n": 256,
+          "em": 0.3398,
+          "mean_tokens": 6434.3,
+          "easy_route_fraction": 0.5703
+        },
+        "parallel_compare": {
+          "n": 69,
+          "em": 0.2029,
+          "mean_tokens": 13313.7,
+          "easy_route_fraction": 0.087
+        },
+        "temporal": {
+          "n": 16,
+          "em": 0.25,
+          "mean_tokens": 6306.7,
+          "easy_route_fraction": 0.25
+        },
+        "yes_no": {
+          "n": 115,
+          "em": 0.2609,
+          "mean_tokens": 2614.1,
+          "easy_route_fraction": 0.9217
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "forcehard_nocritic_minus_forcehard": {
+      "n": 1000,
+      "delta_em": 0.003,
+      "ci95": [
+        -0.002,
+        0.008
+      ],
+      "p_two_sided_approx": 0.3468
+    },
+    "forcehard_nocritic_minus_no_critic": {
+      "n": 1000,
+      "delta_em": 0.04,
+      "ci95": [
+        0.021,
+        0.059
+      ],
+      "p_two_sided_approx": 0.0
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{"ds": "hotpotqa", "done": 25, "n": 1000, "em_running": 0.24, "wall_s": 57.2}
+{"ds": "hotpotqa", "done": 50, "n": 1000, "em_running": 0.34, "wall_s": 90.0}
+{"ds": "hotpotqa", "done": 75, "n": 1000, "em_running": 0.3333, "wall_s": 147.2}
+{"ds": "hotpotqa", "done": 100, "n": 1000, "em_running": 0.3, "wall_s": 172.4}
+{"ds": "hotpotqa", "done": 125, "n": 1000, "em_running": 0.296, "wall_s": 229.8}
+{"ds": "hotpotqa", "done": 150, "n": 1000, "em_running": 0.3133, "wall_s": 275.5}

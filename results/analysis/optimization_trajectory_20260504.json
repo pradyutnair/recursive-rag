@@ -1,0 +1,668 @@
+{
+  "gepa": {
+    "wandb_run": "https://wandb.ai/msc-thesis-pradyut/recrag-gepa/runs/38a33711",
+    "base_val_score": 0.2109033904476179,
+    "num_val_evaluations": 16,
+    "best_logged_score": 0.28905523565630176,
+    "last_best_score": 0.28905523565630176,
+    "trajectory": [
+      {
+        "iteration": 2,
+        "val_score": 0.13162486837967055
+      },
+      {
+        "iteration": 6,
+        "val_score": 0.055814365014567865
+      },
+      {
+        "iteration": 13,
+        "val_score": 0.19768628641735164
+      },
+      {
+        "iteration": 14,
+        "val_score": 0.08701501367497436
+      },
+      {
+        "iteration": 17,
+        "val_score": 0.1880647841790231
+      },
+      {
+        "iteration": 18,
+        "val_score": 0.17303029816551993
+      },
+      {
+        "iteration": 24,
+        "val_score": 0.13482474381188242
+      },
+      {
+        "iteration": 28,
+        "val_score": 0.10056790416900155
+      },
+      {
+        "iteration": 32,
+        "val_score": 0.23170119537264544
+      },
+      {
+        "iteration": 36,
+        "val_score": 0.28905523565630176
+      },
+      {
+        "iteration": 41,
+        "val_score": 0.12275478110110492
+      },
+      {
+        "iteration": 42,
+        "val_score": 0.25248316914292857
+      },
+      {
+        "iteration": 47,
+        "val_score": 0.05602341507637054
+      },
+      {
+        "iteration": 48,
+        "val_score": 0.28081267036642127
+      },
+      {
+        "iteration": 51,
+        "val_score": 0.10144647997857208
+      },
+      {
+        "iteration": 52,
+        "val_score": 0.2879482822788999
+      }
+    ],
+    "best_score_trace": [
+      {
+        "iteration": 2,
+        "best_score": 0.2109033904476179
+      },
+      {
+        "iteration": 6,
+        "best_score": 0.2109033904476179
+      },
+      {
+        "iteration": 13,
+        "best_score": 0.2109033904476179
+      },
+      {
+        "iteration": 14,
+        "best_score": 0.2109033904476179
+      },
+      {
+        "iteration": 17,
+        "best_score": 0.2109033904476179
+      },
+      {
+        "iteration": 18,
+        "best_score": 0.2109033904476179
+      },
+      {
+        "iteration": 24,
+        "best_score": 0.2109033904476179
+      },
+      {
+        "iteration": 28,
+        "best_score": 0.2109033904476179
+      },
+      {
+        "iteration": 32,
+        "best_score": 0.23170119537264544
+      },
+      {
+        "iteration": 36,
+        "best_score": 0.28905523565630176
+      },
+      {
+        "iteration": 41,
+        "best_score": 0.28905523565630176
+      },
+      {
+        "iteration": 42,
+        "best_score": 0.28905523565630176
+      },
+      {
+        "iteration": 47,
+        "best_score": 0.28905523565630176
+      },
+      {
+        "iteration": 48,
+        "best_score": 0.28905523565630176
+      },
+      {
+        "iteration": 51,
+        "best_score": 0.28905523565630176
+      },
+      {
+        "iteration": 52,
+        "best_score": 0.28905523565630176
+      }
+    ],
+    "artifact_note": "W&B metrics synced; artifact upload failed because WANDB_DATA_DIR was not set for artifact staging in this run."
+  },
+  "grpo": {
+    "num_rollouts": 177,
+    "num_question_groups": 45,
+    "groups_with_mixed_em": 4,
+    "mean_group_best_reward": 1.0909,
+    "library_checkpoints": [
+      {
+        "checkpoint": "compiled/grpo_v4_cand13_checkpoints/epoch_0_batch_0.json",
+        "library_size": 6,
+        "next_num": 7
+      },
+      {
+        "checkpoint": "compiled/grpo_v4_cand13_checkpoints/epoch_0_batch_1.json",
+        "library_size": 11,
+        "next_num": 12
+      },
+      {
+        "checkpoint": "compiled/grpo_v4_cand13_checkpoints/epoch_0_batch_2.json",
+        "library_size": 13,
+        "next_num": 14
+      },
+      {
+        "checkpoint": "compiled/grpo_v4_cand13_checkpoints/epoch_0_batch_3.json",
+        "library_size": 18,
+        "next_num": 19
+      }
+    ],
+    "group_rows": [
+      {
+        "epoch": 0,
+        "question_id": "train_5905",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 2.2353,
+        "best_reward": 2.2359,
+        "worst_reward": 2.2338,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_80504",
+        "n": 4,
+        "profile": "one_hop",
+        "difficulty": "easy",
+        "mean_reward": 2.0312,
+        "best_reward": 2.0312,
+        "worst_reward": 2.0312,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_3505",
+        "n": 4,
+        "profile": "bridge_3hop_plus",
+        "difficulty": "hard",
+        "mean_reward": 1.7198,
+        "best_reward": 2.1583,
+        "worst_reward": 0.4044,
+        "mixed_em": true
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_12265",
+        "n": 4,
+        "profile": "yes_no",
+        "difficulty": "easy",
+        "mean_reward": 2.1955,
+        "best_reward": 2.2604,
+        "worst_reward": 2.0009,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_67182",
+        "n": 4,
+        "profile": "bridge_3hop_plus",
+        "difficulty": "hard",
+        "mean_reward": 0.6079,
+        "best_reward": 0.6079,
+        "worst_reward": 0.6079,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_77681",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 0.4045,
+        "best_reward": 0.4164,
+        "worst_reward": 0.3923,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "3hop1__465302_183029_831331",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 0.4443,
+        "best_reward": 0.4446,
+        "worst_reward": 0.444,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_14100",
+        "n": 4,
+        "profile": "bridge_3hop_plus",
+        "difficulty": "hard",
+        "mean_reward": 0.4274,
+        "best_reward": 0.4412,
+        "worst_reward": 0.414,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_32470",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 1.6607,
+        "best_reward": 2.193,
+        "worst_reward": 0.0655,
+        "mixed_em": true
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_3554",
+        "n": 4,
+        "profile": "yes_no",
+        "difficulty": "easy",
+        "mean_reward": 2.2495,
+        "best_reward": 2.2495,
+        "worst_reward": 2.2495,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_6941",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 1.1943,
+        "best_reward": 2.0347,
+        "worst_reward": 0.3433,
+        "mixed_em": true
+      },
+      {
+        "epoch": 0,
+        "question_id": "2hop__611543_705760",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 0.5898,
+        "best_reward": 0.8089,
+        "worst_reward": 0.3714,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_32415",
+        "n": 4,
+        "profile": "one_hop",
+        "difficulty": "easy",
+        "mean_reward": 2.2419,
+        "best_reward": 2.2419,
+        "worst_reward": 2.2419,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_77608",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 2.1859,
+        "best_reward": 2.1859,
+        "worst_reward": 2.1859,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_3598",
+        "n": 4,
+        "profile": "yes_no",
+        "difficulty": "hard",
+        "mean_reward": 0.0602,
+        "best_reward": 0.0603,
+        "worst_reward": 0.0601,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "2hop__91652_52870",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 0.7276,
+        "best_reward": 0.7281,
+        "worst_reward": 0.7271,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_77638",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "easy",
+        "mean_reward": 0.2167,
+        "best_reward": 1.0654,
+        "worst_reward": -0.0662,
+        "mixed_em": true
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_32433",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "easy",
+        "mean_reward": -0.0159,
+        "best_reward": 0.0702,
+        "worst_reward": -0.1384,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_77674",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 2.1769,
+        "best_reward": 2.1788,
+        "worst_reward": 2.1749,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_14142",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 2.0603,
+        "best_reward": 2.0616,
+        "worst_reward": 2.059,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_3541",
+        "n": 4,
+        "profile": "yes_no",
+        "difficulty": "easy",
+        "mean_reward": 2.2425,
+        "best_reward": 2.2425,
+        "worst_reward": 2.2425,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_12215",
+        "n": 4,
+        "profile": "yes_no",
+        "difficulty": "easy",
+        "mean_reward": 2.2469,
+        "best_reward": 2.2469,
+        "worst_reward": 2.2469,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "3hop2__106350_21987_831253",
+        "n": 4,
+        "profile": "bridge_3hop_plus",
+        "difficulty": "hard",
+        "mean_reward": 0.4858,
+        "best_reward": 0.6257,
+        "worst_reward": 0.3458,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_3515",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 0.3901,
+        "best_reward": 0.3904,
+        "worst_reward": 0.3895,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "2hop__91811_3089",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "easy",
+        "mean_reward": 1.0737,
+        "best_reward": 1.0747,
+        "worst_reward": 1.0726,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "2hop__252624_11179",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 0.4363,
+        "best_reward": 0.4364,
+        "worst_reward": 0.4362,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "2hop__822119_14970",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 0.4364,
+        "best_reward": 0.4369,
+        "worst_reward": 0.4362,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "2hop__26571_3807",
+        "n": 4,
+        "profile": "numeric",
+        "difficulty": "hard",
+        "mean_reward": 0.2866,
+        "best_reward": 0.2867,
+        "worst_reward": 0.2864,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "3hop1__330447_715836_26008",
+        "n": 4,
+        "profile": "numeric",
+        "difficulty": "hard",
+        "mean_reward": 0.4139,
+        "best_reward": 0.4144,
+        "worst_reward": 0.4125,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_12281",
+        "n": 4,
+        "profile": "yes_no",
+        "difficulty": "easy",
+        "mean_reward": 2.2428,
+        "best_reward": 2.2428,
+        "worst_reward": 2.2428,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_3556",
+        "n": 4,
+        "profile": "yes_no",
+        "difficulty": "hard",
+        "mean_reward": 0.1478,
+        "best_reward": 0.1478,
+        "worst_reward": 0.1478,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "3hop1__834093_406717_25935",
+        "n": 4,
+        "profile": "one_hop",
+        "difficulty": "hard",
+        "mean_reward": 0.1843,
+        "best_reward": 0.3715,
+        "worst_reward": 0.1182,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_6952",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "hard",
+        "mean_reward": 0.434,
+        "best_reward": 0.4344,
+        "worst_reward": 0.4339,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "2hop__3874_750102",
+        "n": 4,
+        "profile": "bridge_3hop_plus",
+        "difficulty": "hard",
+        "mean_reward": 0.9023,
+        "best_reward": 0.9276,
+        "worst_reward": 0.8766,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_14183",
+        "n": 4,
+        "profile": "yes_no",
+        "difficulty": "hard",
+        "mean_reward": 0.1514,
+        "best_reward": 0.1514,
+        "worst_reward": 0.1514,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_80566",
+        "n": 4,
+        "profile": "yes_no",
+        "difficulty": "hard",
+        "mean_reward": 0.1506,
+        "best_reward": 0.1506,
+        "worst_reward": 0.1506,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_77421",
+        "n": 4,
+        "profile": "numeric",
+        "difficulty": "hard",
+        "mean_reward": 0.2936,
+        "best_reward": 0.3697,
+        "worst_reward": 0.0666,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "3hop1__647685_840421_41097",
+        "n": 4,
+        "profile": "temporal",
+        "difficulty": "hard",
+        "mean_reward": 0.3554,
+        "best_reward": 0.356,
+        "worst_reward": 0.355,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "2hop__630207_432198",
+        "n": 4,
+        "profile": "bridge_2hop",
+        "difficulty": "easy",
+        "mean_reward": -0.0699,
+        "best_reward": -0.0693,
+        "worst_reward": -0.0701,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "3hop1__714437_593059_76293",
+        "n": 4,
+        "profile": "temporal",
+        "difficulty": "hard",
+        "mean_reward": 2.1265,
+        "best_reward": 2.1278,
+        "worst_reward": 2.1252,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "3hop1__262651_365698_39874",
+        "n": 4,
+        "profile": "numeric",
+        "difficulty": "hard",
+        "mean_reward": 0.2491,
+        "best_reward": 0.2491,
+        "worst_reward": 0.2491,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "train_12283",
+        "n": 4,
+        "profile": "yes_no",
+        "difficulty": "easy",
+        "mean_reward": 2.2317,
+        "best_reward": 2.2317,
+        "worst_reward": 2.2317,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "4hop3__31642_754527_531155_20507",
+        "n": 4,
+        "profile": "temporal",
+        "difficulty": "hard",
+        "mean_reward": 0.2513,
+        "best_reward": 0.2514,
+        "worst_reward": 0.2511,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "3hop1__750125_183029_831331",
+        "n": 4,
+        "profile": "one_hop",
+        "difficulty": "hard",
+        "mean_reward": 0.6265,
+        "best_reward": 0.8033,
+        "worst_reward": 0.4496,
+        "mixed_em": false
+      },
+      {
+        "epoch": 0,
+        "question_id": "2hop__695023_503265",
+        "n": 1,
+        "profile": "temporal",
+        "difficulty": "easy",
+        "mean_reward": 1.7163,
+        "best_reward": 1.7163,
+        "worst_reward": 1.7163,
+        "mixed_em": false
+      }
+    ],
+    "stopped_note": "Full cand13 GRPO stopped at epoch_0_batch_3 after OpenAI reflection stalled; partial library matched val EM but increased tokens."
+  }
+}

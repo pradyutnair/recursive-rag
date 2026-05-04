@@ -1,0 +1,41 @@
+{
+  "n": 1000,
+  "norm_em": 0.162,
+  "token_f1": 0.2363,
+  "contain": 0.186,
+  "mean_quality": 0.878,
+  "mean_efficiency": 0.4472,
+  "mean_composite": 0.6879,
+  "mean_tokens": 7293.8,
+  "mean_elapsed_s": 20.9,
+  "mean_nodes": 2.57,
+  "route_dist": {
+    "hard": 933,
+    "easy": 67
+  },
+  "topology_dist": {
+    "dag_n2": 492,
+    "dag_n5": 36,
+    "dag_n4": 133,
+    "dag_n3": 231,
+    "easy_lane": 67,
+    "single_hop": 27,
+    "dag_n6": 10,
+    "dag_n8": 1,
+    "dag_n7": 3
+  },
+  "profile_dist": {
+    "temporal": 242,
+    "one_hop": 86,
+    "bridge_3hop_plus": 212,
+    "numeric": 68,
+    "bridge_2hop": 379,
+    "parallel_compare": 12,
+    "yes_no": 1
+  },
+  "topology_mutated_rate": 0.0,
+  "easy_route_fraction": 0.067,
+  "easy_route_norm_em": 0.0149,
+  "easy_route_mean_tokens": 2133.6,
+  "wall_clock_s": 2631.21
+}
