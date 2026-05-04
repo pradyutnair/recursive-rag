@@ -48,13 +48,11 @@ class AdaptiveProgram(dspy.Module):
         self.router = pipeline.route_predict
         self.planner = pipeline.plan_predict
         self.synthesizer = pipeline.synth_predict
-        self.critic = pipeline.critic_predict
 
     def _sync(self) -> None:
         self.pipeline.route_predict = self.router
         self.pipeline.plan_predict = self.planner
         self.pipeline.synth_predict = self.synthesizer
-        self.pipeline.critic_predict = self.critic
 
     def forward(self, question: str, budget_hint: str = "normal") -> dspy.Prediction:
         self._sync()

@@ -1,0 +1,88 @@
+{
+    "answer": "no",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "What is the name of the comedy by William Shakespeare that is thought to have been written in 1598?",
+                "expected_type": "title",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "A Midsummer Night's Dream",
+                "confidence": 0.9,
+                "chunk_id": "10960194",
+                "queries_used": [
+                    "What is the name of the comedy by William Shakespeare that is thought to have been written in 1598?"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the name of the comedy by William Shakespeare that is thought to have been written in 1598?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "Is A Midsummer Night's Dream a comedy of intrigue?",
+                "expected_type": "yes_no",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "no",
+                "confidence": 0.8,
+                "chunk_id": "13808250",
+                "queries_used": [
+                    "Is A Midsummer Night's Dream a comedy of intrigue? (given: What is the name of the comedy by William Shakespeare that is thought to have been written in 1598? -> A Midsummer Night's Dream)"
+                ],
+                "expanded_into": [],
+                "raw_question": "Is <A1.1> a comedy of intrigue?",
+                "retrieval_query": "Is A Midsummer Night's Dream a comedy of intrigue? (given: What is the name of the comedy by William Shakespeare that is thought to have been written in 1598? -> A Midsummer Night's Dream)"
+            }
+        ],
+        "synth_answer_raw": "no",
+        "critic": []
+    },
+    "metadata": {
+        "root_tokens": 4136,
+        "sub_tokens": 29012,
+        "total_tokens": 33148,
+        "elapsed_s": 16.316,
+        "hops": 1,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "no",
+                "evidence_chunk_id": "13808250",
+                "confidence": 0.8,
+                "queries_used": [
+                    "Is A Midsummer Night's Dream a comedy of intrigue? (given: What is the name of the comedy by William Shakespeare that is thought to have been written in 1598? -> A Midsummer Night's Dream)"
+                ],
+                "expected_answer_type": "yes_no"
+            }
+        ],
+        "profile": "bridge_3hop_plus",
+        "budget_hint": "normal",
+        "route": "hard",
+        "initial_route": "hard",
+        "router_reason": "'Comedy of intrigue' is a descriptive phrase that must be resolved first; the question requires resolving the genre to identify the specific comedy by Shakespeare, which involves a bridge entity.",
+        "escalated": false,
+        "tau_escalate": 0.7,
+        "easy_max_attempts": 2,
+        "level1_best_confidence": 0.0,
+        "level1_best_answer": "",
+        "level1_findings": [],
+        "expected_type": "entity",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [
+            "13808250"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 3,
+        "critic": [],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": true,
+        "direct_easy_answer": false
+    }
+}

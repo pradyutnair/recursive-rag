@@ -1,0 +1,149 @@
+{
+    "answer": "Gyeongju City, South Korea",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Where was Donda West's funeral held?",
+                "expected_type": "place",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "",
+                "confidence": 0.0,
+                "chunk_id": "",
+                "queries_used": [
+                    "Where was Donda West's funeral held?",
+                    "Where was Donda West's funeral service held?",
+                    "Where was Donda West's funeral service held? evidence",
+                    "Where was Donda West's funeral service held? Location of the funeral service",
+                    "Location of Donda West's funeral"
+                ],
+                "expanded_into": [],
+                "raw_question": "Where was Donda West's funeral held?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "What is the area of <A1.1> in square miles?",
+                "expected_type": "number",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "",
+                "confidence": 0.0,
+                "chunk_id": "",
+                "queries_used": [
+                    "What is the area of <A1.1> in square miles?",
+                    "What is the area of <A1.1> in square miles? evidence",
+                    "What is the area of <A1.1> in square miles? evidence evidence",
+                    "What is the area of <A1.1> in square miles? evidence evidence",
+                    "What is the area of <A1.1> in square miles? evidence evidence"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the area of <A1.1> in square miles?",
+                "retrieval_query": ""
+            }
+        ],
+        "synth_answer_raw": "Gyeongju City, South Korea",
+        "critic": []
+    },
+    "metadata": {
+        "root_tokens": 8559,
+        "sub_tokens": 52804,
+        "total_tokens": 61363,
+        "elapsed_s": 33.671,
+        "hops": 6,
+        "retries": 8,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "Gyeongju City, South Korea",
+                "evidence_chunk_id": "1319162",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Where does Gyeongju bread originate?"
+                ],
+                "expected_answer_type": "place"
+            },
+            {
+                "answer": "Howard Penman",
+                "evidence_chunk_id": "4499103",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who is the person who could describe the process of evaporation?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "South Korea",
+                "evidence_chunk_id": "5714399",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is the country of Gyeongju City, South Korea? (given: Where does Gyeongju bread originate? -> Gyeongju City, South Korea)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "",
+                "evidence_chunk_id": "",
+                "confidence": 0.0,
+                "queries_used": [
+                    "What is the area of <A1.1> in square miles?",
+                    "What is the area of <A1.1> in square miles? evidence",
+                    "What is the area of <A1.1> in square miles? evidence evidence",
+                    "What is the area of <A1.1> in square miles? evidence evidence",
+                    "What is the area of <A1.1> in square miles? evidence evidence"
+                ],
+                "expected_answer_type": "auto"
+            },
+            {
+                "answer": "a woman's desperation for her former lover to return",
+                "evidence_chunk_id": "2868701",
+                "confidence": 0.6,
+                "queries_used": [
+                    "Who is We Belong Together by Ludwig G\u00f6ransson about? (given: Who is the composer of Forever? -> Ludwig G\u00f6ransson)",
+                    "What is the subject or theme of the song \"We Belong Together\" by Ludwig G\u00f6ransson?",
+                    "Who is the song \"We Belong Together\" by Ludwig G\u00f6ransson about?",
+                    "Who is the song \"We Belong Together\" by Mariah Carey about?",
+                    "Who is the song \"We Belong Together\" by Ludwig G\u00f6ransson about? (given: a woman's desperation for her former lover to return)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "British",
+                "evidence_chunk_id": "2381460",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is the country of origin of Howard Penman? (given: Who is the person who could describe the process of evaporation? -> Howard Penman)"
+                ],
+                "expected_answer_type": "entity"
+            }
+        ],
+        "profile": "numeric",
+        "budget_hint": "normal",
+        "route": "hard",
+        "initial_route": "hard",
+        "router_reason": "The question requires resolving the city where Donda West's funeral was held first, then determining its area in square miles.",
+        "escalated": false,
+        "tau_escalate": 0.7,
+        "easy_max_attempts": 2,
+        "level1_best_confidence": 0.0,
+        "level1_best_answer": "",
+        "level1_findings": [],
+        "expected_type": "number",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [
+            "1319162"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 2,
+        "critic": [],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

@@ -122,7 +122,7 @@ def composite_reward(
     contain = _contain(pred, gold)
     grounded = _grounding(pred, findings)
     shape = _shape_match(pred, expected_type)
-    quality = 1.0 * f1 + 0.3 * contain + 0.4 * grounded + 0.2 * shape
+    quality = 1.5 * em + 1.0 * f1 + 0.3 * contain + 0.4 * grounded + 0.2 * shape
     efficiency = math.exp(-max(0, total_tokens) / token_T)
     composite = quality * (efficiency ** alpha)
     return RewardBreakdown(em, f1, contain, grounded, shape, quality, efficiency, composite, int(total_tokens))

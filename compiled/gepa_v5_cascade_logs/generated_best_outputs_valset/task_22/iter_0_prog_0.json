@@ -1,0 +1,88 @@
+{
+    "answer": "The Gruffalo",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera?",
+                "expected_type": "title",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Snow Maiden",
+                "confidence": 0.9,
+                "chunk_id": "19846564",
+                "queries_used": [
+                    "What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera?"
+                ],
+                "expanded_into": [],
+                "raw_question": "What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "What is the subtitle of Snow Maiden?",
+                "expected_type": "title",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "A Spring Fairy Tale",
+                "confidence": 0.95,
+                "chunk_id": "14061456",
+                "queries_used": [
+                    "What is the subtitle of Snow Maiden? (given: What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera? -> Snow Maiden)"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the subtitle of <A1.1>?",
+                "retrieval_query": "What is the subtitle of Snow Maiden? (given: What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera? -> Snow Maiden)"
+            }
+        ],
+        "synth_answer_raw": "The Gruffalo",
+        "critic": []
+    },
+    "metadata": {
+        "root_tokens": 5289,
+        "sub_tokens": 26770,
+        "total_tokens": 32059,
+        "elapsed_s": 16.196,
+        "hops": 1,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "The Gruffalo",
+                "evidence_chunk_id": "2058144",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Which children's book written by Julia Donaldson MBE is illustrated by Axel Scheffler? (given: Who is the Scottish writer and Children's laureate? -> Julia Donaldson MBE)"
+                ],
+                "expected_answer_type": "title"
+            }
+        ],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "initial_route": "hard",
+        "router_reason": "The question involves resolving the opera conducted by Nikolai Rimsky-Korsakov at Novaya Opera, which requires identifying the specific opera first before finding its subtitle.",
+        "escalated": false,
+        "tau_escalate": 0.7,
+        "easy_max_attempts": 2,
+        "level1_best_confidence": 0.0,
+        "level1_best_answer": "",
+        "level1_findings": [],
+        "expected_type": "entity",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [
+            "2058144"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 2,
+        "critic": [],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

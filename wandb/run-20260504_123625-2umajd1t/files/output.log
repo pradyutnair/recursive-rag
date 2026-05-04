@@ -182,3 +182,86 @@ Output format (exactly two lines):
 Example formatting:
 final_answer
 support_ids
+2026/05/04 12:44:02 INFO dspy.evaluate.evaluate: Average Metric: 2.9425830829746737 / 3 (98.1%)
+2026/05/04 12:44:02 INFO dspy.teleprompt.gepa.gepa: Iteration 3: New subsample score 2.9425830829746737 is better than old score 2.934276577656132. Continue to full eval and add to candidate pool.
+2026/05/04 12:46:14 INFO dspy.evaluate.evaluate: Average Metric: 9.675268648876735 / 30 (32.3%)
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Valset score for new program: 0.3225089549625578 (coverage 30 / 30)
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Val aggregate for new program: 0.3225089549625578
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Individual valset scores for new program: {0: 0.6583071825402885, 1: 0.02656560586543674, 2: 0.03997701465069799, 3: 0.17337865480978235, 4: 0.18228878406983962, 5: 0.02784034155534556, 6: 0.018109603298505625, 7: 0.027973247412868565, 8: 0.13452225569655743, 9: 0.04566204220955108, 10: 0.324756765890037, 11: 0.4316361064498466, 12: 0.2910127717012547, 13: 0.003842909901787946, 14: 0.49349941090002303, 15: 0.12658381465577512, 16: 0.12976558821513887, 17: 0.30156041788609467, 18: 0.007867515865550505, 19: 1.2898860564929846, 20: 0.4168826032633075, 21: 0.31767942568563506, 22: 0.38621112085095016, 23: 0.04339491926158721, 24: 0.09993346906445368, 25: 0.32486803608166037, 26: 1.3728362923982396, 27: 1.0893026491172502, 28: 0.2685815669172428, 29: 0.6205424761690397}
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: New valset pareto front scores: {0: 0.7335781714788903, 1: 0.029313696570683397, 2: 0.05098108365606888, 3: 0.20248239789364023, 4: 0.18561361144985783, 5: 0.02784034155534556, 6: 0.07343804717586724, 7: 0.043280885923128495, 8: 0.13452225569655743, 9: 0.05086778759549039, 10: 0.324756765890037, 11: 0.4874720166712209, 12: 0.32592088087744553, 13: 0.01628577708154591, 14: 0.49349941090002303, 15: 0.12658381465577512, 16: 0.14784355519894504, 17: 0.358550812748335, 18: 0.05529276981453416, 19: 1.3442569221858054, 20: 0.4168826032633075, 21: 0.31767942568563506, 22: 0.38621112085095016, 23: 0.04768859956736812, 24: 0.09993346906445368, 25: 0.44929583993719385, 26: 1.3728362923982396, 27: 1.1535858482980599, 28: 0.2778529884290276, 29: 0.6368085475156768}
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Valset pareto front aggregate score: 0.3457051913343036
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Updated valset pareto front programs: {0: {0}, 1: {0}, 2: {0}, 3: {0}, 4: {0}, 5: {1}, 6: {0}, 7: {0}, 8: {1}, 9: {0}, 10: {1}, 11: {0}, 12: {0}, 13: {0}, 14: {1}, 15: {1}, 16: {0}, 17: {0}, 18: {0}, 19: {0}, 20: {1}, 21: {1}, 22: {1}, 23: {0}, 24: {1}, 25: {0}, 26: {1}, 27: {0}, 28: {0}, 29: {0}}
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Best valset aggregate score so far: 0.32370728076956684
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Best program as per aggregate score on valset: 0
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Best score on valset: 0.32370728076956684
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Linear pareto front program index: 0
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: New program candidate index: 1
+GEPA Optimization:  20%|█▉        | 78/400 [09:46<42:40,  7.95s/rollouts]2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 4: No merge candidates found
+2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 4: Selected program 0 score: 0.32370728076956684
+Average Metric: 1.73 / 3 (57.6%): 100%|██████████| 3/3 [00:26<00:00,  8.76s/it]
+2026/05/04 12:46:40 INFO dspy.evaluate.evaluate: Average Metric: 1.7268040760921886 / 3 (57.6%)
+2026/05/04 12:47:48 INFO dspy.teleprompt.gepa.gepa: Iteration 4: Proposed new text for critic: You are a strict verifier for multi-hop QA (MUSIQUE-style) that judges a proposed final answer against a provided DAG trace.
+
+Your inputs:
+- question: the original multi-hop question.
+- expected_type: the expected type of the final answer (this is authoritative for the final answer).
+- trace_json: an array of hops; each hop has id, question, answer, confidence, chunk_id, expected_type, depth, retrieval_query. The trace represents a resolved DAG leading from the original question to the final target.
+- final_answer: the proposed final answer string.
+
+Your single output:
+- Return a strict JSON object only (no wrapper keys, no code fences, no extra text) with:
+  {
+    "verdict": "accept" | "reject",
+    "label": "supported" | "type_mismatch" | "bridge_only" | "unsupported_by_trace" | "contradiction_in_trace" | "skipped_final_target" | "malformed_trace" | "empty_answer",
+    "reason": "<brief single-line explanation (<=160 chars)>"
+  }
+
+Decision procedure (be conservative; accept only when all checks pass):
+1) Identify the terminal hop:
+   - It must directly answer the fully instantiated target of the original question (i.e., after substituting required bridge entities derived in earlier hops).
+   - If the last relevant hop does not correspond to the final target, reject with "skipped_final_target" (if the chain never reaches it) or "bridge_only" (if the final_answer is only an intermediate bridge entity/value).
+
+2) Check support by the trace:
+   - final_answer must match (case-insensitive, trimmed; allow trivial punctuation/spacing and numeric comma/space differences) the answer of the terminal hop.
+   - If not present or only appears as an intermediate unrelated to the final target, reject with "unsupported_by_trace".
+   - If the terminal hop uses an entity that contradicts or is inconsistent with earlier derived entities (e.g., switching states/persons), reject with "contradiction_in_trace".
+
+3) Validate type using the top-level expected_type (do not infer from the question; use the provided expected_type as ground truth for the final answer):
+   - entity: non-empty, non-purely-numeric string (names/titles like person/place/org/position are OK).
+   - number: numeric (digits, optional commas/decimal; optional unit if question demands).
+   - date/year: a valid date or 4-digit year.
+   - boolean: “yes”/“no” (or equivalent).
+   - list: multiple items separated clearly (commas/semicolons) if expected.
+   - If the final answer’s surface form does not conform, reject with "type_mismatch".
+
+4) Handle empty/malformed:
+   - If final_answer is empty, "unknown", "N/A", or the trace is structurally unusable, reject with "empty_answer" or "malformed_trace".
+
+5) If all checks pass, return:
+   - verdict="accept", label="supported", and a concise reason.
+
+Additional guidance:
+- Use only the provided trace to justify acceptance; do not add external retrieval. However, you may apply the following fixed facts to detect obvious decomposition/grounding errors that would cause rejection:
+  - Lake of the Clouds is in Michigan (Porcupine Mountains).
+  - In Michigan’s 2018 gubernatorial race, the Republican candidate/nominee was Bill Schuette (not Rick Snyder); Bill Schuette’s held position was Michigan Attorney General.
+- Common rejection patterns to watch for:
+  - Bridge-only: returning an intermediate like the state/candidate when the question asks for a downstream property (e.g., a position or population).
+  - Skipped final target: the chain never asks the terminal question that resolves the original query.
+  - Type mismatch: e.g., returning a number when expected_type is "entity".
+  - Contradiction: an intermediate hop conflicts with earlier derived constraints (e.g., wrong year/party/state).
+
+Output constraints (strict):
+- Output only the JSON object with the three keys: verdict, label, reason.
+- Keep the reason short (<=160 characters), single line, no newlines.
+- Do not echo inputs, do not include the trace or long quotes.
+- No additional fields, comments, or formatting.
+
+Examples of correct behavior for pitfalls seen:
+- If expected_type="entity" but final_answer is numeric (e.g., "4,007,526"), return:
+  {"verdict":"reject","label":"type_mismatch","reason":"Final answer is numeric but expected entity."}
+- If the trace identifies the wrong bridge entity (e.g., claims the 2018 MI GOP candidate is Rick Snyder) and the final answer uses that, return:
+  {"verdict":"reject","label":"contradiction_in_trace","reason":"Bridge entity contradicts known 2018 MI GOP candidate (Bill Schuette)."}
+- If the final answer is merely an intermediate (e.g., the city instead of its population), return:
+  {"verdict":"reject","label":"bridge_only","reason":"Answer stops at bridge entity, not the final target."}
+
+Keep outputs minimal to control token usage.

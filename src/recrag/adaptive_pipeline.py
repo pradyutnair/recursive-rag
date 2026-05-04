@@ -138,6 +138,18 @@ DEFAULT_ROUTER_INSTRUCTIONS = (
     "{\"route\":\"hard\",\"reason\":\"Requires resolving director bridge before spouse lookup.\"}\n"
 )
 
+SAFE_EASY_STOP_PROFILES: set[str] = set()
+
+
+def _safe_easy_stop(profile: str, finding: HopFinding | None, tau: float) -> bool:
+    if finding is None or finding.confidence < tau:
+        return False
+    if not finding.answer.strip() or not finding.evidence_chunk_id:
+        return False
+    if SAFE_EASY_STOP_PROFILES and str(profile or "") not in SAFE_EASY_STOP_PROFILES:
+        return False
+    return True
+
 
 @dataclass
 class AdaptiveConfig:
@@ -150,12 +162,15 @@ class AdaptiveConfig:
     router_instructions: str = DEFAULT_ROUTER_INSTRUCTIONS
     synth_instructions: str = DEFAULT_SYNTH_INSTRUCTIONS
     critic_instructions: str = DEFAULT_CRITIC_INSTRUCTIONS
-    use_critic: bool = True
+    use_critic: bool = False
     use_router: bool = True
     force_route: str | None = None
     budget_hint: str = "normal"
     max_critic_retries: int = 0
     max_searches: int = 3
+    use_escalation: bool = True
+    tau_escalate: float = 0.7
+    easy_max_attempts: int = 2
     # Adaptive critic: skip critic when easy (n_nodes==1 AND min_finding_confidence >= tau_skip_critic)
     tau_skip_critic: float = 0.7
 
@@ -382,13 +397,13 @@ class AdaptiveRecursivePipeline:
                 return True, ids
         return False, ids
 
-    async def _direct_path(self, question: str, expected_type: str) -> PlanRun:
+    async def _direct_path(self, question: str, expected_type: str, max_attempts: int | None = None) -> PlanRun:
         """Single-hop SAS path used as fallback when the planner fails."""
         plan = PlanRun(nodes={}, final_node="Q1.1")
         node = PlannedNode(id="Q1.1", question=question, raw_question=question, expected_type=expected_type, depends_on=[])
         plan.nodes["Q1.1"] = node
         runner = AdaptiveDAGRunner(retriever=self.retriever, sub_lm=self.sub_lm, state=self.tool_state, max_nodes=self.config.max_nodes, max_recursion_depth=0, tau_recurse=self.config.tau_recurse)
-        runner.max_searches = self.config.max_searches
+        runner.max_searches = int(max_attempts or self.config.max_searches)
         await runner.run_node(node)
         return plan
 
@@ -417,14 +432,42 @@ class AdaptiveRecursivePipeline:
         prof = classify(question)
 
         route, route_reason = await self._route(question, prof, budget_hint)
+        initial_route = route
+        escalated = False
+        level1_findings: list[dict[str, Any]] = []
+        level1_best_confidence = 0.0
+        level1_best_answer = ""
         if route == "easy":
-            plan = await self._direct_path(question, expected_type)
+            plan = await self._direct_path(question, expected_type, max_attempts=self.config.easy_max_attempts)
+            best_level1 = max(self.tool_state.findings, key=lambda f: f.confidence, default=None)
+            level1_findings = [f.as_dict() for f in self.tool_state.findings]
+            if best_level1:
+                level1_best_confidence = float(best_level1.confidence)
+                level1_best_answer = best_level1.answer
+            can_stop = _safe_easy_stop(prof, best_level1, self.config.tau_escalate)
+            if self.config.use_escalation and not can_stop:
+                escalated = True
+                preserved_chunks = dict(self.tool_state.chunks_by_id)
+                preserved_errors = list(self.tool_state.tool_errors)
+                self.tool_state.findings.clear()
+                self.tool_state.total_hops = 0
+                self.tool_state.total_retries = 0
+                self.tool_state.tool_errors[:] = preserved_errors
+                self.tool_state.chunks_by_id.update(preserved_chunks)
+                hint = (
+                    "LEVEL-1 single-investigator attempt was not confident enough; "
+                    f"best_answer={level1_best_answer!r}, confidence={level1_best_confidence:.2f}. "
+                    "Escalate to a full DAG that resolves the final target, not just the weak intermediate answer."
+                )
+                route = "hard"
+                route_reason = f"{route_reason} | escalated_low_confidence"
+                plan = await self._execute(question, expected_type, note=hint, budget_hint=budget_hint)
         else:
             plan = await self._execute(question, expected_type, budget_hint=budget_hint)
 
         direct_easy_answer = False
         best_easy = max(self.tool_state.findings, key=lambda f: f.confidence, default=None)
-        if route == "easy" and best_easy and best_easy.confidence >= 0.7 and best_easy.answer.strip() and best_easy.evidence_chunk_id:
+        if route == "easy" and _safe_easy_stop(prof, best_easy, self.config.tau_escalate):
             synth_ans = best_easy.answer
             synth_ids = best_easy.evidence_chunk_id
             used_final_node_answer = False
@@ -523,7 +566,14 @@ class AdaptiveRecursivePipeline:
             "profile": prof,
             "budget_hint": budget_hint,
             "route": route,
+            "initial_route": initial_route,
             "router_reason": route_reason,
+            "escalated": escalated,
+            "tau_escalate": self.config.tau_escalate,
+            "easy_max_attempts": self.config.easy_max_attempts,
+            "level1_best_confidence": round(level1_best_confidence, 3),
+            "level1_best_answer": level1_best_answer,
+            "level1_findings": level1_findings,
             "expected_type": expected_type,
             "topology": topology,
             "n_nodes": len(plan.nodes),

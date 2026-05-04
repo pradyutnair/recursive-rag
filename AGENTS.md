@@ -257,6 +257,17 @@ Current driver at `src/recrag/grpo/compile.py`. Key decisions:
 
 ## Experiment plan with detailed checkpoints
 
+
+### Cascade v5 implementation checkpoint -- 2026-05-04
+
+- [x] Implemented confidence-gated escalation in `src/recrag/adaptive_pipeline.py` and `src/recrag/sync_pipeline.py`: easy route runs a cheap level-1 investigator with `easy_max_attempts=2`; if confidence/evidence is below `tau_escalate=0.7`, it escalates to the full DAG with the level-1 answer/confidence passed as a planner hint. Metadata now records `initial_route`, `escalated`, `level1_best_confidence`, `level1_best_answer`, and `level1_findings`.
+- [x] Dropped critic from the default runtime path: `AdaptiveConfig.use_critic=False`, `scripts/eval_on_test.py --use-critic` is now opt-in, and GEPA v5 optimizes only router/planner/synthesizer via `AdaptiveProgram`.
+- [x] Added CLI controls: `--tau-escalate`, `--easy-max-attempts`, and `--no-escalation` in `scripts/eval_on_test.py`; GEPA compile also supports `--tau-escalate`, `--easy-max-attempts`, and `--no-escalation`.
+- [x] Fixed the shared reward in `src/recrag/metric.py`: `quality = 1.5*EM + 1.0*F1 + 0.3*contain + 0.4*grounded + 0.2*shape`, making EM the dominant optimization signal.
+- [x] Phase-0 cascade/default val check completed at `results/runs/val_cascade_default_20260504`: 0.3333 EM / 5204.7 tokens, matching force-hard/no-critic val EM with fewer tokens. A stricter profile-floor variant was tested at `results/runs/val_cascade_safe_20260504` and rejected because it dropped to 0.300 EM / 6277.7 tokens.
+- [ ] Phase-1 100q cascade/default pilot was started at `results/runs/pilot_cascade_default_20260504`; partial result showed confidence-only escalation still under-routes some high-confidence wrong easy cases (MuSiQue 0.200 / 7251; 2Wiki 0.210 / 7418), so this run was stopped before completion and v5 GEPA was launched to optimize routing/planning under the corrected EM reward.
+- [ ] Fresh GEPA v5 cascade launched in tmux `gepa_v5_cascade_20260504`, W&B run `icq3rthv`, output `compiled/gepa_v5_cascade.json`, logs `compiled/gepa_v5_cascade_logs/run.log`, followed by val eval `results/runs/val_gepa_v5_cascade_20260504` when optimization completes. Early GEPA v5 signal: iteration 9 new-program val score 0.4344 and best aggregate trace 0.4953 under the corrected EM-heavy reward. Post-GEPA queue `cascade_v5_post_20260504` will run `pilot_gepa_v5_cascade_20260504`, then full `test_gepa_v5_cascade_20260504`, then refresh thesis analysis.
+
 ### Phase 0: Orient and verify -- DONE
 
 - [x] vLLM servers confirmed live on node409 (ports 8001, 8002, 8003)
@@ -358,7 +369,7 @@ Current driver at `src/recrag/grpo/compile.py`. Key decisions:
 
 - [x] **No-critic**: completed at `results/runs/test_nocritic_20260504`: MuSiQue 0.159 / 7383.9; 2Wiki 0.268 / 6846.3; HotpotQA 0.332 / 5097.0; Bamboogle 0.264 / 4746.2. It matches or slightly improves adaptive EM while reducing tokens on all 4, but still trails force-hard on MuSiQue/2Wiki/Bamboogle. Paired files: `results/analysis/nocritic_vs_adaptive_forcehard_*.json`.
 - [x] **No-experience-library**: current full adaptive/default run is already without a library (`results/runs/test_v4_default_20260504`); partial GRPO library hurt val tokens without EM gain.
-- [ ] **Random routing**: running in tmux `post_nocritic_queue_20260504` at adaptive easy rates. MuSiQue completed: 0.162 EM / 7293.8 tokens, below force-hard/no-critic but slightly above adaptive/no-critic. 2Wiki is in progress; HotpotQA and Bamboogle still queued.
+- [x] **Random routing**: completed at `results/runs/test_randomroute_20260504`: MuSiQue 0.162 / 7293.8; 2Wiki 0.275 / 6817.8; HotpotQA 0.306 / 4775.2; Bamboogle 0.272 / 4535.9. Paired comparisons in `results/analysis/random_route_compare_*.json`: adaptive beats random significantly only on HotpotQA (+0.026 EM, p=0.018); random is statistically tied or slightly ahead elsewhere. This supports replacing binary routing with cascade + better GEPA routing.
 - [ ] **No-oracle GEPA**: queued in tmux `post_nocritic_queue_20260504`, after random routing. It runs GEPA with `--oracle-naive-dir ""`, then evaluates val and full test with `compiled/gepa_nooracle_20260504.json`.
 - [x] **Force-easy (SAS baseline)**: completed in Phase 5 at `results/runs/test_forceeasy_20260504`.
 - [x] **Force-hard (MAS upper bound)**: completed in Phase 5 at `results/runs/test_forcehard_20260504`.

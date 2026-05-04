@@ -1,4 +1,4 @@
-"""GEPA optimizer over router, planner, synthesizer, and critic."""
+"""GEPA optimizer over router, planner, and synthesizer."""
 from __future__ import annotations
 
 import argparse
@@ -96,10 +96,13 @@ def compile_gepa(args: argparse.Namespace) -> None:
                 budget_hint=args.budget_hint,
                 max_critic_retries=args.max_critic_retries,
                 max_searches=args.max_searches,
+                use_critic=False,
+                use_escalation=not args.no_escalation,
+                tau_escalate=args.tau_escalate,
+                easy_max_attempts=args.easy_max_attempts,
                 router_instructions=seed_prompts.get("router", AdaptiveConfig.router_instructions),
                 planner_instructions=seed_prompts.get("planner", AdaptiveConfig.planner_instructions),
                 synth_instructions=seed_prompts.get("synthesizer", AdaptiveConfig.synth_instructions),
-                critic_instructions=seed_prompts.get("critic", AdaptiveConfig.critic_instructions),
             ),
         )
         program = AdaptiveProgram(pipeline)
@@ -175,12 +178,15 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--reflection-max-tokens", type=int, default=16000)
     p.add_argument("--retriever-url", default="http://node408:8003")
     p.add_argument("--experience-library")
-    p.add_argument("--seed-program", default="", help="JSON prompts file used to initialize router/planner/synthesizer/critic")
+    p.add_argument("--seed-program", default="", help="JSON prompts file used to initialize router/planner/synthesizer")
     p.add_argument("--max-iters", type=int, default=15)
     p.add_argument("--max-nodes", type=int, default=6)
     p.add_argument("--max-recursion", type=int, default=0)
     p.add_argument("--max-critic-retries", type=int, default=0)
     p.add_argument("--max-searches", type=int, default=5)
+    p.add_argument("--tau-escalate", type=float, default=0.7)
+    p.add_argument("--easy-max-attempts", type=int, default=2)
+    p.add_argument("--no-escalation", action="store_true")
     p.add_argument("--tau-recurse", type=float, default=0.5)
     p.add_argument("--budget-hint", choices=["tight", "normal", "rich"], default="normal")
     p.add_argument("--auto", choices=["light", "medium", "heavy"], default="medium")

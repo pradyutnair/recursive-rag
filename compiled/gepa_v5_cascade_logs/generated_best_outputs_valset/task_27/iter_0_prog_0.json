@@ -1,0 +1,98 @@
+{
+    "answer": "Lieutenant Commander Steve McGarrett",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Which character does Alex O'Loughlin play in \"Hawaii Five-O\"?",
+                "expected_type": "entity",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Lieutenant Commander Steve McGarrett",
+                "confidence": 0.95,
+                "chunk_id": "18293203",
+                "queries_used": [
+                    "Which character does Alex O'Loughlin play in \"Hawaii Five-O\"?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Which character does Alex O'Loughlin play in \"Hawaii Five-O\"?",
+                "retrieval_query": ""
+            }
+        ],
+        "synth_answer_raw": "Lieutenant Commander Steve McGarrett",
+        "critic": []
+    },
+    "metadata": {
+        "root_tokens": 0,
+        "sub_tokens": 10485,
+        "total_tokens": 10485,
+        "elapsed_s": 5.288,
+        "hops": 2,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "no",
+                "evidence_chunk_id": "13808250",
+                "confidence": 0.8,
+                "queries_used": [
+                    "Is A Midsummer Night's Dream a comedy of intrigue? (given: What is the name of the comedy by William Shakespeare that is thought to have been written in 1598? -> A Midsummer Night's Dream)"
+                ],
+                "expected_answer_type": "yes_no"
+            },
+            {
+                "answer": "Lieutenant Commander Steve McGarrett",
+                "evidence_chunk_id": "18293203",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Which character does Alex O'Loughlin play in \"Hawaii Five-O\"?"
+                ],
+                "expected_answer_type": "entity"
+            }
+        ],
+        "profile": "one_hop",
+        "budget_hint": "normal",
+        "route": "easy",
+        "initial_route": "easy",
+        "router_reason": "Alex O'Loughlin is a specific named entity, and the question asks for a direct attribute (the character he plays) in a specific show.",
+        "escalated": false,
+        "tau_escalate": 0.7,
+        "easy_max_attempts": 2,
+        "level1_best_confidence": 0.95,
+        "level1_best_answer": "Lieutenant Commander Steve McGarrett",
+        "level1_findings": [
+            {
+                "answer": "no",
+                "evidence_chunk_id": "13808250",
+                "confidence": 0.8,
+                "queries_used": [
+                    "Is A Midsummer Night's Dream a comedy of intrigue? (given: What is the name of the comedy by William Shakespeare that is thought to have been written in 1598? -> A Midsummer Night's Dream)"
+                ],
+                "expected_answer_type": "yes_no"
+            },
+            {
+                "answer": "Lieutenant Commander Steve McGarrett",
+                "evidence_chunk_id": "18293203",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Which character does Alex O'Loughlin play in \"Hawaii Five-O\"?"
+                ],
+                "expected_answer_type": "entity"
+            }
+        ],
+        "expected_type": "entity",
+        "topology": "easy_lane",
+        "n_nodes": 1,
+        "final_node": "Q1.1",
+        "support_ids": [
+            "18293203"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 1,
+        "critic": [],
+        "critic_skipped_reason": "direct_easy_high_confidence",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": true
+    }
+}

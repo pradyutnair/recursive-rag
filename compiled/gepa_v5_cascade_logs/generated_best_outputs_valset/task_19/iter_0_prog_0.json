@@ -1,0 +1,170 @@
+{
+    "answer": "18 March 1959",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Are Audrey O'Brien and V. Gordon Childe of the same nationality?",
+                "expected_type": "yes_no",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "no",
+                "confidence": 0.9,
+                "chunk_id": "4567574",
+                "queries_used": [
+                    "Are Audrey O'Brien and V. Gordon Childe of the same nationality?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Are Audrey O'Brien and V. Gordon Childe of the same nationality?",
+                "retrieval_query": ""
+            }
+        ],
+        "synth_answer_raw": "18 March 1959",
+        "critic": []
+    },
+    "metadata": {
+        "root_tokens": 0,
+        "sub_tokens": 12085,
+        "total_tokens": 12085,
+        "elapsed_s": 4.323,
+        "hops": 6,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "Princess Louise Sophie of Schleswig-Holstein-Sonderburg-Augustenburg",
+                "evidence_chunk_id": "2177",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who was Princess Victoria Margaret Of Prussia's mother?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "18 March 1959",
+                "evidence_chunk_id": "1267417",
+                "confidence": 0.95,
+                "queries_used": [
+                    "When was Luc Besson born? (given: Who directed The Fifth Element? -> Luc Besson)"
+                ],
+                "expected_answer_type": "date"
+            },
+            {
+                "answer": "April 26, 1949",
+                "evidence_chunk_id": "9476388",
+                "confidence": 0.95,
+                "queries_used": [
+                    "When was Dominic Sena born? (given: Who directed Saint Janet? -> Dominic Sena)"
+                ],
+                "expected_answer_type": "date"
+            },
+            {
+                "answer": "February 12, 1873",
+                "evidence_chunk_id": "7662716",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What is the date of death of P\u014dmare IV? (given: Who is Teriimaevarua Ii's mother? -> P\u014dmare IV)"
+                ],
+                "expected_answer_type": "date"
+            },
+            {
+                "answer": "8 April 1866",
+                "evidence_chunk_id": "7557444",
+                "confidence": 0.95,
+                "queries_used": [
+                    "When was Princess Louise Sophie of Schleswig-Holstein-Sonderburg-Augustenburg born? (given: Who was Princess Victoria Margaret Of Prussia's mother? -> Princess Louise Sophie of Schleswig-Holstein-Sonderburg-Augustenburg)"
+                ],
+                "expected_answer_type": "date"
+            },
+            {
+                "answer": "no",
+                "evidence_chunk_id": "4567574",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Are Audrey O'Brien and V. Gordon Childe of the same nationality?"
+                ],
+                "expected_answer_type": "yes_no"
+            }
+        ],
+        "profile": "yes_no",
+        "budget_hint": "normal",
+        "route": "easy",
+        "initial_route": "easy",
+        "router_reason": "Both entities explicitly named; direct relation check.",
+        "escalated": false,
+        "tau_escalate": 0.7,
+        "easy_max_attempts": 2,
+        "level1_best_confidence": 0.95,
+        "level1_best_answer": "18 March 1959",
+        "level1_findings": [
+            {
+                "answer": "Princess Louise Sophie of Schleswig-Holstein-Sonderburg-Augustenburg",
+                "evidence_chunk_id": "2177",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who was Princess Victoria Margaret Of Prussia's mother?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "18 March 1959",
+                "evidence_chunk_id": "1267417",
+                "confidence": 0.95,
+                "queries_used": [
+                    "When was Luc Besson born? (given: Who directed The Fifth Element? -> Luc Besson)"
+                ],
+                "expected_answer_type": "date"
+            },
+            {
+                "answer": "April 26, 1949",
+                "evidence_chunk_id": "9476388",
+                "confidence": 0.95,
+                "queries_used": [
+                    "When was Dominic Sena born? (given: Who directed Saint Janet? -> Dominic Sena)"
+                ],
+                "expected_answer_type": "date"
+            },
+            {
+                "answer": "February 12, 1873",
+                "evidence_chunk_id": "7662716",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What is the date of death of P\u014dmare IV? (given: Who is Teriimaevarua Ii's mother? -> P\u014dmare IV)"
+                ],
+                "expected_answer_type": "date"
+            },
+            {
+                "answer": "8 April 1866",
+                "evidence_chunk_id": "7557444",
+                "confidence": 0.95,
+                "queries_used": [
+                    "When was Princess Louise Sophie of Schleswig-Holstein-Sonderburg-Augustenburg born? (given: Who was Princess Victoria Margaret Of Prussia's mother? -> Princess Louise Sophie of Schleswig-Holstein-Sonderburg-Augustenburg)"
+                ],
+                "expected_answer_type": "date"
+            },
+            {
+                "answer": "no",
+                "evidence_chunk_id": "4567574",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Are Audrey O'Brien and V. Gordon Childe of the same nationality?"
+                ],
+                "expected_answer_type": "yes_no"
+            }
+        ],
+        "expected_type": "yes_no",
+        "topology": "easy_lane",
+        "n_nodes": 1,
+        "final_node": "Q1.1",
+        "support_ids": [
+            "1267417"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 1,
+        "critic": [],
+        "critic_skipped_reason": "direct_easy_high_confidence",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": true
+    }
+}

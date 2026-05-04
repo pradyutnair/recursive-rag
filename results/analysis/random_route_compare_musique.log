@@ -1,0 +1,183 @@
+{
+  "runs": {
+    "adaptive": {
+      "n": 1000,
+      "em": 0.158,
+      "f1": 0.2312,
+      "mean_tokens": 8003.7,
+      "easy_route_fraction": 0.066,
+      "easy_route_em": 0.1364,
+      "easy_route_mean_tokens": 2228.6,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 379,
+          "em": 0.2084,
+          "mean_tokens": 6412.9,
+          "easy_route_fraction": 0.0554
+        },
+        "bridge_3hop_plus": {
+          "n": 212,
+          "em": 0.1321,
+          "mean_tokens": 9347.5,
+          "easy_route_fraction": 0.0094
+        },
+        "numeric": {
+          "n": 68,
+          "em": 0.1765,
+          "mean_tokens": 9213.7,
+          "easy_route_fraction": 0.0147
+        },
+        "one_hop": {
+          "n": 86,
+          "em": 0.093,
+          "mean_tokens": 4946.9,
+          "easy_route_fraction": 0.3605
+        },
+        "parallel_compare": {
+          "n": 12,
+          "em": 0.0833,
+          "mean_tokens": 7838.2,
+          "easy_route_fraction": 0.1667
+        },
+        "temporal": {
+          "n": 242,
+          "em": 0.124,
+          "mean_tokens": 10078.0,
+          "easy_route_fraction": 0.0372
+        },
+        "yes_no": {
+          "n": 1,
+          "em": 0.0,
+          "mean_tokens": 6648.0,
+          "easy_route_fraction": 0.0
+        }
+      }
+    },
+    "no_critic": {
+      "n": 1000,
+      "em": 0.159,
+      "f1": 0.2325,
+      "mean_tokens": 7383.9,
+      "easy_route_fraction": 0.064,
+      "easy_route_em": 0.1406,
+      "easy_route_mean_tokens": 2106.8,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 379,
+          "em": 0.2084,
+          "mean_tokens": 5844.9,
+          "easy_route_fraction": 0.0554
+        },
+        "bridge_3hop_plus": {
+          "n": 212,
+          "em": 0.1368,
+          "mean_tokens": 8693.2,
+          "easy_route_fraction": 0.0094
+        },
+        "numeric": {
+          "n": 68,
+          "em": 0.1765,
+          "mean_tokens": 8559.8,
+          "easy_route_fraction": 0.0147
+        },
+        "one_hop": {
+          "n": 86,
+          "em": 0.093,
+          "mean_tokens": 4701.6,
+          "easy_route_fraction": 0.3488
+        },
+        "parallel_compare": {
+          "n": 12,
+          "em": 0.0833,
+          "mean_tokens": 7255.8,
+          "easy_route_fraction": 0.1667
+        },
+        "temporal": {
+          "n": 242,
+          "em": 0.124,
+          "mean_tokens": 9282.3,
+          "easy_route_fraction": 0.0331
+        },
+        "yes_no": {
+          "n": 1,
+          "em": 0.0,
+          "mean_tokens": 5983.0,
+          "easy_route_fraction": 0.0
+        }
+      }
+    },
+    "random": {
+      "n": 1000,
+      "em": 0.162,
+      "f1": 0.2363,
+      "mean_tokens": 7293.8,
+      "easy_route_fraction": 0.067,
+      "easy_route_em": 0.0149,
+      "easy_route_mean_tokens": 2133.6,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 379,
+          "em": 0.2058,
+          "mean_tokens": 5802.6,
+          "easy_route_fraction": 0.0686
+        },
+        "bridge_3hop_plus": {
+          "n": 212,
+          "em": 0.1321,
+          "mean_tokens": 8543.8,
+          "easy_route_fraction": 0.0519
+        },
+        "numeric": {
+          "n": 68,
+          "em": 0.1618,
+          "mean_tokens": 8548.9,
+          "easy_route_fraction": 0.0441
+        },
+        "one_hop": {
+          "n": 86,
+          "em": 0.1395,
+          "mean_tokens": 5033.2,
+          "easy_route_fraction": 0.1047
+        },
+        "parallel_compare": {
+          "n": 12,
+          "em": 0.1667,
+          "mean_tokens": 8432.8,
+          "easy_route_fraction": 0.0
+        },
+        "temporal": {
+          "n": 242,
+          "em": 0.1281,
+          "mean_tokens": 8953.2,
+          "easy_route_fraction": 0.0702
+        },
+        "yes_no": {
+          "n": 1,
+          "em": 0.0,
+          "mean_tokens": 1297.0,
+          "easy_route_fraction": 1.0
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "adaptive_minus_random": {
+      "n": 1000,
+      "delta_em": -0.004,
+      "ci95": [
+        -0.013,
+        0.005
+      ],
+      "p_two_sided_approx": 0.4362
+    },
+    "no_critic_minus_random": {
+      "n": 1000,
+      "delta_em": -0.003,
+      "ci95": [
+        -0.012,
+        0.006
+      ],
+      "p_two_sided_approx": 0.5802
+    }
+  }
+}

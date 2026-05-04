@@ -68,6 +68,9 @@ def make_pipeline(args: argparse.Namespace, idx: int) -> AdaptiveRecursivePipeli
         max_critic_retries=args.max_critic_retries,
         budget_hint=args.budget_hint,
         max_searches=args.max_searches,
+        use_escalation=args.use_escalation,
+        tau_escalate=args.tau_escalate,
+        easy_max_attempts=args.easy_max_attempts,
     )
     prompts = _load_program(args.program)
     if prompts:
@@ -128,6 +131,7 @@ def summarize(rows: list[dict]) -> dict:
         "topology_dist": _hist(rows, "topology"),
         "profile_dist": _hist(rows, "profile"),
         "topology_mutated_rate": round(sum(1 for r in rows if r["metadata"].get("topology_mutated")) / n, 4),
+        "escalation_rate": round(sum(1 for r in rows if r["metadata"].get("escalated")) / n, 4),
     }
     if easy_rows:
         summary["easy_route_fraction"] = round(len(easy_rows) / n, 4)
@@ -237,8 +241,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--tau-recurse", type=float, default=0.5)
     p.add_argument("--use-dag", action="store_true", default=True)
     p.add_argument("--no-dag", dest="use_dag", action="store_false")
-    p.add_argument("--use-critic", action="store_true", default=True)
+    p.add_argument("--use-critic", action="store_true", default=False)
     p.add_argument("--no-critic", dest="use_critic", action="store_false")
+    p.add_argument("--use-escalation", action="store_true", default=True)
+    p.add_argument("--no-escalation", dest="use_escalation", action="store_false")
+    p.add_argument("--tau-escalate", type=float, default=0.7)
+    p.add_argument("--easy-max-attempts", type=int, default=2)
     p.add_argument("--use-router", action="store_true", default=True)
     p.add_argument("--no-router", dest="use_router", action="store_false")
     p.add_argument("--force-route", choices=["auto", "easy", "hard"], default="auto")

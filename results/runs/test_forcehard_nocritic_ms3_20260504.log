@@ -75,3 +75,9 @@
 {"ds": "2wikimultihop", "done": 850, "n": 1000, "em_running": 0.3071, "wall_s": 2105.0}
 {"ds": "2wikimultihop", "done": 875, "n": 1000, "em_running": 0.3017, "wall_s": 2157.8}
 {"ds": "2wikimultihop", "done": 900, "n": 1000, "em_running": 0.2989, "wall_s": 2217.1}
+{"ds": "2wikimultihop", "done": 925, "n": 1000, "em_running": 0.2995, "wall_s": 2288.4}
+{"ds": "2wikimultihop", "done": 950, "n": 1000, "em_running": 0.3, "wall_s": 2343.4}
+{"ds": "2wikimultihop", "done": 975, "n": 1000, "em_running": 0.3015, "wall_s": 2392.6}
+{"ds": "2wikimultihop", "done": 1000, "n": 1000, "em_running": 0.303, "wall_s": 2450.7}
+[done] 2wikimultihop: {"n": 1000, "norm_em": 0.303, "token_f1": 0.3671, "contain": 0.373, "mean_quality": 1.0596, "mean_efficiency": 0.4455, "mean_composite": 0.826, "mean_tokens": 7136.5, "mean_elapsed_s": 19.56, "mean_nodes": 2.9, "route_dist": {"hard": 1000}, "topology_dist": {"dag_n2": 481, "dag_n3": 257, "dag_n5": 210, "single_hop": 39, "dag_n7": 10, "dag_n4": 3}, "profile_dist": {"one_hop": 256, "bridge_3hop_plus": 109, "yes_no": 115, "parallel_compare": 69, "bridge_2hop": 427, "temporal": 16, "numeric": 8}, "topology_mutated_rate": 0.0, "easy_route_fraction": 0.0, "easy_route_norm_em": 0.0, "easy_route_mean_tokens": 0.0, "wall_clock_s": 2453.88}
+{"ds": "hotpotqa", "done": 25, "n": 1000, "em_running": 0.36, "wall_s": 50.6}

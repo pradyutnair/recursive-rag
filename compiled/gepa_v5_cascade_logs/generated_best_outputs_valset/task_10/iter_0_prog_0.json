@@ -1,0 +1,80 @@
+{
+    "answer": "no",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Are the directors of films The House Of 72 Tenants and Ya\u015fam Kavgas\u0131 both from the same country?",
+                "expected_type": "yes_no",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "no",
+                "confidence": 0.9,
+                "chunk_id": "16612241",
+                "queries_used": [
+                    "Are the directors of films The House Of 72 Tenants and Ya\u015fam Kavgas\u0131 both from the same country?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Are the directors of films The House Of 72 Tenants and Ya\u015fam Kavgas\u0131 both from the same country?",
+                "retrieval_query": ""
+            }
+        ],
+        "synth_answer_raw": "no",
+        "critic": []
+    },
+    "metadata": {
+        "root_tokens": 0,
+        "sub_tokens": 9940,
+        "total_tokens": 9940,
+        "elapsed_s": 4.286,
+        "hops": 1,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "no",
+                "evidence_chunk_id": "16612241",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Are the directors of films The House Of 72 Tenants and Ya\u015fam Kavgas\u0131 both from the same country?"
+                ],
+                "expected_answer_type": "yes_no"
+            }
+        ],
+        "profile": "yes_no",
+        "budget_hint": "normal",
+        "route": "easy",
+        "initial_route": "easy",
+        "router_reason": "Both entities explicitly named; direct relation check.",
+        "escalated": false,
+        "tau_escalate": 0.7,
+        "easy_max_attempts": 2,
+        "level1_best_confidence": 0.9,
+        "level1_best_answer": "no",
+        "level1_findings": [
+            {
+                "answer": "no",
+                "evidence_chunk_id": "16612241",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Are the directors of films The House Of 72 Tenants and Ya\u015fam Kavgas\u0131 both from the same country?"
+                ],
+                "expected_answer_type": "yes_no"
+            }
+        ],
+        "expected_type": "yes_no",
+        "topology": "easy_lane",
+        "n_nodes": 1,
+        "final_node": "Q1.1",
+        "support_ids": [
+            "16612241"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 1,
+        "critic": [],
+        "critic_skipped_reason": "direct_easy_high_confidence",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": true
+    }
+}
