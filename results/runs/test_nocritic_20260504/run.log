@@ -1,0 +1,288 @@
+{"ds": "musique", "done": 25, "n": 1000, "em_running": 0.32, "wall_s": 68.2}
+{"ds": "musique", "done": 50, "n": 1000, "em_running": 0.24, "wall_s": 124.3}
+{"ds": "musique", "done": 75, "n": 1000, "em_running": 0.1867, "wall_s": 191.4}
+{"ds": "musique", "done": 100, "n": 1000, "em_running": 0.2, "wall_s": 287.8}
+{"ds": "musique", "done": 125, "n": 1000, "em_running": 0.16, "wall_s": 335.4}
+{"ds": "musique", "done": 150, "n": 1000, "em_running": 0.1667, "wall_s": 415.2}
+{"ds": "musique", "done": 175, "n": 1000, "em_running": 0.1543, "wall_s": 465.0}
+{"ds": "musique", "done": 200, "n": 1000, "em_running": 0.15, "wall_s": 515.0}
+{"ds": "musique", "done": 225, "n": 1000, "em_running": 0.16, "wall_s": 579.3}
+{"ds": "musique", "done": 250, "n": 1000, "em_running": 0.156, "wall_s": 637.5}
+{"ds": "musique", "done": 275, "n": 1000, "em_running": 0.1636, "wall_s": 709.4}
+{"ds": "musique", "done": 300, "n": 1000, "em_running": 0.1667, "wall_s": 787.7}
+{"ds": "musique", "done": 325, "n": 1000, "em_running": 0.1662, "wall_s": 822.9}
+{"ds": "musique", "done": 350, "n": 1000, "em_running": 0.1743, "wall_s": 901.2}
+{"ds": "musique", "done": 375, "n": 1000, "em_running": 0.1653, "wall_s": 954.4}
+{"ds": "musique", "done": 400, "n": 1000, "em_running": 0.1575, "wall_s": 1029.3}
+{"ds": "musique", "done": 425, "n": 1000, "em_running": 0.16, "wall_s": 1082.9}
+{"ds": "musique", "done": 450, "n": 1000, "em_running": 0.1644, "wall_s": 1163.9}
+{"ds": "musique", "done": 475, "n": 1000, "em_running": 0.1642, "wall_s": 1223.2}
+2026/05/04 07:02:15 WARNING dspy.clients.lm: LM response was truncated due to exceeding max_tokens=768. You can inspect the latest LM interactions with `dspy.inspect_history()`. To avoid truncation, consider passing a larger max_tokens when setting up dspy.LM. You may also consider increasing the temperature (currently 0.0)  if the reason for truncation is repetition.
+{"ds": "musique", "done": 500, "n": 1000, "em_running": 0.164, "wall_s": 1286.0}
+{"ds": "musique", "done": 525, "n": 1000, "em_running": 0.1562, "wall_s": 1342.9}
+{"ds": "musique", "done": 550, "n": 1000, "em_running": 0.1582, "wall_s": 1391.5}
+{"ds": "musique", "done": 575, "n": 1000, "em_running": 0.16, "wall_s": 1452.1}
+{"ds": "musique", "done": 600, "n": 1000, "em_running": 0.1583, "wall_s": 1505.4}
+{"ds": "musique", "done": 625, "n": 1000, "em_running": 0.1616, "wall_s": 1587.6}
+{"ds": "musique", "done": 650, "n": 1000, "em_running": 0.1569, "wall_s": 1655.3}
+{"ds": "musique", "done": 675, "n": 1000, "em_running": 0.157, "wall_s": 1743.4}
+{"ds": "musique", "done": 700, "n": 1000, "em_running": 0.1529, "wall_s": 1822.3}
+{"ds": "musique", "done": 725, "n": 1000, "em_running": 0.1517, "wall_s": 1877.4}
+{"ds": "musique", "done": 750, "n": 1000, "em_running": 0.1507, "wall_s": 1959.4}
+{"ds": "musique", "done": 775, "n": 1000, "em_running": 0.1471, "wall_s": 2027.8}
+{"ds": "musique", "done": 800, "n": 1000, "em_running": 0.1562, "wall_s": 2098.8}
+{"ds": "musique", "done": 825, "n": 1000, "em_running": 0.1552, "wall_s": 2145.7}
+{"ds": "musique", "done": 850, "n": 1000, "em_running": 0.1565, "wall_s": 2205.1}
+{"ds": "musique", "done": 875, "n": 1000, "em_running": 0.1589, "wall_s": 2287.6}
+{"ds": "musique", "done": 900, "n": 1000, "em_running": 0.1578, "wall_s": 2360.3}
+{"ds": "musique", "done": 925, "n": 1000, "em_running": 0.1568, "wall_s": 2410.2}
+{"ds": "musique", "done": 950, "n": 1000, "em_running": 0.1579, "wall_s": 2478.0}
+{"ds": "musique", "done": 975, "n": 1000, "em_running": 0.16, "wall_s": 2549.9}
+{"ds": "musique", "done": 1000, "n": 1000, "em_running": 0.158, "wall_s": 2595.3}
+[done] musique: {"n": 1000, "norm_em": 0.159, "token_f1": 0.2325, "contain": 0.183, "mean_quality": 0.8732, "mean_efficiency": 0.4404, "mean_composite": 0.6823, "mean_tokens": 7383.9, "mean_elapsed_s": 20.74, "mean_nodes": 2.63, "route_dist": {"hard": 936, "easy": 64}, "topology_dist": {"dag_n2": 481, "easy_lane": 64, "dag_n5": 40, "dag_n4": 140, "dag_n3": 245, "single_hop": 16, "dag_n6": 10, "dag_n8": 1, "dag_n7": 3}, "profile_dist": {"temporal": 242, "one_hop": 86, "bridge_3hop_plus": 212, "numeric": 68, "bridge_2hop": 379, "parallel_compare": 12, "yes_no": 1}, "topology_mutated_rate": 0.0, "easy_route_fraction": 0.064, "easy_route_norm_em": 0.1406, "easy_route_mean_tokens": 2106.8, "wall_clock_s": 2608.02}
+{"ds": "2wikimultihop", "done": 25, "n": 1000, "em_running": 0.36, "wall_s": 35.3}
+{"ds": "2wikimultihop", "done": 50, "n": 1000, "em_running": 0.26, "wall_s": 100.2}
+{"ds": "2wikimultihop", "done": 75, "n": 1000, "em_running": 0.28, "wall_s": 177.5}
+{"ds": "2wikimultihop", "done": 100, "n": 1000, "em_running": 0.24, "wall_s": 226.9}
+{"ds": "2wikimultihop", "done": 125, "n": 1000, "em_running": 0.232, "wall_s": 275.0}
+{"ds": "2wikimultihop", "done": 150, "n": 1000, "em_running": 0.2533, "wall_s": 347.6}
+{"ds": "2wikimultihop", "done": 175, "n": 1000, "em_running": 0.24, "wall_s": 359.7}
+{"ds": "2wikimultihop", "done": 200, "n": 1000, "em_running": 0.255, "wall_s": 427.4}
+{"ds": "2wikimultihop", "done": 225, "n": 1000, "em_running": 0.2533, "wall_s": 465.0}
+{"ds": "2wikimultihop", "done": 250, "n": 1000, "em_running": 0.28, "wall_s": 563.3}
+{"ds": "2wikimultihop", "done": 300, "n": 1000, "em_running": 0.2633, "wall_s": 624.1}
+{"ds": "2wikimultihop", "done": 275, "n": 1000, "em_running": 0.2909, "wall_s": 627.0}
+{"ds": "2wikimultihop", "done": 325, "n": 1000, "em_running": 0.28, "wall_s": 700.2}
+{"ds": "2wikimultihop", "done": 350, "n": 1000, "em_running": 0.2714, "wall_s": 727.5}
+{"ds": "2wikimultihop", "done": 375, "n": 1000, "em_running": 0.2827, "wall_s": 786.2}
+{"ds": "2wikimultihop", "done": 400, "n": 1000, "em_running": 0.2825, "wall_s": 822.7}
+{"ds": "2wikimultihop", "done": 425, "n": 1000, "em_running": 0.2753, "wall_s": 864.2}
+{"ds": "2wikimultihop", "done": 450, "n": 1000, "em_running": 0.28, "wall_s": 935.3}
+{"ds": "2wikimultihop", "done": 475, "n": 1000, "em_running": 0.28, "wall_s": 984.6}
+{"ds": "2wikimultihop", "done": 500, "n": 1000, "em_running": 0.274, "wall_s": 1051.3}
+{"ds": "2wikimultihop", "done": 525, "n": 1000, "em_running": 0.2781, "wall_s": 1097.3}
+{"ds": "2wikimultihop", "done": 550, "n": 1000, "em_running": 0.2782, "wall_s": 1139.3}
+{"ds": "2wikimultihop", "done": 575, "n": 1000, "em_running": 0.28, "wall_s": 1203.7}
+{"ds": "2wikimultihop", "done": 600, "n": 1000, "em_running": 0.2933, "wall_s": 1272.5}
+{"ds": "2wikimultihop", "done": 625, "n": 1000, "em_running": 0.2864, "wall_s": 1327.2}
+{"ds": "2wikimultihop", "done": 650, "n": 1000, "em_running": 0.28, "wall_s": 1351.0}
+{"ds": "2wikimultihop", "done": 675, "n": 1000, "em_running": 0.277, "wall_s": 1416.0}
+{"ds": "2wikimultihop", "done": 700, "n": 1000, "em_running": 0.2729, "wall_s": 1449.0}
+{"ds": "2wikimultihop", "done": 725, "n": 1000, "em_running": 0.269, "wall_s": 1511.1}
+{"ds": "2wikimultihop", "done": 750, "n": 1000, "em_running": 0.2707, "wall_s": 1574.9}
+{"ds": "2wikimultihop", "done": 775, "n": 1000, "em_running": 0.2697, "wall_s": 1634.4}
+{"ds": "2wikimultihop", "done": 800, "n": 1000, "em_running": 0.2612, "wall_s": 1668.4}
+{"ds": "2wikimultihop", "done": 825, "n": 1000, "em_running": 0.2642, "wall_s": 1733.1}
+{"ds": "2wikimultihop", "done": 850, "n": 1000, "em_running": 0.2682, "wall_s": 1793.0}
+{"ds": "2wikimultihop", "done": 875, "n": 1000, "em_running": 0.2663, "wall_s": 1829.7}
+{"ds": "2wikimultihop", "done": 900, "n": 1000, "em_running": 0.2633, "wall_s": 1906.1}
+{"ds": "2wikimultihop", "done": 925, "n": 1000, "em_running": 0.267, "wall_s": 1975.7}
+{"ds": "2wikimultihop", "done": 950, "n": 1000, "em_running": 0.2674, "wall_s": 2028.0}
+{"ds": "2wikimultihop", "done": 975, "n": 1000, "em_running": 0.2677, "wall_s": 2062.5}
+{"ds": "2wikimultihop", "done": 1000, "n": 1000, "em_running": 0.268, "wall_s": 2106.9}
+[done] 2wikimultihop: {"n": 1000, "norm_em": 0.268, "token_f1": 0.3294, "contain": 0.33, "mean_quality": 1.0106, "mean_efficiency": 0.5017, "mean_composite": 0.8112, "mean_tokens": 6846.3, "mean_elapsed_s": 16.83, "mean_nodes": 2.31, "route_dist": {"hard": 692, "easy": 308}, "topology_dist": {"dag_n2": 439, "easy_lane": 308, "dag_n5": 179, "dag_n3": 44, "single_hop": 17, "dag_n7": 9, "dag_n4": 4}, "profile_dist": {"one_hop": 256, "bridge_3hop_plus": 109, "yes_no": 115, "parallel_compare": 69, "bridge_2hop": 427, "temporal": 16, "numeric": 8}, "topology_mutated_rate": 0.0, "easy_route_fraction": 0.308, "easy_route_norm_em": 0.3474, "easy_route_mean_tokens": 2751.6, "wall_clock_s": 2128.82}
+{"ds": "hotpotqa", "done": 25, "n": 1000, "em_running": 0.32, "wall_s": 40.7}
+{"ds": "hotpotqa", "done": 50, "n": 1000, "em_running": 0.36, "wall_s": 80.1}
+{"ds": "hotpotqa", "done": 75, "n": 1000, "em_running": 0.3333, "wall_s": 124.8}
+{"ds": "hotpotqa", "done": 100, "n": 1000, "em_running": 0.34, "wall_s": 168.2}
+{"ds": "hotpotqa", "done": 125, "n": 1000, "em_running": 0.328, "wall_s": 212.4}
+{"ds": "hotpotqa", "done": 150, "n": 1000, "em_running": 0.3333, "wall_s": 268.9}
+{"ds": "hotpotqa", "done": 175, "n": 1000, "em_running": 0.3429, "wall_s": 316.8}
+{"ds": "hotpotqa", "done": 200, "n": 1000, "em_running": 0.34, "wall_s": 349.6}
+{"ds": "hotpotqa", "done": 225, "n": 1000, "em_running": 0.3467, "wall_s": 389.9}
+{"ds": "hotpotqa", "done": 250, "n": 1000, "em_running": 0.352, "wall_s": 466.3}
+{"ds": "hotpotqa", "done": 275, "n": 1000, "em_running": 0.3382, "wall_s": 483.7}
+{"ds": "hotpotqa", "done": 300, "n": 1000, "em_running": 0.3567, "wall_s": 534.4}
+{"ds": "hotpotqa", "done": 325, "n": 1000, "em_running": 0.3538, "wall_s": 594.1}
+{"ds": "hotpotqa", "done": 350, "n": 1000, "em_running": 0.3514, "wall_s": 625.4}
+{"ds": "hotpotqa", "done": 375, "n": 1000, "em_running": 0.3653, "wall_s": 673.0}
+{"ds": "hotpotqa", "done": 400, "n": 1000, "em_running": 0.3625, "wall_s": 720.2}
+{"ds": "hotpotqa", "done": 425, "n": 1000, "em_running": 0.3788, "wall_s": 780.1}
+{"ds": "hotpotqa", "done": 450, "n": 1000, "em_running": 0.3778, "wall_s": 818.6}
+{"ds": "hotpotqa", "done": 475, "n": 1000, "em_running": 0.3684, "wall_s": 843.7}
+{"ds": "hotpotqa", "done": 500, "n": 1000, "em_running": 0.364, "wall_s": 884.6}
+{"ds": "hotpotqa", "done": 525, "n": 1000, "em_running": 0.3676, "wall_s": 917.9}
+{"ds": "hotpotqa", "done": 550, "n": 1000, "em_running": 0.3655, "wall_s": 961.2}
+{"ds": "hotpotqa", "done": 575, "n": 1000, "em_running": 0.3704, "wall_s": 1007.2}
+{"ds": "hotpotqa", "done": 600, "n": 1000, "em_running": 0.3683, "wall_s": 1041.5}
+{"ds": "hotpotqa", "done": 625, "n": 1000, "em_running": 0.36, "wall_s": 1080.7}
+{"ds": "hotpotqa", "done": 650, "n": 1000, "em_running": 0.3554, "wall_s": 1121.0}
+{"ds": "hotpotqa", "done": 675, "n": 1000, "em_running": 0.3467, "wall_s": 1155.6}
+{"ds": "hotpotqa", "done": 700, "n": 1000, "em_running": 0.3529, "wall_s": 1208.5}
+{"ds": "hotpotqa", "done": 725, "n": 1000, "em_running": 0.3448, "wall_s": 1234.9}
+{"ds": "hotpotqa", "done": 750, "n": 1000, "em_running": 0.3427, "wall_s": 1273.0}
+{"ds": "hotpotqa", "done": 775, "n": 1000, "em_running": 0.3458, "wall_s": 1331.3}
+{"ds": "hotpotqa", "done": 800, "n": 1000, "em_running": 0.3463, "wall_s": 1361.5}
+{"ds": "hotpotqa", "done": 825, "n": 1000, "em_running": 0.3479, "wall_s": 1429.3}
+{"ds": "hotpotqa", "done": 850, "n": 1000, "em_running": 0.3435, "wall_s": 1451.3}
+{"ds": "hotpotqa", "done": 875, "n": 1000, "em_running": 0.3429, "wall_s": 1499.0}
+{"ds": "hotpotqa", "done": 900, "n": 1000, "em_running": 0.3389, "wall_s": 1549.5}
+{"ds": "hotpotqa", "done": 925, "n": 1000, "em_running": 0.3373, "wall_s": 1601.6}
+{"ds": "hotpotqa", "done": 950, "n": 1000, "em_running": 0.3358, "wall_s": 1655.6}
+{"ds": "hotpotqa", "done": 975, "n": 1000, "em_running": 0.3364, "wall_s": 1701.1}
+{"ds": "hotpotqa", "done": 1000, "n": 1000, "em_running": 0.331, "wall_s": 1733.9}
+[done] hotpotqa: {"n": 1000, "norm_em": 0.332, "token_f1": 0.4374, "contain": 0.395, "mean_quality": 1.1471, "mean_efficiency": 0.5719, "mean_composite": 0.9668, "mean_tokens": 5097.0, "mean_elapsed_s": 13.92, "mean_nodes": 1.84, "route_dist": {"easy": 370, "hard": 630}, "topology_dist": {"easy_lane": 370, "dag_n3": 161, "dag_n2": 412, "single_hop": 26, "dag_n4": 22, "dag_n6": 1, "dag_n5": 5, "dag_n7": 3}, "profile_dist": {"bridge_2hop": 400, "bridge_3hop_plus": 125, "temporal": 89, "parallel_compare": 72, "one_hop": 201, "yes_no": 70, "numeric": 43}, "topology_mutated_rate": 0.0, "easy_route_fraction": 0.37, "easy_route_norm_em": 0.4081, "easy_route_mean_tokens": 2251.4, "wall_clock_s": 1745.92}
+{"ds": "bamboogle", "done": 25, "n": 125, "em_running": 0.24, "wall_s": 45.2}
+{"ds": "bamboogle", "done": 50, "n": 125, "em_running": 0.28, "wall_s": 88.4}
+{"ds": "bamboogle", "done": 75, "n": 125, "em_running": 0.24, "wall_s": 129.5}
+{"ds": "bamboogle", "done": 100, "n": 125, "em_running": 0.24, "wall_s": 174.4}
+{"ds": "bamboogle", "done": 125, "n": 125, "em_running": 0.256, "wall_s": 206.4}
+[done] bamboogle: {"n": 125, "norm_em": 0.264, "token_f1": 0.4155, "contain": 0.312, "mean_quality": 1.1062, "mean_efficiency": 0.5701, "mean_composite": 0.9252, "mean_tokens": 4746.2, "mean_elapsed_s": 13.05, "mean_nodes": 1.78, "route_dist": {"hard": 103, "easy": 22}, "topology_dist": {"dag_n2": 84, "easy_lane": 22, "dag_n3": 7, "single_hop": 12}, "profile_dist": {"bridge_2hop": 52, "temporal": 28, "one_hop": 27, "bridge_3hop_plus": 9, "parallel_compare": 2, "numeric": 7}, "topology_mutated_rate": 0.0, "easy_route_fraction": 0.176, "easy_route_norm_em": 0.2273, "easy_route_mean_tokens": 2520.5, "wall_clock_s": 213.47}
+
+ALL: {
+  "musique": {
+    "n": 1000,
+    "norm_em": 0.159,
+    "token_f1": 0.2325,
+    "contain": 0.183,
+    "mean_quality": 0.8732,
+    "mean_efficiency": 0.4404,
+    "mean_composite": 0.6823,
+    "mean_tokens": 7383.9,
+    "mean_elapsed_s": 20.74,
+    "mean_nodes": 2.63,
+    "route_dist": {
+      "hard": 936,
+      "easy": 64
+    },
+    "topology_dist": {
+      "dag_n2": 481,
+      "easy_lane": 64,
+      "dag_n5": 40,
+      "dag_n4": 140,
+      "dag_n3": 245,
+      "single_hop": 16,
+      "dag_n6": 10,
+      "dag_n8": 1,
+      "dag_n7": 3
+    },
+    "profile_dist": {
+      "temporal": 242,
+      "one_hop": 86,
+      "bridge_3hop_plus": 212,
+      "numeric": 68,
+      "bridge_2hop": 379,
+      "parallel_compare": 12,
+      "yes_no": 1
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 0.064,
+    "easy_route_norm_em": 0.1406,
+    "easy_route_mean_tokens": 2106.8,
+    "wall_clock_s": 2608.02
+  },
+  "2wikimultihop": {
+    "n": 1000,
+    "norm_em": 0.268,
+    "token_f1": 0.3294,
+    "contain": 0.33,
+    "mean_quality": 1.0106,
+    "mean_efficiency": 0.5017,
+    "mean_composite": 0.8112,
+    "mean_tokens": 6846.3,
+    "mean_elapsed_s": 16.83,
+    "mean_nodes": 2.31,
+    "route_dist": {
+      "hard": 692,
+      "easy": 308
+    },
+    "topology_dist": {
+      "dag_n2": 439,
+      "easy_lane": 308,
+      "dag_n5": 179,
+      "dag_n3": 44,
+      "single_hop": 17,
+      "dag_n7": 9,
+      "dag_n4": 4
+    },
+    "profile_dist": {
+      "one_hop": 256,
+      "bridge_3hop_plus": 109,
+      "yes_no": 115,
+      "parallel_compare": 69,
+      "bridge_2hop": 427,
+      "temporal": 16,
+      "numeric": 8
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 0.308,
+    "easy_route_norm_em": 0.3474,
+    "easy_route_mean_tokens": 2751.6,
+    "wall_clock_s": 2128.82
+  },
+  "hotpotqa": {
+    "n": 1000,
+    "norm_em": 0.332,
+    "token_f1": 0.4374,
+    "contain": 0.395,
+    "mean_quality": 1.1471,
+    "mean_efficiency": 0.5719,
+    "mean_composite": 0.9668,
+    "mean_tokens": 5097.0,
+    "mean_elapsed_s": 13.92,
+    "mean_nodes": 1.84,
+    "route_dist": {
+      "easy": 370,
+      "hard": 630
+    },
+    "topology_dist": {
+      "easy_lane": 370,
+      "dag_n3": 161,
+      "dag_n2": 412,
+      "single_hop": 26,
+      "dag_n4": 22,
+      "dag_n6": 1,
+      "dag_n5": 5,
+      "dag_n7": 3
+    },
+    "profile_dist": {
+      "bridge_2hop": 400,
+      "bridge_3hop_plus": 125,
+      "temporal": 89,
+      "parallel_compare": 72,
+      "one_hop": 201,
+      "yes_no": 70,
+      "numeric": 43
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 0.37,
+    "easy_route_norm_em": 0.4081,
+    "easy_route_mean_tokens": 2251.4,
+    "wall_clock_s": 1745.92
+  },
+  "bamboogle": {
+    "n": 125,
+    "norm_em": 0.264,
+    "token_f1": 0.4155,
+    "contain": 0.312,
+    "mean_quality": 1.1062,
+    "mean_efficiency": 0.5701,
+    "mean_composite": 0.9252,
+    "mean_tokens": 4746.2,
+    "mean_elapsed_s": 13.05,
+    "mean_nodes": 1.78,
+    "route_dist": {
+      "hard": 103,
+      "easy": 22
+    },
+    "topology_dist": {
+      "dag_n2": 84,
+      "easy_lane": 22,
+      "dag_n3": 7,
+      "single_hop": 12
+    },
+    "profile_dist": {
+      "bridge_2hop": 52,
+      "temporal": 28,
+      "one_hop": 27,
+      "bridge_3hop_plus": 9,
+      "parallel_compare": 2,
+      "numeric": 7
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 0.176,
+    "easy_route_norm_em": 0.2273,
+    "easy_route_mean_tokens": 2520.5,
+    "wall_clock_s": 213.47
+  }
+}

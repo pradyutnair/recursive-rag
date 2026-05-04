@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="460" viewBox="0 0 760 460">
+<rect width="100%" height="100%" fill="white"/>
+<text x="380.0" y="28" text-anchor="middle" font-family="Arial" font-size="18">2wikimultihop: EM vs mean tokens</text>
+<line x1="70" y1="390" x2="690" y2="390" stroke="#222"/>
+<line x1="70" y1="390" x2="70" y2="70" stroke="#222"/>
+<text x="380.0" y="438" text-anchor="middle" font-family="Arial" font-size="13">mean tokens</text>
+<text transform="translate(20 230.0) rotate(-90)" text-anchor="middle" font-family="Arial" font-size="13">EM</text>
+<line x1="70.0" y1="390" x2="70.0" y2="395" stroke="#222"/>
+<text x="70.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">0</text>
+<line x1="65" y1="390.0" x2="70" y2="390.0" stroke="#222"/>
+<text x="61" y="393.0" text-anchor="end" font-family="Arial" font-size="10">0.00</text>
+<line x1="194.0" y1="390" x2="194.0" y2="395" stroke="#222"/>
+<text x="194.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">2034</text>
+<line x1="65" y1="326.0" x2="70" y2="326.0" stroke="#222"/>
+<text x="61" y="329.0" text-anchor="end" font-family="Arial" font-size="10">0.07</text>
+<line x1="318.0" y1="390" x2="318.0" y2="395" stroke="#222"/>
+<text x="318.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">4068</text>
+<line x1="65" y1="262.0" x2="70" y2="262.0" stroke="#222"/>
+<text x="61" y="265.0" text-anchor="end" font-family="Arial" font-size="10">0.14</text>
+<line x1="442.0" y1="390" x2="442.0" y2="395" stroke="#222"/>
+<text x="442.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">6102</text>
+<line x1="65" y1="198.0" x2="70" y2="198.0" stroke="#222"/>
+<text x="61" y="201.0" text-anchor="end" font-family="Arial" font-size="10">0.21</text>
+<line x1="566.0" y1="390" x2="566.0" y2="395" stroke="#222"/>
+<text x="566.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">8136</text>
+<line x1="65" y1="134.0" x2="70" y2="134.0" stroke="#222"/>
+<text x="61" y="137.0" text-anchor="end" font-family="Arial" font-size="10">0.28</text>
+<line x1="690.0" y1="390" x2="690.0" y2="395" stroke="#222"/>
+<text x="690.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">10170</text>
+<line x1="65" y1="70.0" x2="70" y2="70.0" stroke="#222"/>
+<text x="61" y="73.0" text-anchor="end" font-family="Arial" font-size="10">0.35</text>
+<circle cx="126.2" cy="199.3" r="6" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="134.2" y="191.3" font-family="Arial" font-size="11">naive</text>
+<circle cx="532.1" cy="244.9" r="6" fill="#ff7f0e" stroke="none" stroke-width="2"/>
+<text x="540.1" y="236.9" font-family="Arial" font-size="11">ircot</text>
+<circle cx="293.9" cy="315.2" r="6" fill="#17becf" stroke="none" stroke-width="2"/>
+<text x="301.9" y="307.2" font-family="Arial" font-size="11">opera</text>
+<circle cx="644.1" cy="191.1" r="6" fill="#1f77b4" stroke="none" stroke-width="2"/>
+<text x="652.1" y="183.1" font-family="Arial" font-size="11">ma-rag</text>
+<circle cx="515.8" cy="145.5" r="6" fill="#d62728" stroke="none" stroke-width="2"/>
+<text x="523.8" y="137.5" font-family="Arial" font-size="11">adaptive_default</text>
+<circle cx="210.2" cy="172.0" r="6" fill="#2ca02c" stroke="#111111" stroke-width="2"/>
+<text x="218.2" y="164.0" font-family="Arial" font-size="11">force_easy</text>
+<circle cx="609.7" cy="111.7" r="6" fill="#9467bd" stroke="#111111" stroke-width="2"/>
+<text x="617.7" y="103.7" font-family="Arial" font-size="11">force_hard</text>
+<circle cx="487.4" cy="145.5" r="6" fill="#e377c2" stroke="#111111" stroke-width="2"/>
+<text x="495.4" y="137.5" font-family="Arial" font-size="11">no_critic</text>
+</svg>

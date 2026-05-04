@@ -1,0 +1,92 @@
+{
+    "answer": "The Fifth Element",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "What is the current country that contains Nancova?",
+                "expected_type": "organization",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Chile",
+                "confidence": 0.9,
+                "chunk_id": "6961937",
+                "queries_used": [
+                    "What is the current country that contains Nancova?"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the current country that contains Nancova?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "In what region of Chile did the Germans clash with the Portuguese?",
+                "expected_type": "place",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "Zona Sur",
+                "confidence": 0.8,
+                "chunk_id": "12222266",
+                "queries_used": [
+                    "In what region of Chile did the Germans clash with the Portuguese? (given: What is the current country that contains Nancova? -> Chile)",
+                    "Where in Chile did the Germans and Portuguese historically clash?"
+                ],
+                "expanded_into": [],
+                "raw_question": "In what region of <A1.1> did the Germans clash with the Portuguese?",
+                "retrieval_query": "In what region of Chile did the Germans clash with the Portuguese? (given: What is the current country that contains Nancova? -> Chile)"
+            }
+        ],
+        "synth_answer_raw": "The Fifth Element",
+        "critic": [
+            {
+                "verdict": "flag",
+                "reason": "mismatch"
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 5121,
+        "sub_tokens": 51455,
+        "total_tokens": 56576,
+        "elapsed_s": 22.081,
+        "hops": 1,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "The Fifth Element",
+                "evidence_chunk_id": "13968168",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Which film has the director born first, The Fifth Element or Saint Janet?"
+                ],
+                "expected_answer_type": "title"
+            }
+        ],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question involves resolving the country containing Nancova first, then determining the region where the Germans clashed with the Portuguese, requiring multiple hops and bridge entities.",
+        "expected_type": "entity",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [
+            "13968168"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "flag",
+                "reason": "mismatch"
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

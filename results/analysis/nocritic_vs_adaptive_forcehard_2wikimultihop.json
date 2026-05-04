@@ -1,0 +1,183 @@
+{
+  "runs": {
+    "no_critic": {
+      "n": 1000,
+      "em": 0.268,
+      "f1": 0.3294,
+      "mean_tokens": 6846.3,
+      "easy_route_fraction": 0.308,
+      "easy_route_em": 0.3474,
+      "easy_route_mean_tokens": 2751.6,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 427,
+          "em": 0.2225,
+          "mean_tokens": 7277.8,
+          "easy_route_fraction": 0.1007
+        },
+        "bridge_3hop_plus": {
+          "n": 109,
+          "em": 0.3211,
+          "mean_tokens": 6635.2,
+          "easy_route_fraction": 0.0183
+        },
+        "numeric": {
+          "n": 8,
+          "em": 0.375,
+          "mean_tokens": 6006.0,
+          "easy_route_fraction": 0.125
+        },
+        "one_hop": {
+          "n": 256,
+          "em": 0.3398,
+          "mean_tokens": 6434.3,
+          "easy_route_fraction": 0.5703
+        },
+        "parallel_compare": {
+          "n": 69,
+          "em": 0.2029,
+          "mean_tokens": 13313.7,
+          "easy_route_fraction": 0.087
+        },
+        "temporal": {
+          "n": 16,
+          "em": 0.25,
+          "mean_tokens": 6306.7,
+          "easy_route_fraction": 0.25
+        },
+        "yes_no": {
+          "n": 115,
+          "em": 0.2609,
+          "mean_tokens": 2614.1,
+          "easy_route_fraction": 0.9217
+        }
+      }
+    },
+    "adaptive": {
+      "n": 1000,
+      "em": 0.268,
+      "f1": 0.3303,
+      "mean_tokens": 7312.8,
+      "easy_route_fraction": 0.305,
+      "easy_route_em": 0.3475,
+      "easy_route_mean_tokens": 2792.2,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 427,
+          "em": 0.2225,
+          "mean_tokens": 7870.8,
+          "easy_route_fraction": 0.1007
+        },
+        "bridge_3hop_plus": {
+          "n": 109,
+          "em": 0.3211,
+          "mean_tokens": 7256.0,
+          "easy_route_fraction": 0.0183
+        },
+        "numeric": {
+          "n": 8,
+          "em": 0.375,
+          "mean_tokens": 6882.8,
+          "easy_route_fraction": 0.125
+        },
+        "one_hop": {
+          "n": 256,
+          "em": 0.3438,
+          "mean_tokens": 6691.4,
+          "easy_route_fraction": 0.5625
+        },
+        "parallel_compare": {
+          "n": 69,
+          "em": 0.1884,
+          "mean_tokens": 13986.7,
+          "easy_route_fraction": 0.087
+        },
+        "temporal": {
+          "n": 16,
+          "em": 0.25,
+          "mean_tokens": 6827.9,
+          "easy_route_fraction": 0.25
+        },
+        "yes_no": {
+          "n": 115,
+          "em": 0.2609,
+          "mean_tokens": 2770.6,
+          "easy_route_fraction": 0.913
+        }
+      }
+    },
+    "forcehard": {
+      "n": 1000,
+      "em": 0.305,
+      "f1": 0.3681,
+      "mean_tokens": 8852.2,
+      "easy_route_fraction": 0.0,
+      "easy_route_em": 0.0,
+      "easy_route_mean_tokens": 0.0,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 427,
+          "em": 0.2342,
+          "mean_tokens": 7880.4,
+          "easy_route_fraction": 0.0
+        },
+        "bridge_3hop_plus": {
+          "n": 109,
+          "em": 0.3211,
+          "mean_tokens": 6776.1,
+          "easy_route_fraction": 0.0
+        },
+        "numeric": {
+          "n": 8,
+          "em": 0.375,
+          "mean_tokens": 6604.1,
+          "easy_route_fraction": 0.0
+        },
+        "one_hop": {
+          "n": 256,
+          "em": 0.3945,
+          "mean_tokens": 10419.0,
+          "easy_route_fraction": 0.0
+        },
+        "parallel_compare": {
+          "n": 69,
+          "em": 0.2319,
+          "mean_tokens": 14124.6,
+          "easy_route_fraction": 0.0
+        },
+        "temporal": {
+          "n": 16,
+          "em": 0.3125,
+          "mean_tokens": 6200.4,
+          "easy_route_fraction": 0.0
+        },
+        "yes_no": {
+          "n": 115,
+          "em": 0.3913,
+          "mean_tokens": 8302.0,
+          "easy_route_fraction": 0.0
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "no_critic_minus_adaptive": {
+      "n": 1000,
+      "delta_em": 0.0,
+      "ci95": [
+        -0.006,
+        0.006
+      ],
+      "p_two_sided_approx": 1.0
+    },
+    "no_critic_minus_forcehard": {
+      "n": 1000,
+      "delta_em": -0.037,
+      "ci95": [
+        -0.056,
+        -0.018
+      ],
+      "p_two_sided_approx": 0.0004
+    }
+  }
+}

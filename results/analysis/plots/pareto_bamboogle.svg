@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="460" viewBox="0 0 760 460">
+<rect width="100%" height="100%" fill="white"/>
+<text x="380.0" y="28" text-anchor="middle" font-family="Arial" font-size="18">bamboogle: EM vs mean tokens</text>
+<line x1="70" y1="390" x2="690" y2="390" stroke="#222"/>
+<line x1="70" y1="390" x2="70" y2="70" stroke="#222"/>
+<text x="380.0" y="438" text-anchor="middle" font-family="Arial" font-size="13">mean tokens</text>
+<text transform="translate(20 230.0) rotate(-90)" text-anchor="middle" font-family="Arial" font-size="13">EM</text>
+<line x1="70.0" y1="390" x2="70.0" y2="395" stroke="#222"/>
+<text x="70.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">0</text>
+<line x1="65" y1="390.0" x2="70" y2="390.0" stroke="#222"/>
+<text x="61" y="393.0" text-anchor="end" font-family="Arial" font-size="10">0.00</text>
+<line x1="194.0" y1="390" x2="194.0" y2="395" stroke="#222"/>
+<text x="194.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">1475</text>
+<line x1="65" y1="326.0" x2="70" y2="326.0" stroke="#222"/>
+<text x="61" y="329.0" text-anchor="end" font-family="Arial" font-size="10">0.09</text>
+<line x1="318.0" y1="390" x2="318.0" y2="395" stroke="#222"/>
+<text x="318.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">2949</text>
+<line x1="65" y1="262.0" x2="70" y2="262.0" stroke="#222"/>
+<text x="61" y="265.0" text-anchor="end" font-family="Arial" font-size="10">0.18</text>
+<line x1="442.0" y1="390" x2="442.0" y2="395" stroke="#222"/>
+<text x="442.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">4424</text>
+<line x1="65" y1="198.0" x2="70" y2="198.0" stroke="#222"/>
+<text x="61" y="201.0" text-anchor="end" font-family="Arial" font-size="10">0.26</text>
+<line x1="566.0" y1="390" x2="566.0" y2="395" stroke="#222"/>
+<text x="566.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">5899</text>
+<line x1="65" y1="134.0" x2="70" y2="134.0" stroke="#222"/>
+<text x="61" y="137.0" text-anchor="end" font-family="Arial" font-size="10">0.35</text>
+<line x1="690.0" y1="390" x2="690.0" y2="395" stroke="#222"/>
+<text x="690.0" y="410" text-anchor="middle" font-family="Arial" font-size="10">7374</text>
+<line x1="65" y1="70.0" x2="70" y2="70.0" stroke="#222"/>
+<text x="61" y="73.0" text-anchor="end" font-family="Arial" font-size="10">0.44</text>
+<circle cx="141.8" cy="274.1" r="6" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="149.8" y="266.1" font-family="Arial" font-size="11">naive</text>
+<circle cx="639.6" cy="239.3" r="6" fill="#ff7f0e" stroke="none" stroke-width="2"/>
+<text x="647.6" y="231.3" font-family="Arial" font-size="11">ircot</text>
+<circle cx="298.7" cy="198.7" r="6" fill="#17becf" stroke="#111111" stroke-width="2"/>
+<text x="306.7" y="190.7" font-family="Arial" font-size="11">opera</text>
+<circle cx="644.1" cy="111.7" r="6" fill="#1f77b4" stroke="#111111" stroke-width="2"/>
+<text x="652.1" y="103.7" font-family="Arial" font-size="11">ma-rag</text>
+<circle cx="504.1" cy="198.7" r="6" fill="#d62728" stroke="none" stroke-width="2"/>
+<text x="512.1" y="190.7" font-family="Arial" font-size="11">adaptive_default</text>
+<circle cx="216.5" cy="308.8" r="6" fill="#2ca02c" stroke="none" stroke-width="2"/>
+<text x="224.5" y="300.8" font-family="Arial" font-size="11">force_easy</text>
+<circle cx="513.4" cy="163.9" r="6" fill="#9467bd" stroke="#111111" stroke-width="2"/>
+<text x="521.4" y="155.9" font-family="Arial" font-size="11">force_hard</text>
+<circle cx="469.1" cy="198.7" r="6" fill="#e377c2" stroke="none" stroke-width="2"/>
+<text x="477.1" y="190.7" font-family="Arial" font-size="11">no_critic</text>
+</svg>

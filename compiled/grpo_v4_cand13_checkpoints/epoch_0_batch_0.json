@@ -1,0 +1,54 @@
+{
+  "next_num": 7,
+  "max_entries": 30,
+  "entries": [
+    {
+      "id": "E-001",
+      "text": "For relative-to-attribute questions, plan the shortest bridge: (subject -> resolve the relative -> fetch only the requested terminal attribute). First, perform a high-confidence ID step to ground the relative (use strict name/context matching and type constraints). Then query only the target attribute on that entity; do not open sibling attributes unless needed for disambiguation. Enable early stopping once a grounded, high-confidence hit for the target slot is found. At synthesis, select the terminal attribute value (not the bridge entity).",
+      "rationale": "High-scoring runs consistently resolved the bridge entity first, limited hops, avoided parallel sibling lookups, stopped early, and extracted the terminal attribute; the low-scoring run pursued redundant branches and meta checks that didn’t advance the asked slot.",
+      "profile": "bridge_3hop_plus",
+      "utility": 0,
+      "uses": 0
+    },
+    {
+      "id": "E-002",
+      "text": "Enforce an answer-type guardrail and node filtering: derive the expected answer type from the question (e.g., place/date/person/number) and only accept spans from nodes whose schema/type matches that slot; exclude verification/meta nodes as answer sources. Prefer attribute values directly attached to the grounded bridge entity and supported by the same or tightly-linked evidence.",
+      "rationale": "Winners constrained extraction to the correct slot and avoided selecting from verification nodes; the losing run lacked this filter and explored redundant checks, increasing error risk.",
+      "profile": "bridge_3hop_plus",
+      "utility": 0,
+      "uses": 0
+    },
+    {
+      "id": "E-003",
+      "text": "For easy yes/no comparisons, start with a single-hop, joint query that asks the comparison directly. Accept the result only if the snippet explicitly answers the boolean and is high-confidence (>=0.7) with clear grounding; otherwise fall back to two parallel lookups of the same attribute for each entity and compare. Synthesize only the final Yes/No with decisive citation(s) and use early stopping once a confident resolution is found to save tokens.",
+      "rationale": "Winning runs prioritized a direct, grounded single-hop check and only decomposed when confidence was low, yielding accurate answers with fewer tokens. This decision policy is broadly transferable to yes/no tasks.",
+      "profile": "yes_no",
+      "utility": 0,
+      "uses": 0
+    },
+    {
+      "id": "E-004",
+      "text": "When backing off to parallel checks, enforce evidence hygiene and normalization: disambiguate entities (strict name/type/role), query the exact target attribute, reject related-but-different properties, and normalize values (units, spellings, aliases, temporal scope) before comparing. Require each sub-answer to meet the confidence threshold (>=0.7) and be grounded to the correct entity; output only the boolean, not intermediate attributes, and keep retrieval tight (add only lightweight extra lookups if confidence is borderline).",
+      "rationale": "Successful trajectories avoided attribute conflation and ensured each side of the comparison was independently grounded and normalized before synthesis, improving reliability on comparative yes/no questions.",
+      "profile": "yes_no",
+      "utility": 0,
+      "uses": 0
+    },
+    {
+      "id": "E-005",
+      "text": "For venue-anchored jurisdiction/location questions, use a strict two-hop bridge: (1) resolve the venue/facility/campus to its host city, normalized as \"City, State/Region, Country\" with high-confidence grounding and type checks; (2) from that normalized city, fetch only the requested administrative unit (county/state/province, etc.). Gate hop 2 on a grounded hop 1, enforce an answer-type guard so only the administrative unit can be finalized (never the venue or the city), and cite an authoritative administrative source for the final span. If multiple plausible host cities remain, branch minimally; otherwise stop after these two hops.",
+      "rationale": "High-reward runs consistently gated the second hop on a confidently grounded city normalized with region and enforced answer-type selection of the administrative unit; the low-reward run lacked reliable two-hop execution/type guarding. This pattern generalizes to venue/facility→jurisdiction questions.",
+      "profile": "bridge_2hop",
+      "utility": 0,
+      "uses": 0
+    },
+    {
+      "id": "E-006",
+      "text": "Optimize retrieval for 2-hop bridges: issue one narrowly scoped lookup per hop, reuse the resolved city string/ID directly for hop 2, and constrain hop 2 to the known region to avoid cross-jurisdiction mismatches. Avoid redundant retries/parallel branches; only branch to resolve true ambiguity. Prefer a single authoritative administrative source for the final mapping and return only the terminal unit, not intermediates.",
+      "rationale": "Winning trajectories minimized tokens by reusing the grounded entity, scoping by region, and avoiding unnecessary branching while still providing precise citations. These efficiency controls are transferable across bridge_2hop tasks.",
+      "profile": "bridge_2hop",
+      "utility": 0,
+      "uses": 0
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "musique": {
+    "n": 1000,
+    "norm_em": 0.062,
+    "token_f1": 0.13,
+    "contain": 0.074,
+    "mean_quality": 0.7105,
+    "mean_efficiency": 0.7693,
+    "mean_composite": 0.6615,
+    "mean_tokens": 2379.6,
+    "mean_elapsed_s": 5.57,
+    "mean_nodes": 1.0,
+    "route_dist": {
+      "easy": 1000
+    },
+    "topology_dist": {
+      "easy_lane": 1000
+    },
+    "profile_dist": {
+      "temporal": 242,
+      "one_hop": 86,
+      "bridge_3hop_plus": 212,
+      "numeric": 68,
+      "bridge_2hop": 379,
+      "parallel_compare": 12,
+      "yes_no": 1
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 1.0,
+    "easy_route_norm_em": 0.062,
+    "easy_route_mean_tokens": 2379.6,
+    "wall_clock_s": 706.49
+  },
+  "2wikimultihop": {
+    "n": 1000,
+    "norm_em": 0.239,
+    "token_f1": 0.2901,
+    "contain": 0.258,
+    "mean_quality": 0.9559,
+    "mean_efficiency": 0.7735,
+    "mean_composite": 0.88,
+    "mean_tokens": 2299.8,
+    "mean_elapsed_s": 5.29,
+    "mean_nodes": 1.0,
+    "route_dist": {
+      "easy": 1000
+    },
+    "topology_dist": {
+      "easy_lane": 1000
+    },
+    "profile_dist": {
+      "one_hop": 256,
+      "bridge_3hop_plus": 109,
+      "yes_no": 115,
+      "parallel_compare": 69,
+      "bridge_2hop": 427,
+      "temporal": 16,
+      "numeric": 8
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 1.0,
+    "easy_route_norm_em": 0.239,
+    "easy_route_mean_tokens": 2299.8,
+    "wall_clock_s": 670.64
+  },
+  "hotpotqa": {
+    "n": 1000,
+    "norm_em": 0.297,
+    "token_f1": 0.4023,
+    "contain": 0.345,
+    "mean_quality": 1.0916,
+    "mean_efficiency": 0.8123,
+    "mean_composite": 1.0297,
+    "mean_tokens": 1809.6,
+    "mean_elapsed_s": 4.25,
+    "mean_nodes": 1.0,
+    "route_dist": {
+      "easy": 1000
+    },
+    "topology_dist": {
+      "easy_lane": 1000
+    },
+    "profile_dist": {
+      "bridge_2hop": 400,
+      "bridge_3hop_plus": 125,
+      "temporal": 89,
+      "parallel_compare": 72,
+      "one_hop": 201,
+      "yes_no": 70,
+      "numeric": 43
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 1.0,
+    "easy_route_norm_em": 0.297,
+    "easy_route_mean_tokens": 1809.6,
+    "wall_clock_s": 541.63
+  },
+  "bamboogle": {
+    "n": 125,
+    "norm_em": 0.112,
+    "token_f1": 0.2296,
+    "contain": 0.144,
+    "mean_quality": 0.8664,
+    "mean_efficiency": 0.8156,
+    "mean_composite": 0.8112,
+    "mean_tokens": 1742.6,
+    "mean_elapsed_s": 4.13,
+    "mean_nodes": 1.0,
+    "route_dist": {
+      "easy": 125
+    },
+    "topology_dist": {
+      "easy_lane": 125
+    },
+    "profile_dist": {
+      "bridge_2hop": 52,
+      "temporal": 28,
+      "one_hop": 27,
+      "bridge_3hop_plus": 9,
+      "parallel_compare": 2,
+      "numeric": 7
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 1.0,
+    "easy_route_norm_em": 0.112,
+    "easy_route_mean_tokens": 1742.6,
+    "wall_clock_s": 74.15
+  }
+}

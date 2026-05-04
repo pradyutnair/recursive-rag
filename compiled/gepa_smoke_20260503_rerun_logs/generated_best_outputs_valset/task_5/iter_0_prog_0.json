@@ -1,0 +1,101 @@
+{
+    "answer": "12.5",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Where was Donda West's funeral held?",
+                "expected_type": "place",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "",
+                "confidence": 0.0,
+                "chunk_id": "",
+                "queries_used": [
+                    "Where was Donda West's funeral held?",
+                    "Where was Donda West's funeral service held?",
+                    "Where was Donda West's funeral service held? evidence",
+                    "Where was Donda West's funeral service held? Location of the funeral service",
+                    "Location of Donda West's funeral"
+                ],
+                "expanded_into": [],
+                "raw_question": "Where was Donda West's funeral held?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "What is the area of <A1.1> in square miles?",
+                "expected_type": "number",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "",
+                "confidence": 0.0,
+                "chunk_id": "",
+                "queries_used": [
+                    "What is the area of <A1.1> in square miles?",
+                    "What is the area of <A1.1> in square miles? evidence",
+                    "What is the area of <A1.1> in square miles? evidence evidence",
+                    "What is the area of <A1.1> in square miles? evidence evidence",
+                    "What is the area of <A1.1> in square miles? evidence"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the area of <A1.1> in square miles?",
+                "retrieval_query": ""
+            }
+        ],
+        "synth_answer_raw": "12.5",
+        "critic": [
+            {
+                "verdict": "flag",
+                "reason": "The final answer '12.5' is a number, which matches the expected type. However, the trace does not provide any resolved answers for the intermediate questions (Q1.1 and Q2.1), so there is no evidence in the trace to support the final answer."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 9595,
+        "sub_tokens": 58093,
+        "total_tokens": 67688,
+        "elapsed_s": 39.076,
+        "hops": 1,
+        "retries": 4,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "the Chief Justice of the United States",
+                "evidence_chunk_id": "12010102",
+                "confidence": 0.4,
+                "queries_used": [
+                    "Which body presides over impeachment trials of the president of American? (given: What is Matthias W. Day's country of citizenship? -> American)",
+                    "Which body is responsible for presiding over the impeachment trial of the President of the United States?",
+                    "Which entity presides over the impeachment trial of the President of the United States?",
+                    "Which entity presides over the impeachment trial of the President of the United States? evidence",
+                    "Which entity presides over the impeachment trial of the President of the United States? evidence"
+                ],
+                "expected_answer_type": "entity"
+            }
+        ],
+        "profile": "numeric",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question requires resolving the city where Donda West's funeral was held first, then determining its area in square miles.",
+        "expected_type": "number",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [],
+        "citation_accepted": false,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "flag",
+                "reason": "The final answer '12.5' is a number, which matches the expected type. However, the trace does not provide any resolved answers for the intermediate questions (Q1.1 and Q2.1), so there is no evidence in the trace to support the final answer."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+<rect width="100%" height="100%" fill="white"/>
+<text x="450.0" y="28" text-anchor="middle" font-family="Arial" font-size="18">Inference-time scaling snapshot</text>
+<line x1="75" y1="445" x2="825" y2="445" stroke="#222"/>
+<line x1="75" y1="445" x2="75" y2="75" stroke="#222"/>
+<text x="450.0" y="498" text-anchor="middle" font-family="Arial" font-size="13">log(mean tokens)</text>
+<text transform="translate(22 260.0) rotate(-90)" text-anchor="middle" font-family="Arial" font-size="13">log(EM)</text>
+<circle cx="119.1" cy="407.1" r="4.5" fill="#d62728"/>
+<text x="125.1" y="401.1" font-family="Arial" font-size="10">musique:naive</text>
+<circle cx="719.5" cy="351.0" r="4.5" fill="#d62728"/>
+<circle cx="492.9" cy="295.2" r="4.5" fill="#d62728"/>
+<circle cx="774.8" cy="269.8" r="4.5" fill="#d62728"/>
+<text x="780.8" y="263.8" font-family="Arial" font-size="10">musique:ma-rag</text>
+<circle cx="132.7" cy="185.6" r="4.5" fill="#1f77b4"/>
+<text x="138.7" y="179.6" font-family="Arial" font-size="10">2wikimultihop:naive</text>
+<circle cx="708.4" cy="229.7" r="4.5" fill="#1f77b4"/>
+<circle cx="510.4" cy="336.6" r="4.5" fill="#1f77b4"/>
+<circle cx="767.7" cy="178.8" r="4.5" fill="#1f77b4"/>
+<text x="773.7" y="172.8" font-family="Arial" font-size="10">2wikimultihop:ma-rag</text>
+<circle cx="121.5" cy="115.3" r="4.5" fill="#2ca02c"/>
+<text x="127.5" y="109.3" font-family="Arial" font-size="10">hotpotqa:naive</text>
+<circle cx="664.5" cy="121.4" r="4.5" fill="#2ca02c"/>
+<circle cx="461.4" cy="246.8" r="4.5" fill="#2ca02c"/>
+<circle cx="750.1" cy="160.6" r="4.5" fill="#2ca02c"/>
+<text x="756.1" y="154.6" font-family="Arial" font-size="10">hotpotqa:ma-rag</text>
+<circle cx="111.9" cy="228.7" r="4.5" fill="#9467bd"/>
+<text x="117.9" y="222.7" font-family="Arial" font-size="10">bamboogle:naive</text>
+<circle cx="677.7" cy="186.3" r="4.5" fill="#9467bd"/>
+<circle cx="428.4" cy="147.9" r="4.5" fill="#9467bd"/>
+<circle cx="679.8" cy="87.4" r="4.5" fill="#9467bd"/>
+<text x="685.8" y="81.4" font-family="Arial" font-size="10">bamboogle:ma-rag</text>
+<circle cx="723.2" cy="230.7" r="4.5" fill="#d62728"/>
+<text x="729.2" y="224.7" font-family="Arial" font-size="10">musique:adaptive_default</text>
+<circle cx="698.6" cy="145.4" r="4.5" fill="#1f77b4"/>
+<text x="704.6" y="139.4" font-family="Arial" font-size="10">2wikimultihop:adaptive_default</text>
+<circle cx="619.8" cy="110.9" r="4.5" fill="#2ca02c"/>
+<text x="625.8" y="104.9" font-family="Arial" font-size="10">hotpotqa:adaptive_default</text>
+<circle cx="603.5" cy="147.9" r="4.5" fill="#9467bd"/>
+<text x="609.5" y="141.9" font-family="Arial" font-size="10">bamboogle:adaptive_default</text>
+<circle cx="391.8" cy="381.7" r="4.5" fill="#d62728"/>
+<text x="397.8" y="375.7" font-family="Arial" font-size="10">musique:force_easy</text>
+<circle cx="382.5" cy="163.9" r="4.5" fill="#1f77b4"/>
+<text x="388.5" y="157.9" font-family="Arial" font-size="10">2wikimultihop:force_easy</text>
+<circle cx="317.0" cy="128.8" r="4.5" fill="#2ca02c"/>
+<text x="323.0" y="122.8" font-family="Arial" font-size="10">hotpotqa:force_easy</text>
+<circle cx="306.7" cy="286.3" r="4.5" fill="#9467bd"/>
+<text x="312.7" y="280.3" font-family="Arial" font-size="10">bamboogle:force_easy</text>
+<circle cx="709.9" cy="218.0" r="4.5" fill="#d62728"/>
+<text x="715.9" y="212.0" font-family="Arial" font-size="10">musique:force_hard</text>
+<circle cx="750.8" cy="124.5" r="4.5" fill="#1f77b4"/>
+<text x="756.8" y="118.5" font-family="Arial" font-size="10">2wikimultihop:force_hard</text>
+<circle cx="673.1" cy="112.8" r="4.5" fill="#2ca02c"/>
+<text x="679.1" y="106.8" font-family="Arial" font-size="10">hotpotqa:force_hard</text>
+<circle cx="609.2" cy="120.9" r="4.5" fill="#9467bd"/>
+<text x="615.2" y="114.9" font-family="Arial" font-size="10">bamboogle:force_hard</text>
+<circle cx="701.2" cy="229.7" r="4.5" fill="#d62728"/>
+<circle cx="680.6" cy="145.4" r="4.5" fill="#1f77b4"/>
+<circle cx="599.9" cy="110.9" r="4.5" fill="#2ca02c"/>
+<circle cx="580.5" cy="147.9" r="4.5" fill="#9467bd"/>
+<circle cx="686.2" cy="218.9" r="4.5" fill="#d62728"/>
+</svg>

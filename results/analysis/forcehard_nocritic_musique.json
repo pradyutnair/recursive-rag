@@ -1,0 +1,183 @@
+{
+  "runs": {
+    "forcehard_nocritic": {
+      "n": 1000,
+      "em": 0.17,
+      "f1": 0.2413,
+      "mean_tokens": 6989.1,
+      "easy_route_fraction": 0.0,
+      "easy_route_em": 0.0,
+      "easy_route_mean_tokens": 0.0,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 379,
+          "em": 0.2137,
+          "mean_tokens": 5468.1,
+          "easy_route_fraction": 0.0
+        },
+        "bridge_3hop_plus": {
+          "n": 212,
+          "em": 0.1415,
+          "mean_tokens": 8059.9,
+          "easy_route_fraction": 0.0
+        },
+        "numeric": {
+          "n": 68,
+          "em": 0.1765,
+          "mean_tokens": 8044.1,
+          "easy_route_fraction": 0.0
+        },
+        "one_hop": {
+          "n": 86,
+          "em": 0.1395,
+          "mean_tokens": 4923.0,
+          "easy_route_fraction": 0.0
+        },
+        "parallel_compare": {
+          "n": 12,
+          "em": 0.1667,
+          "mean_tokens": 7827.9,
+          "easy_route_fraction": 0.0
+        },
+        "temporal": {
+          "n": 242,
+          "em": 0.1364,
+          "mean_tokens": 8836.0,
+          "easy_route_fraction": 0.0
+        },
+        "yes_no": {
+          "n": 1,
+          "em": 0.0,
+          "mean_tokens": 5356.0,
+          "easy_route_fraction": 0.0
+        }
+      }
+    },
+    "forcehard": {
+      "n": 1000,
+      "em": 0.171,
+      "f1": 0.245,
+      "mean_tokens": 7623.5,
+      "easy_route_fraction": 0.0,
+      "easy_route_em": 0.0,
+      "easy_route_mean_tokens": 0.0,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 379,
+          "em": 0.2164,
+          "mean_tokens": 6084.2,
+          "easy_route_fraction": 0.0
+        },
+        "bridge_3hop_plus": {
+          "n": 212,
+          "em": 0.1415,
+          "mean_tokens": 8700.2,
+          "easy_route_fraction": 0.0
+        },
+        "numeric": {
+          "n": 68,
+          "em": 0.1765,
+          "mean_tokens": 8697.5,
+          "easy_route_fraction": 0.0
+        },
+        "one_hop": {
+          "n": 86,
+          "em": 0.1395,
+          "mean_tokens": 5399.0,
+          "easy_route_fraction": 0.0
+        },
+        "parallel_compare": {
+          "n": 12,
+          "em": 0.1667,
+          "mean_tokens": 8568.6,
+          "easy_route_fraction": 0.0
+        },
+        "temporal": {
+          "n": 242,
+          "em": 0.1364,
+          "mean_tokens": 9539.5,
+          "easy_route_fraction": 0.0
+        },
+        "yes_no": {
+          "n": 1,
+          "em": 0.0,
+          "mean_tokens": 6021.0,
+          "easy_route_fraction": 0.0
+        }
+      }
+    },
+    "no_critic": {
+      "n": 1000,
+      "em": 0.159,
+      "f1": 0.2325,
+      "mean_tokens": 7383.9,
+      "easy_route_fraction": 0.064,
+      "easy_route_em": 0.1406,
+      "easy_route_mean_tokens": 2106.8,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 379,
+          "em": 0.2084,
+          "mean_tokens": 5844.9,
+          "easy_route_fraction": 0.0554
+        },
+        "bridge_3hop_plus": {
+          "n": 212,
+          "em": 0.1368,
+          "mean_tokens": 8693.2,
+          "easy_route_fraction": 0.0094
+        },
+        "numeric": {
+          "n": 68,
+          "em": 0.1765,
+          "mean_tokens": 8559.8,
+          "easy_route_fraction": 0.0147
+        },
+        "one_hop": {
+          "n": 86,
+          "em": 0.093,
+          "mean_tokens": 4701.6,
+          "easy_route_fraction": 0.3488
+        },
+        "parallel_compare": {
+          "n": 12,
+          "em": 0.0833,
+          "mean_tokens": 7255.8,
+          "easy_route_fraction": 0.1667
+        },
+        "temporal": {
+          "n": 242,
+          "em": 0.124,
+          "mean_tokens": 9282.3,
+          "easy_route_fraction": 0.0331
+        },
+        "yes_no": {
+          "n": 1,
+          "em": 0.0,
+          "mean_tokens": 5983.0,
+          "easy_route_fraction": 0.0
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "forcehard_nocritic_minus_forcehard": {
+      "n": 1000,
+      "delta_em": -0.001,
+      "ci95": [
+        -0.005,
+        0.002
+      ],
+      "p_two_sided_approx": 0.7968
+    },
+    "forcehard_nocritic_minus_no_critic": {
+      "n": 1000,
+      "delta_em": 0.011,
+      "ci95": [
+        0.004,
+        0.019
+      ],
+      "p_two_sided_approx": 0.004
+    }
+  }
+}

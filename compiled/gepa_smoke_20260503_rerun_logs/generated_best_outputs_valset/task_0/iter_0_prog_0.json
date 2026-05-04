@@ -1,0 +1,146 @@
+{
+    "answer": "Andrew Holness",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "In which country is Rio Cobre located?",
+                "expected_type": "entity",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Jamaica",
+                "confidence": 0.95,
+                "chunk_id": "2085471",
+                "queries_used": [
+                    "In which country is Rio Cobre located?"
+                ],
+                "expanded_into": [],
+                "raw_question": "In which country is Rio Cobre located?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "Who is the current prime minister of Jamaica?",
+                "expected_type": "person",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "Andrew Holness",
+                "confidence": 0.95,
+                "chunk_id": "8293428",
+                "queries_used": [
+                    "Who is the current prime minister of Jamaica? (given: In which country is Rio Cobre located? -> Jamaica)"
+                ],
+                "expanded_into": [],
+                "raw_question": "Who is the current prime minister of <A1.1>?",
+                "retrieval_query": "Who is the current prime minister of Jamaica? (given: In which country is Rio Cobre located? -> Jamaica)"
+            }
+        ],
+        "synth_answer_raw": "Andrew Holness",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The answer 'Andrew Holness' is supported by the trace and matches the expected type 'person'."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 6376,
+        "sub_tokens": 20207,
+        "total_tokens": 26583,
+        "elapsed_s": 17.628,
+        "hops": 7,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "Jamaica",
+                "evidence_chunk_id": "2085471",
+                "confidence": 0.95,
+                "queries_used": [
+                    "In which country is Rio Cobre located?"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "Ludwig G\u00f6ransson",
+                "evidence_chunk_id": "10407153",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who is the composer of Forever?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "Rhaunen",
+                "evidence_chunk_id": "7771498",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Where was Sigbert Josef Maria Ganser born?"
+                ],
+                "expected_answer_type": "place"
+            },
+            {
+                "answer": "Andrew Holness",
+                "evidence_chunk_id": "8293428",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Who is the current prime minister of Jamaica? (given: In which country is Rio Cobre located? -> Jamaica)"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "German Peasants' War",
+                "evidence_chunk_id": "5919246",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is the largest mass uprising in the history of Rhaunen? (given: Where was Sigbert Josef Maria Ganser born? -> Rhaunen)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "Tony Hsieh",
+                "evidence_chunk_id": "18079835",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who owns the gold spike in the home of the World Series of Poker?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "American",
+                "evidence_chunk_id": "10189787",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is Matthias W. Day's country of citizenship?"
+                ],
+                "expected_answer_type": "entity"
+            }
+        ],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "'Country where Rio Cobre is located' is an unnamed bridge entity that must be resolved first to determine the country, then find its current prime minister.",
+        "expected_type": "person",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [
+            "2085471",
+            "8293428"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The answer 'Andrew Holness' is supported by the trace and matches the expected type 'person'."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

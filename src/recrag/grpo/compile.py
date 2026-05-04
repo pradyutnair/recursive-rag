@@ -61,6 +61,26 @@ def _loads_ops(text: str) -> list[dict[str, Any]]:
             return []
 
 
+def _load_program(path: str | None) -> dict[str, str]:
+    if not path:
+        return {}
+    obj = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(obj, dict):
+        return {}
+    raw_prompts = obj.get("prompts")
+    if isinstance(raw_prompts, dict):
+        return {str(k): str(v) for k, v in raw_prompts.items()}
+    prompts: dict[str, str] = {}
+    for name, value in obj.items():
+        if isinstance(value, str):
+            prompts[str(name)] = value
+        elif isinstance(value, dict):
+            sig = value.get("signature")
+            if isinstance(sig, dict) and isinstance(sig.get("instructions"), str):
+                prompts[str(name)] = sig["instructions"]
+    return prompts
+
+
 def _load_oracle(args: argparse.Namespace) -> OracleLookup | None:
     if not args.oracle_naive_dir:
         return None
@@ -102,6 +122,7 @@ async def compile_grpo(args: argparse.Namespace) -> ExperienceLibrary:
         mode=args.wandb_mode or None,
     )
     oracle = _load_oracle(args)
+    program_prompts = _load_program(args.program)
     if oracle:
         print(f"[oracle] loaded {len(oracle)} entries; stats={oracle.stats()}")
 
@@ -121,6 +142,12 @@ async def compile_grpo(args: argparse.Namespace) -> ExperienceLibrary:
                             max_recursion_depth=args.max_recursion,
                             tau_recurse=args.tau_recurse,
                             experience_library=None,  # use the in-memory library directly
+                            router_instructions=program_prompts.get("router", AdaptiveConfig.router_instructions),
+                            planner_instructions=program_prompts.get("planner", AdaptiveConfig.planner_instructions),
+                            synth_instructions=program_prompts.get("synthesizer", AdaptiveConfig.synth_instructions),
+                            critic_instructions=program_prompts.get("critic", AdaptiveConfig.critic_instructions),
+                            budget_hint=args.budget_hint,
+                            max_searches=args.max_searches,
                         ),
                     )
                     # Inject current library snapshot (profile-keyed)
@@ -252,9 +279,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--max-nodes", type=int, default=6)
     p.add_argument("--max-recursion", type=int, default=0)
     p.add_argument("--tau-recurse", type=float, default=0.5)
+    p.add_argument("--max-searches", type=int, default=5)
+    p.add_argument("--budget-hint", choices=["tight", "normal", "rich"], default="normal")
     p.add_argument("--token-T", type=float, default=8000.0)
     p.add_argument("--alpha", type=float, default=0.3)
     p.add_argument("--seed-library")
+    p.add_argument("--program", help="JSON file with GEPA/compiled prompts")
     p.add_argument("--library-cap", type=int, default=30)
     p.add_argument("--checkpoint-dir", default="compiled/grpo_v4_E")
     p.add_argument("--wandb-project", default="recrag-grpo")

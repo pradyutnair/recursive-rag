@@ -1,0 +1,144 @@
+_wandb:
+    value:
+        cli_version: 0.26.1
+        e:
+            dc5xc0m2c7wui86cfpd3hzgvkhc4o4wc:
+                args:
+                    - --questions
+                    - data/multidataset/train_v3.json
+                    - --program
+                    - compiled/gepa_v3_recovered_cand13.json
+                    - --reflection-lm
+                    - openai/gpt-5
+                    - --oracle-naive-dir
+                    - compiled/oracle
+                    - --oracle-datasets
+                    - musique,2wikimultihop,hotpotqa
+                    - --group-size
+                    - "4"
+                    - --epochs
+                    - "3"
+                    - --batch-size
+                    - "10"
+                    - --library-cap
+                    - "30"
+                    - --out-json
+                    - compiled/grpo_v4_cand13_library.json
+                    - --out-txt
+                    - compiled/grpo_v4_cand13_library.txt
+                    - --checkpoint-dir
+                    - compiled/grpo_v4_cand13_checkpoints
+                    - --out-dir
+                    - results/grpo_logs/v4_cand13
+                    - --wandb-project
+                    - recrag-grpo
+                    - --run-name
+                    - grpo_v4_cand13_20260503
+                cpu_count: 24
+                cpu_count_logical: 48
+                disk:
+                    /:
+                        total: "187420844032"
+                        used: "8410537984"
+                email: pradyut.nair@student.uva.nl
+                executable: /local/yzheng/pnair/workspace/adaptive-mas/.venv/bin/python
+                git:
+                    commit: c21a0766e71ac9a018499eaab92959b6d3e30c04
+                    remote: github-uva:pradyutnair/recursive-rag.git
+                host: node409
+                memory:
+                    total: "118110580736"
+                os: Linux-4.18.0-348.2.1.el8_5.x86_64-x86_64-with-glibc2.28
+                program: -m recrag.grpo.compile
+                python: CPython 3.10.18
+                root: /local/yzheng/pnair/workspace/recursive-rag
+                startedAt: "2026-05-03T22:03:32.854451Z"
+                writerId: dc5xc0m2c7wui86cfpd3hzgvkhc4o4wc
+        m: []
+        python_version: 3.10.18
+        t:
+            "1":
+                - 95
+                - 105
+                - 107
+            "2":
+                - 95
+                - 105
+                - 107
+            "3":
+                - 13
+                - 16
+            "4": 3.10.18
+            "5": 0.26.1
+            "12": 0.26.1
+            "13": linux-x86_64
+alpha:
+    value: 0.3
+batch_size:
+    value: 10
+budget_hint:
+    value: normal
+checkpoint_dir:
+    value: compiled/grpo_v4_cand13_checkpoints
+epochs:
+    value: 3
+group_size:
+    value: 4
+library_cap:
+    value: 30
+max_iters:
+    value: 15
+max_nodes:
+    value: 6
+max_recursion:
+    value: 0
+max_searches:
+    value: 5
+n_train:
+    value: 0
+no_wandb:
+    value: false
+oracle_datasets:
+    value: musique,2wikimultihop,hotpotqa
+oracle_naive_dir:
+    value: compiled/oracle
+out_dir:
+    value: results/grpo_logs/v4_cand13
+out_json:
+    value: compiled/grpo_v4_cand13_library.json
+out_txt:
+    value: compiled/grpo_v4_cand13_library.txt
+program:
+    value: compiled/gepa_v3_recovered_cand13.json
+questions:
+    value: data/multidataset/train_v3.json
+reflection_lm:
+    value: openai/gpt-5
+reflection_max_tokens:
+    value: 16000
+retriever_url:
+    value: http://node408:8003
+root_lm:
+    value: qwen14b-nothink
+root_max_tokens:
+    value: 768
+run_name:
+    value: grpo_v4_cand13_20260503
+seed:
+    value: 13
+seed_library:
+    value: null
+sub_lm:
+    value: qwen14b-nothink
+sub_max_tokens:
+    value: 512
+tau_recurse:
+    value: 0.5
+temperature:
+    value: 0.7
+token_T:
+    value: 8000
+wandb_mode:
+    value: ""
+wandb_project:
+    value: recrag-grpo

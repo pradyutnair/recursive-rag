@@ -1,0 +1,109 @@
+{
+  "runs": {
+    "adaptive": {
+      "n": 125,
+      "em": 0.264,
+      "f1": 0.4155,
+      "mean_tokens": 5163.3,
+      "easy_route_fraction": 0.176,
+      "easy_route_em": 0.2273,
+      "easy_route_mean_tokens": 2519.1,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 52,
+          "em": 0.2885,
+          "mean_tokens": 5475.6,
+          "easy_route_fraction": 0.1731
+        },
+        "bridge_3hop_plus": {
+          "n": 9,
+          "em": 0.4444,
+          "mean_tokens": 6439.4,
+          "easy_route_fraction": 0.2222
+        },
+        "numeric": {
+          "n": 7,
+          "em": 0.4286,
+          "mean_tokens": 5517.0,
+          "easy_route_fraction": 0.0
+        },
+        "one_hop": {
+          "n": 27,
+          "em": 0.1111,
+          "mean_tokens": 4650.4,
+          "easy_route_fraction": 0.037
+        },
+        "parallel_compare": {
+          "n": 2,
+          "em": 0.0,
+          "mean_tokens": 5314.0,
+          "easy_route_fraction": 0.0
+        },
+        "temporal": {
+          "n": 28,
+          "em": 0.2857,
+          "mean_tokens": 4568.7,
+          "easy_route_fraction": 0.3571
+        }
+      }
+    },
+    "forcehard": {
+      "n": 125,
+      "em": 0.312,
+      "f1": 0.4781,
+      "mean_tokens": 5273.1,
+      "easy_route_fraction": 0.0,
+      "easy_route_em": 0.0,
+      "easy_route_mean_tokens": 0.0,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 52,
+          "em": 0.3654,
+          "mean_tokens": 5652.9,
+          "easy_route_fraction": 0.0
+        },
+        "bridge_3hop_plus": {
+          "n": 9,
+          "em": 0.5556,
+          "mean_tokens": 6726.3,
+          "easy_route_fraction": 0.0
+        },
+        "numeric": {
+          "n": 7,
+          "em": 0.4286,
+          "mean_tokens": 4942.9,
+          "easy_route_fraction": 0.0
+        },
+        "one_hop": {
+          "n": 27,
+          "em": 0.1111,
+          "mean_tokens": 4436.4,
+          "easy_route_fraction": 0.0
+        },
+        "parallel_compare": {
+          "n": 2,
+          "em": 0.0,
+          "mean_tokens": 4715.0,
+          "easy_route_fraction": 0.0
+        },
+        "temporal": {
+          "n": 28,
+          "em": 0.3214,
+          "mean_tokens": 5029.6,
+          "easy_route_fraction": 0.0
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "adaptive_minus_forcehard": {
+      "n": 125,
+      "delta_em": -0.048,
+      "ci95": [
+        -0.096,
+        -0.008
+      ],
+      "p_two_sided_approx": 0.0298
+    }
+  }
+}

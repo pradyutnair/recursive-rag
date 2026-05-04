@@ -270,9 +270,16 @@ Current driver at `src/recrag/grpo/compile.py`. Key decisions:
 - [x] W&B logging implemented in `src/recrag/gepa/compile.py` and `src/recrag/grpo/compile.py`
 - [x] `wandb_utils.py` provides `init_wandb`, `log`, `artifact` helpers
 - [x] Both drivers support `--wandb-project`, `--wandb-mode`, `--no-wandb`, artifact saving per checkpoint
-- **Remaining:** smoke test with `--max-metric-calls 20` before full run
+- [x] Smoke test with `--max-metric-calls 20 --no-wandb --track-stats` completed on 2026-05-03. Result: `compiled/gepa_smoke_20260503_rerun.json`; base val score 0.2304 over 30 examples; no GEPA runtime crash. Note: 20-call budget is consumed by the 30-example tracking eval, so this verifies plumbing rather than prompt improvement.
 
-### Phase 2: GEPA optimization (6-10h compute, monitor via W&B) -- NEXT
+### Phase 2: GEPA optimization (6-10h compute, monitor via W&B) -- IN PROGRESS
+
+- [x] Service health checked on 2026-05-03: Qwen3-14B vLLM live on localhost ports 8001, 8002, 8003; retriever `node408:8003` returned 1 hit for a health query.
+- [x] `wandb` installed in `/local/yzheng/pnair/workspace/adaptive-mas/.venv`; `/local/yzheng/pnair/.env` must be loaded with `set -a` so `OPENAI_API_KEY` and `WANDB_API_KEY` are exported.
+- [x] `src/recrag/gepa/compile.py` accepts documented `--track-stats` compatibility flag; GEPA already runs with `track_stats=True`.
+- [x] Full GEPA v4 launched on 2026-05-03 in tmux session `gepa_v4_20260503`; W&B run `38a33711`; local log `compiled/gepa_v4_logs/run.log`; checkpoint `compiled/gepa_v4_logs/gepa_state.bin`; output target `compiled/gepa_v4.json`; seed program `compiled/gepa_v3_recovered_cand13.json`. Initial tracking eval completed with base composite score 0.2109 over 30 val examples.
+- [x] GEPA v4 completed on 2026-05-03/04 after 780 effective metric calls. Best optimizer val composite: 0.2891 (candidate 10), improving over seed composite 0.2109, but independent val eval missed the Phase 2 gate: EM 0.3333, mean tokens 7920.3. Final W&B metric sync succeeded; final artifact upload failed until `WANDB_DATA_DIR` was moved into the repo.
+- [x] Re-evaluated recovered `compiled/gepa_v3_recovered_cand13.json` with the same eval script: EM 0.3667, mean tokens 6627.6, passing the Phase 2 gate and dominating GEPA v4 on val. Use cand13 as the base program for GRPO/eval unless a router-only fallback later beats it.
 
 - Launch GEPA run with full config:
   ```
@@ -301,6 +308,11 @@ Current driver at `src/recrag/grpo/compile.py`. Key decisions:
 - **Fallback:** If GEPA does not converge after 2 attempts, freeze planner/synth/critic from cand13 and only GEPA-evolve the router. This still gives contribution 1 (routing) even without contribution 2 (full optimization).
 
 ### Phase 3: TF-GRPO experience library (5-8h compute, monitor via W&B)
+
+- [x] `src/recrag/grpo/compile.py` now supports `--program`, `--max-searches`, and `--budget-hint`, so GRPO can use GEPA/cand13 prompts instead of silently falling back to defaults.
+- [x] GRPO W&B smoke completed on 2026-05-04 with `--n-train 5 --group-size 2`; W&B artifacts uploaded successfully after setting `WANDB_DATA_DIR` and `WANDB_CACHE_DIR` under the repo.
+- [x] Full cand13-based GRPO launched in tmux session `grpo_v4_cand13_20260503`; log `results/grpo_logs/v4_cand13/run.log`; checkpoints `compiled/grpo_v4_cand13_checkpoints/`; outputs `compiled/grpo_v4_cand13_library.json` and `.txt`; W&B project `recrag-grpo`.
+- [x] GRPO was stopped at `epoch_0_batch_3` after stalling inside an OpenAI reflection call. Latest snapshot had 18 entries. Val check with `compiled/grpo_v4_cand13_library_epoch0_batch3_snapshot.txt`: EM 0.3667, mean tokens 7154.4; this matches cand13 EM but costs more than cand13 without library (6627.6), so the library is not used for current best eval.
 
 - Launch TF-GRPO to build the experience library:
   ```
@@ -336,49 +348,37 @@ Current driver at `src/recrag/grpo/compile.py`. Key decisions:
 
 ### Phase 5: Full eval on 1000q x 4 datasets (6-8h)
 
-- First re-run 100q pilots with GEPA-optimized program to confirm improvement:
-  ```
-  python scripts/eval_on_test.py \
-    --out-dir results/runs/pilot_gepa_v4 \
-    --datasets musique,2wikimultihop,hotpotqa,bamboogle \
-    --n 100 --concurrency 8 \
-    --program compiled/gepa_v4.json \
-    --experience-library compiled/grpo_v4_library.txt
-  ```
-- If 100q results look good (EM >= pre-optimization on 3/4), proceed to full 1000q:
-  ```
-  python scripts/eval_on_test.py \
-    --out-dir results/runs/test_v4 \
-    --datasets musique,2wikimultihop,hotpotqa,bamboogle \
-    --concurrency 8 \
-    --program compiled/gepa_v4.json \
-    --experience-library compiled/grpo_v4_library.txt
-  ```
-- Run force-hard on all datasets: `--force-route hard --out-dir results/runs/test_forcehard`
-- Run force-easy on all datasets: `--force-route easy --out-dir results/runs/test_forceeasy`
+- [x] Cand13 100q pilot completed at `results/runs/pilot_cand13_20260504`; it underperformed the default/no-program pilot, so full eval used default prompts without GRPO library.
+- [x] Full adaptive/default eval completed at `results/runs/test_v4_default_20260504`: MuSiQue 0.158 EM / 8003.7 tokens; 2Wiki 0.268 / 7312.8; HotpotQA 0.332 / 5481.0; Bamboogle 0.264 / 5163.3. It beats MA-RAG at fewer tokens on 3/4 datasets except Bamboogle.
+- [x] Force-easy completed at `results/runs/test_forceeasy_20260504`: MuSiQue 0.062 / 2379.6; 2Wiki 0.239 / 2299.8; HotpotQA 0.297 / 1809.6; Bamboogle 0.112 / 1742.6. Adaptive beats force-easy on all 4; bootstrap files are in `results/analysis/adaptive_vs_forceeasy_*.json`.
+- [x] Force-hard completed at `results/runs/test_forcehard_20260504`: MuSiQue 0.171 / 7623.5; 2Wiki 0.305 / 8852.2; HotpotQA 0.328 / 6662.7; Bamboogle 0.312 / 5273.1. Adaptive vs force-hard: worse on MuSiQue (-1.3 EM, +5.0% tokens), worse on 2Wiki (-3.7 EM, -17.4% tokens), comparable on HotpotQA (+0.4 EM, -17.7% tokens, p=0.678), worse on Bamboogle (-4.8 EM, -2.1% tokens). Bootstrap files are in `results/analysis/adaptive_vs_forcehard_*.json`.
+- [x] Current Pareto/analysis snapshot written to `results/analysis/thesis_results_snapshot.{json,md}` and `results/analysis/plots/`. With force-hard/no-critic MuSiQue included, MuSiQue has a cheaper near-force-hard point (0.170 EM / 6989.1 tokens). Refresh after queued datasets finish.
 
 ### Phase 6: Ablations on same 1000q test IDs (8-12h)
 
-- **No-critic**: run system with critic disabled
-- **No-experience-library**: run system without library
-- **Random routing**: route easy/hard at observed oracle mix rate, randomly
-- **No-oracle GEPA**: re-run GEPA without oracle bonus in reward, evaluate that program
-- **Force-easy (SAS baseline)**: already done in Phase 5
-- **Force-hard (MAS upper bound)**: already done in Phase 5
-- All ablations on same question IDs, same retriever, same model
-- Compute paired bootstrap CIs for all pairwise comparisons
-- Per-profile breakdown: 7 profiles x each ablation condition
+- [x] **No-critic**: completed at `results/runs/test_nocritic_20260504`: MuSiQue 0.159 / 7383.9; 2Wiki 0.268 / 6846.3; HotpotQA 0.332 / 5097.0; Bamboogle 0.264 / 4746.2. It matches or slightly improves adaptive EM while reducing tokens on all 4, but still trails force-hard on MuSiQue/2Wiki/Bamboogle. Paired files: `results/analysis/nocritic_vs_adaptive_forcehard_*.json`.
+- [x] **No-experience-library**: current full adaptive/default run is already without a library (`results/runs/test_v4_default_20260504`); partial GRPO library hurt val tokens without EM gain.
+- [ ] **Random routing**: queued in tmux `post_nocritic_queue_20260504`, after force-hard/no-critic. It runs per dataset at adaptive easy rates: MuSiQue 0.066, 2Wiki 0.305, HotpotQA 0.373, Bamboogle 0.176.
+- [ ] **No-oracle GEPA**: queued in tmux `post_nocritic_queue_20260504`, after random routing. It runs GEPA with `--oracle-naive-dir ""`, then evaluates val and full test with `compiled/gepa_nooracle_20260504.json`.
+- [x] **Force-easy (SAS baseline)**: completed in Phase 5 at `results/runs/test_forceeasy_20260504`.
+- [x] **Force-hard (MAS upper bound)**: completed in Phase 5 at `results/runs/test_forcehard_20260504`.
+- [ ] **Force-hard/no-critic candidate**: running in tmux `post_nocritic_queue_20260504`. MuSiQue completed: 0.170 EM / 6989.1 tokens, statistically tied with force-hard (delta -0.001, p=0.797) while saving 8.3% tokens; comparison `results/analysis/forcehard_nocritic_musique.json`. 2Wiki is running.
+- [ ] Compute paired bootstrap CIs for no-critic/random/no-oracle after runs finish. Baseline-level bootstrap vs naive/MA-RAG is blocked unless per-question FlashRAG baseline predictions are restored; only `results/diagnostics/baselines_rescored.json` summaries are present in this checkout.
+- [ ] Per-profile breakdown: 7 profiles x each ablation condition.
 
 ### Phase 7: Analysis and writeup (5-7 days)
 
-- **Pareto plot per dataset**: EM vs mean tokens for all baselines + all system variants. One figure per dataset.
-- **Inference-time scaling-law plot**: log-log EM vs tokens across all systems. Fit slopes. Identify crossover points where more compute stops helping.
-- **Per-question-type ablation table**: 7 profiles x {router, planner, parallel exec, critic, library} = 35 cells with marginal EM contribution and 95% CI.
-- **Routing analysis**: confusion matrix (router prediction vs oracle), EM as function of router confidence.
-- **Effort-conditioning analysis**: EM and tokens broken down by route (easy vs hard), compared against force-easy and force-hard.
-- **Optimization trajectory**: GEPA val_em vs metric calls (from W&B), library size vs epoch, prompt length evolution.
-- **Qualitative examples**: 3-5 success cases (routing helped), 3-5 failure cases (routing hurt), with full trace.
-- **Write thesis chapters**: Related Work, Method, Experimental Setup, Results, Analysis, Conclusion.
+- [x] Added reusable analysis script `scripts/thesis_analysis.py`. Current snapshot: `results/analysis/thesis_results_snapshot.json` and `.md`.
+- [x] Current Pareto table generated for baselines + adaptive + force-easy + force-hard. Adaptive is Pareto-efficient on 2Wiki and HotpotQA only; MuSiQue and Bamboogle are dominated.
+- [x] Preliminary scaling slopes generated in `results/analysis/thesis_results_snapshot.json`; refresh after no-critic/random/no-oracle complete.
+- [x] Pareto plot per dataset generated as SVG: `results/analysis/plots/pareto_{musique,2wikimultihop,hotpotqa,bamboogle}.svg`. Refresh after queued ablations finish.
+- [x] Inference-time scaling snapshot generated as SVG: `results/analysis/plots/scaling_snapshot.svg`; slopes are in `results/analysis/thesis_results_snapshot.json`. Refresh after queued ablations finish.
+- [ ] Per-question-type ablation table: 7 profiles x {router, planner, parallel exec, critic, library} = 35 cells with marginal EM contribution and 95% CI.
+- [ ] Routing analysis: confusion matrix (router prediction vs oracle), EM as function of router confidence. Current route-impact table shows easy routing hurts MuSiQue, 2Wiki, and Bamboogle vs force-hard, but helps HotpotQA tokens with comparable EM.
+- [x] Effort-conditioning analysis snapshot generated: `results/analysis/thesis_results_snapshot.md` compares adaptive easy/hard buckets against force-easy and force-hard on same IDs.
+- [ ] Optimization trajectory: GEPA val_em vs metric calls (from W&B), library size vs epoch, prompt length evolution.
+- [x] Qualitative examples extracted: `results/analysis/routing_qualitative_examples.json` and `.md` contain routing-helped and routing-hurt cases with traces.
+- [ ] Write thesis chapters: Related Work, Method, Experimental Setup, Results, Analysis, Conclusion.
 
 ## Reference papers
 

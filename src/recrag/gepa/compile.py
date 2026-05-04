@@ -187,6 +187,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--max-metric-calls", type=int, default=800, help="If >0 overrides auto")
     p.add_argument("--log-dir", default="", help="If set, GEPA writes detailed logs and supports resume from this dir")
     p.add_argument("--num-threads", type=int, default=6)
+    p.add_argument("--track-stats", action="store_true", help="Compatibility flag; GEPA stats are always tracked.")
     p.add_argument("--wandb-project", default="recrag-gepa")
     p.add_argument("--wandb-mode", default="")
     p.add_argument("--run-name", default="")

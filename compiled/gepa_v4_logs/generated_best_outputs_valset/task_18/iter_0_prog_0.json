@@ -1,0 +1,61 @@
+{
+    "answer": "no",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Are the directors of Whoops, I'm an Indian! and Chasing Rainbows (1930 film) of the same nationality?",
+                "expected_type": "yes_no",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "no",
+                "confidence": 0.9,
+                "chunk_id": "10899328",
+                "queries_used": [
+                    "Are the directors of Whoops, I'm an Indian! and Chasing Rainbows (1930 film) of the same nationality?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Are the directors of Whoops, I'm an Indian! and Chasing Rainbows (1930 film) of the same nationality?",
+                "retrieval_query": ""
+            }
+        ],
+        "synth_answer_raw": "no",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'no' directly matches the target node's answer, which addresses the original question about whether the directors of the two films share the same nationality."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 6430,
+        "sub_tokens": 27867,
+        "total_tokens": 34297,
+        "elapsed_s": 14.429,
+        "hops": 0,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [],
+        "profile": "yes_no",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question requires checking if the directors of two films share the same nationality, which involves resolving the directors of each film and then comparing their nationalities.",
+        "expected_type": "entity",
+        "topology": "single_hop",
+        "n_nodes": 1,
+        "final_node": "Q1.1",
+        "support_ids": [],
+        "citation_accepted": false,
+        "expected_hops_for_profile": 1,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'no' directly matches the target node's answer, which addresses the original question about whether the directors of the two films share the same nationality."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

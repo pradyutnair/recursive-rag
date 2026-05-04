@@ -1,0 +1,91 @@
+{
+    "answer": "no",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera?",
+                "expected_type": "title",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Snow Maiden",
+                "confidence": 0.9,
+                "chunk_id": "19846564",
+                "queries_used": [
+                    "What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera?"
+                ],
+                "expanded_into": [],
+                "raw_question": "What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "What is the subtitle of Snow Maiden?",
+                "expected_type": "title",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "A Spring Fairy Tale",
+                "confidence": 0.95,
+                "chunk_id": "14061456",
+                "queries_used": [
+                    "What is the subtitle of Snow Maiden? (given: What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera? -> Snow Maiden)"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the subtitle of <A1.1>?",
+                "retrieval_query": "What is the subtitle of Snow Maiden? (given: What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera? -> Snow Maiden)"
+            }
+        ],
+        "synth_answer_raw": "no",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'A Spring Fairy Tale' is supported by the trace and matches the expected type 'entity'."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 5289,
+        "sub_tokens": 32926,
+        "total_tokens": 38215,
+        "elapsed_s": 18.761,
+        "hops": 1,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "no",
+                "evidence_chunk_id": "13808250",
+                "confidence": 0.8,
+                "queries_used": [
+                    "Is A Midsummer Night's Dream a comedy of intrigue? (given: What is the name of the comedy by William Shakespeare that is thought to have been written in 1598? -> A Midsummer Night's Dream)"
+                ],
+                "expected_answer_type": "yes_no"
+            }
+        ],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question involves resolving the opera conducted by Nikolai Rimsky-Korsakov at Novaya Opera, which requires identifying the specific opera first before finding its subtitle.",
+        "expected_type": "entity",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [
+            "13808250"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'A Spring Fairy Tale' is supported by the trace and matches the expected type 'entity'."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

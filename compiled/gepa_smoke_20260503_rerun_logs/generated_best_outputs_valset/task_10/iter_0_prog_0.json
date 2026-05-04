@@ -1,0 +1,99 @@
+{
+    "answer": "Statute of Westminster Adoption Act 1947",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Are the directors of films The House Of 72 Tenants and Ya\u015fam Kavgas\u0131 both from the same country?",
+                "expected_type": "yes_no",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "no",
+                "confidence": 0.9,
+                "chunk_id": "16612241",
+                "queries_used": [
+                    "Are the directors of films The House Of 72 Tenants and Ya\u015fam Kavgas\u0131 both from the same country?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Are the directors of films The House Of 72 Tenants and Ya\u015fam Kavgas\u0131 both from the same country?",
+                "retrieval_query": ""
+            }
+        ],
+        "synth_answer_raw": "Statute of Westminster Adoption Act 1947",
+        "critic": []
+    },
+    "metadata": {
+        "root_tokens": 0,
+        "sub_tokens": 11893,
+        "total_tokens": 11893,
+        "elapsed_s": 4.454,
+        "hops": 5,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "Statute of Westminster Adoption Act 1947",
+                "evidence_chunk_id": "14126643",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What were adopted for use in mainland of British? (given: Which country is the mainland of the country where Howard Penman is from? -> British)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "Chile",
+                "evidence_chunk_id": "6961937",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is the country containing Nancova?"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "four-year",
+                "evidence_chunk_id": "2659305",
+                "confidence": 0.8,
+                "queries_used": [
+                    "What is the term length for members of the body that elects a speaker for the Chief Justice of the United States? (given: Which body presides over impeachment trials of the president of American? -> the Chief Justice of the United States)"
+                ],
+                "expected_answer_type": "number"
+            },
+            {
+                "answer": "M\u00e1s a Tierra",
+                "evidence_chunk_id": "20463606",
+                "confidence": 0.9,
+                "queries_used": [
+                    "In what region of Chile did the Germans clash with the Portuguese? (given: What is the country containing Nancova? -> Chile)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "no",
+                "evidence_chunk_id": "16612241",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Are the directors of films The House Of 72 Tenants and Ya\u015fam Kavgas\u0131 both from the same country?"
+                ],
+                "expected_answer_type": "yes_no"
+            }
+        ],
+        "profile": "yes_no",
+        "budget_hint": "normal",
+        "route": "easy",
+        "router_reason": "Both entities explicitly named; direct relation check.",
+        "expected_type": "yes_no",
+        "topology": "easy_lane",
+        "n_nodes": 1,
+        "final_node": "Q1.1",
+        "support_ids": [
+            "14126643"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 1,
+        "critic": [],
+        "critic_skipped_reason": "direct_easy_high_confidence",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": true
+    }
+}

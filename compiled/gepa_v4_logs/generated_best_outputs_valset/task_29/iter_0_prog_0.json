@@ -1,0 +1,154 @@
+{
+    "answer": "AMP",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "What is the name of the major shopping center served by Garden City bus station?",
+                "expected_type": "entity",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Westfield Garden City",
+                "confidence": 0.95,
+                "chunk_id": "9996753",
+                "queries_used": [
+                    "What is the name of the major shopping center served by Garden City bus station?"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the name of the major shopping center served by Garden City bus station?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "Who previously operated Westfield Garden City?",
+                "expected_type": "organization",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "AMP Limited",
+                "confidence": 0.9,
+                "chunk_id": "9996753",
+                "queries_used": [
+                    "Who previously operated Westfield Garden City? (given: What is the name of the major shopping center served by Garden City bus station? -> Westfield Garden City)"
+                ],
+                "expanded_into": [],
+                "raw_question": "Who previously operated <A1.1>?",
+                "retrieval_query": "Who previously operated Westfield Garden City? (given: What is the name of the major shopping center served by Garden City bus station? -> Westfield Garden City)"
+            }
+        ],
+        "synth_answer_raw": "AMP Limited",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'AMP Limited' matches the target node's answer, which directly resolves the original question."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 3956,
+        "sub_tokens": 28972,
+        "total_tokens": 32928,
+        "elapsed_s": 15.399,
+        "hops": 8,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "Michael Morpurgo",
+                "evidence_chunk_id": "19263104",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Which of Michael Morpurgo wrote a children's book illustrated by Axel Scheffler? (given: Which Scottish writer and Children's Laureate has written children's books? -> Michael Morpurgo)"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "comedy",
+                "evidence_chunk_id": "10960194",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What genre is the comedy A Comedy of Errors classified under? (given: What comedy by William Shakespeare is thought to have been written in 1598? -> A Comedy of Errors)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "Neil Armstrong",
+                "evidence_chunk_id": "63474",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who presented the prizes at the 1971 World Championship Tennis Finals?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "Purdue",
+                "evidence_chunk_id": "15250588",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Where did Neil Armstrong earn his bachelor's degree? (given: Who presented the prizes at the 1971 World Championship Tennis Finals? -> Neil Armstrong)"
+                ],
+                "expected_answer_type": "place"
+            },
+            {
+                "answer": "Manhattan",
+                "evidence_chunk_id": "15931012",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Which city in Kansas has an airport with the ICAO of KHRU?"
+                ],
+                "expected_answer_type": "place"
+            },
+            {
+                "answer": "Westfield Garden City",
+                "evidence_chunk_id": "9996753",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What is the name of the major shopping center served by Garden City bus station?"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "52,281",
+                "evidence_chunk_id": "5503936",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What was the population of Manhattan in 2010? (given: Which city in Kansas has an airport with the ICAO of KHRU? -> Manhattan)"
+                ],
+                "expected_answer_type": "number"
+            },
+            {
+                "answer": "AMP Limited",
+                "evidence_chunk_id": "9996753",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who previously operated Westfield Garden City? (given: What is the name of the major shopping center served by Garden City bus station? -> Westfield Garden City)"
+                ],
+                "expected_answer_type": "organization"
+            }
+        ],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question involves a bridge entity 'this major shopping center' which must be resolved first to determine who previously operated it.",
+        "expected_type": "entity",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [
+            "9996753"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'AMP Limited' matches the target node's answer, which directly resolves the original question."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

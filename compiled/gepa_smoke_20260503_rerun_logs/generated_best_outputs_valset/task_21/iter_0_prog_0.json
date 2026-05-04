@@ -1,0 +1,167 @@
+{
+    "answer": "2007 Fiesta Bowl",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Which game played on January 1, 2007 did the 2006 Boise State Broncos football team face Oklahoma in?",
+                "expected_type": "entity",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "2007 Fiesta Bowl",
+                "confidence": 0.9,
+                "chunk_id": "12055674",
+                "queries_used": [
+                    "Which game played on January 1, 2007 did the 2006 Boise State Broncos football team face Oklahoma in?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Which game played on January 1, 2007 did the 2006 Boise State Broncos football team face Oklahoma in?",
+                "retrieval_query": ""
+            }
+        ],
+        "synth_answer_raw": "2007 Fiesta Bowl",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer '2007 Fiesta Bowl' is directly supported by the trace and matches the expected type 'entity'."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 5289,
+        "sub_tokens": 26395,
+        "total_tokens": 31684,
+        "elapsed_s": 16.882,
+        "hops": 11,
+        "retries": 4,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "The Three Stooges",
+                "evidence_chunk_id": "15278569",
+                "confidence": 0.8,
+                "queries_used": [
+                    "Who directed the film Whoops, I'm an Indian!"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "Charles Reisner",
+                "evidence_chunk_id": "10899328",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Who directed the film Chasing Rainbows (1930 film)"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "American",
+                "evidence_chunk_id": "15278569",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is the nationality of The Three Stooges (given: Who directed the film Whoops, I'm an Indian! -> The Three Stooges)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "American",
+                "evidence_chunk_id": "19306075",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What is the nationality of Charles Reisner (given: Who directed the film Chasing Rainbows (1930 film) -> Charles Reisner)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "yes",
+                "evidence_chunk_id": "16893698",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Is American the same as American (given: What is the nationality of The Three Stooges -> American; What is the nationality of Charles Reisner -> American)"
+                ],
+                "expected_answer_type": "yes_no"
+            },
+            {
+                "answer": "2007 Fiesta Bowl",
+                "evidence_chunk_id": "12055674",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Which game played on January 1, 2007 did the 2006 Boise State Broncos football team face Oklahoma in?"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "Snow Maiden",
+                "evidence_chunk_id": "19846564",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera?"
+                ],
+                "expected_answer_type": "title"
+            },
+            {
+                "answer": "Julia Donaldson MBE",
+                "evidence_chunk_id": "1536638",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who is the Scottish writer and Children's laureate?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "Dominic Sena",
+                "evidence_chunk_id": "1267417",
+                "confidence": 0.4,
+                "queries_used": [
+                    "Which director was born first, Luc Besson (18 March 1959) or Dominic Sena (April 26, 1949)? (given: When was Luc Besson born? -> 18 March 1959; When was Dominic Sena born? -> April 26, 1949)",
+                    "Who was born first between Luc Besson and Dominic Sena?",
+                    "Who was born first between Luc Besson (18 March 1959) and Dominic Sena (April 26, 1949)?",
+                    "Who was born first between Luc Besson (18 March 1959) and Dominic Sena (April 26, 1949)? evidence",
+                    "Who was born first between Luc Besson (18 March 1959) and Dominic Sena (April 26, 1949)? evidence"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "A Spring Fairy Tale",
+                "evidence_chunk_id": "14061456",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What is the subtitle of Snow Maiden? (given: What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera? -> Snow Maiden)"
+                ],
+                "expected_answer_type": "title"
+            },
+            {
+                "answer": "A Midsummer Night's Dream",
+                "evidence_chunk_id": "10960194",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is the name of the comedy by William Shakespeare that is thought to have been written in 1598?"
+                ],
+                "expected_answer_type": "title"
+            }
+        ],
+        "profile": "one_hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question involves a temporal and contextual bridge: identifying the specific game on January 1, 2007, that the 2006 Boise State Broncos faced Oklahoma in. This requires resolving the event (the game) first, which is not a named entity but a descriptive event that must be resolved before determining the answer.",
+        "expected_type": "entity",
+        "topology": "single_hop",
+        "n_nodes": 1,
+        "final_node": "Q1.1",
+        "support_ids": [
+            "12055674"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 1,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer '2007 Fiesta Bowl' is directly supported by the trace and matches the expected type 'entity'."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

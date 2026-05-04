@@ -1,0 +1,79 @@
+{
+    "answer": "February 12, 1873",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Who is the mother of Teriimaevarua Ii?",
+                "expected_type": "person",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Ari'ifaaite a Hiro and P\u014dmare IV",
+                "confidence": 0.9,
+                "chunk_id": "7662716",
+                "queries_used": [
+                    "Who is the mother of Teriimaevarua Ii?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Who is the mother of Teriimaevarua Ii?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "What is the date of death of Ari'ifaaite a Hiro and P\u014dmare IV?",
+                "expected_type": "date",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "February 12, 1873",
+                "confidence": 0.9,
+                "chunk_id": "7662716",
+                "queries_used": [
+                    "What is the date of death of Ari'ifaaite a Hiro and P\u014dmare IV? (given: Who is the mother of Teriimaevarua Ii? -> Ari'ifaaite a Hiro and P\u014dmare IV)"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the date of death of <A1.1>?",
+                "retrieval_query": "What is the date of death of Ari'ifaaite a Hiro and P\u014dmare IV? (given: Who is the mother of Teriimaevarua Ii? -> Ari'ifaaite a Hiro and P\u014dmare IV)"
+            }
+        ],
+        "synth_answer_raw": "February 12, 1873",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer matches the target node's answer and is correctly derived from the trace."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 6430,
+        "sub_tokens": 44031,
+        "total_tokens": 50461,
+        "elapsed_s": 18.787,
+        "hops": 0,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question involves resolving the entity 'Teriimaevarua Ii's mother' which is an unnamed bridge entity, requiring first identifying the mother before determining the date of death.",
+        "expected_type": "entity",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [],
+        "citation_accepted": false,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer matches the target node's answer and is correctly derived from the trace."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

@@ -1,0 +1,121 @@
+{
+  "runs": {
+    "adaptive": {
+      "n": 1000,
+      "em": 0.268,
+      "f1": 0.3303,
+      "mean_tokens": 7312.8,
+      "easy_route_fraction": 0.305,
+      "easy_route_em": 0.3475,
+      "easy_route_mean_tokens": 2792.2,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 427,
+          "em": 0.2225,
+          "mean_tokens": 7870.8,
+          "easy_route_fraction": 0.1007
+        },
+        "bridge_3hop_plus": {
+          "n": 109,
+          "em": 0.3211,
+          "mean_tokens": 7256.0,
+          "easy_route_fraction": 0.0183
+        },
+        "numeric": {
+          "n": 8,
+          "em": 0.375,
+          "mean_tokens": 6882.8,
+          "easy_route_fraction": 0.125
+        },
+        "one_hop": {
+          "n": 256,
+          "em": 0.3438,
+          "mean_tokens": 6691.4,
+          "easy_route_fraction": 0.5625
+        },
+        "parallel_compare": {
+          "n": 69,
+          "em": 0.1884,
+          "mean_tokens": 13986.7,
+          "easy_route_fraction": 0.087
+        },
+        "temporal": {
+          "n": 16,
+          "em": 0.25,
+          "mean_tokens": 6827.9,
+          "easy_route_fraction": 0.25
+        },
+        "yes_no": {
+          "n": 115,
+          "em": 0.2609,
+          "mean_tokens": 2770.6,
+          "easy_route_fraction": 0.913
+        }
+      }
+    },
+    "force_easy": {
+      "n": 1000,
+      "em": 0.239,
+      "f1": 0.2901,
+      "mean_tokens": 2299.8,
+      "easy_route_fraction": 1.0,
+      "easy_route_em": 0.239,
+      "easy_route_mean_tokens": 2299.8,
+      "profiles": {
+        "bridge_2hop": {
+          "n": 427,
+          "em": 0.1944,
+          "mean_tokens": 2209.5,
+          "easy_route_fraction": 1.0
+        },
+        "bridge_3hop_plus": {
+          "n": 109,
+          "em": 0.0734,
+          "mean_tokens": 1891.7,
+          "easy_route_fraction": 1.0
+        },
+        "numeric": {
+          "n": 8,
+          "em": 0.0,
+          "mean_tokens": 2157.5,
+          "easy_route_fraction": 1.0
+        },
+        "one_hop": {
+          "n": 256,
+          "em": 0.3359,
+          "mean_tokens": 2814.4,
+          "easy_route_fraction": 1.0
+        },
+        "parallel_compare": {
+          "n": 69,
+          "em": 0.4638,
+          "mean_tokens": 2528.9,
+          "easy_route_fraction": 1.0
+        },
+        "temporal": {
+          "n": 16,
+          "em": 0.0,
+          "mean_tokens": 3749.9,
+          "easy_route_fraction": 1.0
+        },
+        "yes_no": {
+          "n": 115,
+          "em": 0.2609,
+          "mean_tokens": 1546.7,
+          "easy_route_fraction": 1.0
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "adaptive_minus_force_easy": {
+      "n": 1000,
+      "delta_em": 0.029,
+      "ci95": [
+        0.001,
+        0.058
+      ],
+      "p_two_sided_approx": 0.045
+    }
+  }
+}

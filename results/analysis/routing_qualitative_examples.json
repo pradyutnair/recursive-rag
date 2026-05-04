@@ -1,0 +1,678 @@
+{
+  "routing_helped": [
+    {
+      "adaptive": {
+        "id": "1c0dd3b00bdc11eba7f7acde48001122",
+        "dataset": "",
+        "question": "Which country Aleksander Koniecpolski (1620\u20131659)'s father is from?",
+        "gold": "Polish-Lithuanian Commonwealth",
+        "answer": "Polish-Lithuanian Commonwealth",
+        "em": 1.0,
+        "tokens": 2054,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Which country Aleksander Koniecpolski (1620\u20131659)'s father is from?\n  [d0] Q1.1 (entity) Which country Aleksander Koniecpolski (1620\u20131659)'s father is from?\n        -> answer='Polish-Lithuanian Commonwealth' conf=0.80 chunk=8909159\nFINAL: 'Polish-Lithuanian Commonwealth' support=['8909159']"
+      },
+      "force_hard": {
+        "id": "1c0dd3b00bdc11eba7f7acde48001122",
+        "dataset": "",
+        "question": "Which country Aleksander Koniecpolski (1620\u20131659)'s father is from?",
+        "gold": "Polish-Lithuanian Commonwealth",
+        "answer": "Polish",
+        "em": 0.0,
+        "tokens": 5160,
+        "route": "hard",
+        "profile": "one_hop",
+        "topology": "dag_n2",
+        "trace": "Q: Which country Aleksander Koniecpolski (1620\u20131659)'s father is from?\n  [d0] Q1.1 (person) Who is Aleksander Koniecpolski (1620\u20131659)'s father?\n        -> answer='Remigiusz Koniecpolski' conf=0.90 chunk=13149040\n  [d1] Q2.1 (country) Which country is <A1.1> from?\n        -> answer='Polish' conf=0.90 chunk=8909159\nFINAL: 'Polish' support=['13149040', '8909159']"
+      },
+      "force_easy": {
+        "id": "1c0dd3b00bdc11eba7f7acde48001122",
+        "dataset": "",
+        "question": "Which country Aleksander Koniecpolski (1620\u20131659)'s father is from?",
+        "gold": "Polish-Lithuanian Commonwealth",
+        "answer": "Polish-Lithuanian Commonwealth",
+        "em": 1.0,
+        "tokens": 1455,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Which country Aleksander Koniecpolski (1620\u20131659)'s father is from?\n  [d0] Q1.1 (entity) Which country Aleksander Koniecpolski (1620\u20131659)'s father is from?\n        -> answer='Polish-Lithuanian Commonwealth' conf=0.80 chunk=8909159\nFINAL: 'Polish-Lithuanian Commonwealth' support=['8909159']"
+      },
+      "token_savings_vs_hard": 3106
+    },
+    {
+      "adaptive": {
+        "id": "7d87730c087211ebbd66ac1f6bf848b6",
+        "dataset": "",
+        "question": "Are the movies Wizards Of The Lost Kingdom and Final Exam (1981 Film), from the same country?",
+        "gold": "no",
+        "answer": "no",
+        "em": 1.0,
+        "tokens": 1814,
+        "route": "easy",
+        "profile": "yes_no",
+        "topology": "easy_lane",
+        "trace": "Q: Are the movies Wizards Of The Lost Kingdom and Final Exam (1981 Film), from the same country?\n  [d0] Q1.1 (yes_no) Are the movies Wizards Of The Lost Kingdom and Final Exam (1981 Film), from the same country?\n        -> answer='no' conf=0.90 chunk=17146344\nFINAL: 'no' support=['17146344']"
+      },
+      "force_hard": {
+        "id": "7d87730c087211ebbd66ac1f6bf848b6",
+        "dataset": "",
+        "question": "Are the movies Wizards Of The Lost Kingdom and Final Exam (1981 Film), from the same country?",
+        "gold": "no",
+        "answer": "yes",
+        "em": 0.0,
+        "tokens": 6030,
+        "route": "hard",
+        "profile": "yes_no",
+        "topology": "dag_n3",
+        "trace": "Q: Are the movies Wizards Of The Lost Kingdom and Final Exam (1981 Film), from the same country?\n  [d0] Q1.1 (entity) What country is the movie Wizards Of The Lost Kingdom from?\n        -> answer='American' conf=0.90 chunk=2211429\n  [d0] Q1.2 (entity) What country is the movie Final Exam (1981 Film) from?\n        -> answer='American' conf=0.90 chunk=17146344\n  [d1] Q2.1 (yes_no) Are <A1.1> and <A1.2> the same?\n        -> answer='yes' conf=0.90 chunk=16893698\nFINAL: 'yes' support=['2211429', '17146344', '16893698']"
+      },
+      "force_easy": {
+        "id": "7d87730c087211ebbd66ac1f6bf848b6",
+        "dataset": "",
+        "question": "Are the movies Wizards Of The Lost Kingdom and Final Exam (1981 Film), from the same country?",
+        "gold": "no",
+        "answer": "no",
+        "em": 1.0,
+        "tokens": 1231,
+        "route": "easy",
+        "profile": "yes_no",
+        "topology": "easy_lane",
+        "trace": "Q: Are the movies Wizards Of The Lost Kingdom and Final Exam (1981 Film), from the same country?\n  [d0] Q1.1 (yes_no) Are the movies Wizards Of The Lost Kingdom and Final Exam (1981 Film), from the same country?\n        -> answer='no' conf=0.90 chunk=17146344\nFINAL: 'no' support=['17146344']"
+      },
+      "token_savings_vs_hard": 4216
+    },
+    {
+      "adaptive": {
+        "id": "689d225009b411ebbdb0ac1f6bf848b6",
+        "dataset": "",
+        "question": "Are Wiqu (Lima) and Qillqa (Melgar) both located in the same country?",
+        "gold": "yes",
+        "answer": "yes",
+        "em": 1.0,
+        "tokens": 1944,
+        "route": "easy",
+        "profile": "yes_no",
+        "topology": "easy_lane",
+        "trace": "Q: Are Wiqu (Lima) and Qillqa (Melgar) both located in the same country?\n  [d0] Q1.1 (yes_no) Are Wiqu (Lima) and Qillqa (Melgar) both located in the same country?\n        -> answer='yes' conf=0.90 chunk=7998224\nFINAL: 'yes' support=['7998224']"
+      },
+      "force_hard": {
+        "id": "689d225009b411ebbdb0ac1f6bf848b6",
+        "dataset": "",
+        "question": "Are Wiqu (Lima) and Qillqa (Melgar) both located in the same country?",
+        "gold": "yes",
+        "answer": "no",
+        "em": 0.0,
+        "tokens": 7833,
+        "route": "hard",
+        "profile": "yes_no",
+        "topology": "dag_n3",
+        "trace": "Q: Are Wiqu (Lima) and Qillqa (Melgar) both located in the same country?\n  [d0] Q1.1 (organization) What country is Wiqu (Lima) located in?\n        -> answer='Peru' conf=0.95 chunk=12258023\n  [d0] Q1.2 (organization) What country is Qillqa (Melgar) located in?\n        -> answer='Palestinian' conf=0.90 chunk=14983248\n  [d1] Q2.1 (yes_no) Are <A1.1> and <A1.2> the same country?\n        -> answer='no' conf=0.95 chunk=269779\nFINAL: 'no' support=['12258023', '14983248', '269779']"
+      },
+      "force_easy": {
+        "id": "689d225009b411ebbdb0ac1f6bf848b6",
+        "dataset": "",
+        "question": "Are Wiqu (Lima) and Qillqa (Melgar) both located in the same country?",
+        "gold": "yes",
+        "answer": "yes",
+        "em": 1.0,
+        "tokens": 1362,
+        "route": "easy",
+        "profile": "yes_no",
+        "topology": "easy_lane",
+        "trace": "Q: Are Wiqu (Lima) and Qillqa (Melgar) both located in the same country?\n  [d0] Q1.1 (yes_no) Are Wiqu (Lima) and Qillqa (Melgar) both located in the same country?\n        -> answer='yes' conf=0.90 chunk=7998224\nFINAL: 'yes' support=['7998224']"
+      },
+      "token_savings_vs_hard": 5889
+    },
+    {
+      "adaptive": {
+        "id": "63ccce2308cb11ebbd92ac1f6bf848b6",
+        "dataset": "",
+        "question": "Who was born earlier, Wang Shusen or Rona Randall?",
+        "gold": "Rona Randall",
+        "answer": "Rona Randall",
+        "em": 1.0,
+        "tokens": 1803,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Who was born earlier, Wang Shusen or Rona Randall?\n  [d0] Q1.1 (person) Who was born earlier, Wang Shusen or Rona Randall?\n        -> answer='Rona Randall' conf=0.70 chunk=6593697\nFINAL: 'Rona Randall' support=['6593697']"
+      },
+      "force_hard": {
+        "id": "63ccce2308cb11ebbd92ac1f6bf848b6",
+        "dataset": "",
+        "question": "Who was born earlier, Wang Shusen or Rona Randall?",
+        "gold": "Rona Randall",
+        "answer": "Wang Shusen and Rona Randall have the same birth date of 16 June 1911",
+        "em": 0.0,
+        "tokens": 18089,
+        "route": "hard",
+        "profile": "one_hop",
+        "topology": "dag_n3",
+        "trace": "Q: Who was born earlier, Wang Shusen or Rona Randall?\n  [d0] Q1.1 (date) When was Wang Shusen born?\n        -> answer='' conf=0.00 chunk=\n  [d0] Q1.2 (date) When was Rona Randall born?\n        -> answer='16 June 1911' conf=0.90 chunk=18339619\n  [d1] Q2.1 (person) Whose birth date is earlier, Wang Shusen (<A1.1>) or Rona Randall (<A1.2>)?\n        -> answer='Wang Shusen and Rona Randall have the same birth date of 16 June 1911' conf=0.40 chunk=18339619\nFINAL: 'Wang Shusen and Rona Randall have the same birth date of 16 June 1911' support=['18339619']"
+      },
+      "force_easy": {
+        "id": "63ccce2308cb11ebbd92ac1f6bf848b6",
+        "dataset": "",
+        "question": "Who was born earlier, Wang Shusen or Rona Randall?",
+        "gold": "Rona Randall",
+        "answer": "Rona Randall",
+        "em": 1.0,
+        "tokens": 1225,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Who was born earlier, Wang Shusen or Rona Randall?\n  [d0] Q1.1 (person) Who was born earlier, Wang Shusen or Rona Randall?\n        -> answer='Rona Randall' conf=0.70 chunk=6593697\nFINAL: 'Rona Randall' support=['6593697']"
+      },
+      "token_savings_vs_hard": 16286
+    },
+    {
+      "adaptive": {
+        "id": "e42d315308f711ebbdaaac1f6bf848b6",
+        "dataset": "",
+        "question": "Which film was released earlier, Dreamville Presents: Revenge or One More Time With Feeling?",
+        "gold": "One More Time With Feeling",
+        "answer": "One More Time with Feeling",
+        "em": 1.0,
+        "tokens": 1781,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Which film was released earlier, Dreamville Presents: Revenge or One More Time With Feeling?\n  [d0] Q1.1 (entity) Which film was released earlier, Dreamville Presents: Revenge or One More Time With Feeling?\n        -> answer='One More Time with Feeling' conf=0.90 chunk=16533792\nFINAL: 'One More Time with Feeling' support=['16533792']"
+      },
+      "force_hard": {
+        "id": "e42d315308f711ebbdaaac1f6bf848b6",
+        "dataset": "",
+        "question": "Which film was released earlier, Dreamville Presents: Revenge or One More Time With Feeling?",
+        "gold": "One More Time With Feeling",
+        "answer": "Dreamville Presents: Revenge",
+        "em": 0.0,
+        "tokens": 12222,
+        "route": "hard",
+        "profile": "one_hop",
+        "topology": "dag_n3",
+        "trace": "Q: Which film was released earlier, Dreamville Presents: Revenge or One More Time With Feeling?\n  [d0] Q1.1 (date) When was Dreamville Presents: Revenge released?\n        -> answer='December 8, 2015' conf=0.95 chunk=15557277\n  [d0] Q1.2 (date) When was One More Time With Feeling released?\n        -> answer='8 September 2016' conf=0.90 chunk=16533798\n  [d1] Q2.1 (title) Which release date is earlier, Dreamville Presents: Revenge (<A1.1>) or One More Time With Feeling (<A1.2>)?\n        -> answer='Dreamville Presents: Revenge (December 8, 2015)' conf=0.40 chunk=15557277\nFINAL: 'Dreamville Presents: Revenge' support=['15557277', '16533798']"
+      },
+      "force_easy": {
+        "id": "e42d315308f711ebbdaaac1f6bf848b6",
+        "dataset": "",
+        "question": "Which film was released earlier, Dreamville Presents: Revenge or One More Time With Feeling?",
+        "gold": "One More Time With Feeling",
+        "answer": "One More Time with Feeling",
+        "em": 1.0,
+        "tokens": 1197,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Which film was released earlier, Dreamville Presents: Revenge or One More Time With Feeling?\n  [d0] Q1.1 (entity) Which film was released earlier, Dreamville Presents: Revenge or One More Time With Feeling?\n        -> answer='One More Time with Feeling' conf=0.90 chunk=16533792\nFINAL: 'One More Time with Feeling' support=['16533792']"
+      },
+      "token_savings_vs_hard": 10441
+    },
+    {
+      "adaptive": {
+        "id": "6854217908a011ebbd78ac1f6bf848b6",
+        "dataset": "",
+        "question": "Which film came out earlier, Marriage Blue or 4 Minute Mile?",
+        "gold": "Marriage Blue",
+        "answer": "Marriage Blue",
+        "em": 1.0,
+        "tokens": 1758,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Which film came out earlier, Marriage Blue or 4 Minute Mile?\n  [d0] Q1.1 (entity) Which film came out earlier, Marriage Blue or 4 Minute Mile?\n        -> answer='Marriage Blue' conf=0.90 chunk=11162784\nFINAL: 'Marriage Blue' support=['11162784']"
+      },
+      "force_hard": {
+        "id": "6854217908a011ebbd78ac1f6bf848b6",
+        "dataset": "",
+        "question": "Which film came out earlier, Marriage Blue or 4 Minute Mile?",
+        "gold": "Marriage Blue",
+        "answer": "November 21, 2013",
+        "em": 0.0,
+        "tokens": 7869,
+        "route": "hard",
+        "profile": "one_hop",
+        "topology": "dag_n3",
+        "trace": "Q: Which film came out earlier, Marriage Blue or 4 Minute Mile?\n  [d0] Q1.1 (date) When was the film Marriage Blue released?\n        -> answer='November 21, 2013' conf=0.90 chunk=11905051\n  [d0] Q1.2 (date) When was the film 4 Minute Mile released?\n        -> answer='2014' conf=0.90 chunk=5371928\n  [d1] Q2.1 (entity) Which release date is earlier, Marriage Blue (<A1.1>) or 4 Minute Mile (<A1.2>)?\n        -> answer='November 21, 2013' conf=0.95 chunk=11905051\nFINAL: 'November 21, 2013' support=['11905051']"
+      },
+      "force_easy": {
+        "id": "6854217908a011ebbd78ac1f6bf848b6",
+        "dataset": "",
+        "question": "Which film came out earlier, Marriage Blue or 4 Minute Mile?",
+        "gold": "Marriage Blue",
+        "answer": "Marriage Blue",
+        "em": 1.0,
+        "tokens": 1178,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Which film came out earlier, Marriage Blue or 4 Minute Mile?\n  [d0] Q1.1 (entity) Which film came out earlier, Marriage Blue or 4 Minute Mile?\n        -> answer='Marriage Blue' conf=0.90 chunk=11162784\nFINAL: 'Marriage Blue' support=['11162784']"
+      },
+      "token_savings_vs_hard": 6111
+    },
+    {
+      "adaptive": {
+        "id": "02102208088011ebbd6cac1f6bf848b6",
+        "dataset": "",
+        "question": "Who is younger, Thomas Praytor or Matthew Knox?",
+        "gold": "Matthew Knox",
+        "answer": "Matthew Knox",
+        "em": 1.0,
+        "tokens": 9132,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Who is younger, Thomas Praytor or Matthew Knox?\n  [d0] Q1.1 (person) Who is younger, Thomas Praytor or Matthew Knox?\n        -> answer='Matthew Knox' conf=0.40 chunk=11731061\nFINAL: 'Matthew Knox' support=['11731061']"
+      },
+      "force_hard": {
+        "id": "02102208088011ebbd6cac1f6bf848b6",
+        "dataset": "",
+        "question": "Who is younger, Thomas Praytor or Matthew Knox?",
+        "gold": "Matthew Knox",
+        "answer": "George Hodges Knox",
+        "em": 0.0,
+        "tokens": 12723,
+        "route": "hard",
+        "profile": "one_hop",
+        "topology": "dag_n3",
+        "trace": "Q: Who is younger, Thomas Praytor or Matthew Knox?\n  [d0] Q1.1 (date) When was Thomas Praytor born?\n        -> answer='' conf=0.00 chunk=\n  [d0] Q1.2 (date) When was Matthew Knox born?\n        -> answer='17 December 1885' conf=0.95 chunk=9502569\n  [d1] Q2.1 (person) Whose birth date is later, Thomas Praytor (<A1.1>) or Matthew Knox (<A1.2>)?\n        -> answer='George Hodges Knox' conf=1.00 chunk=9502569\nFINAL: 'George Hodges Knox' support=['9502569']"
+      },
+      "force_easy": {
+        "id": "02102208088011ebbd6cac1f6bf848b6",
+        "dataset": "",
+        "question": "Who is younger, Thomas Praytor or Matthew Knox?",
+        "gold": "Matthew Knox",
+        "answer": "Matthew Knox",
+        "em": 1.0,
+        "tokens": 8555,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Who is younger, Thomas Praytor or Matthew Knox?\n  [d0] Q1.1 (person) Who is younger, Thomas Praytor or Matthew Knox?\n        -> answer='Matthew Knox' conf=0.40 chunk=11731061\nFINAL: 'Matthew Knox' support=['11731061']"
+      },
+      "token_savings_vs_hard": 3591
+    },
+    {
+      "adaptive": {
+        "id": "65fa28440bdb11eba7f7acde48001122",
+        "dataset": "",
+        "question": "What nationality is the composer of song Chiquilla (Julio Iglesias Song)?",
+        "gold": "Spanish",
+        "answer": "Spanish",
+        "em": 1.0,
+        "tokens": 1898,
+        "route": "easy",
+        "profile": "bridge_2hop",
+        "topology": "easy_lane",
+        "trace": "Q: What nationality is the composer of song Chiquilla (Julio Iglesias Song)?\n  [d0] Q1.1 (entity) What nationality is the composer of song Chiquilla (Julio Iglesias Song)?\n        -> answer='Spanish' conf=0.90 chunk=513874\nFINAL: 'Spanish' support=['513874']"
+      },
+      "force_hard": {
+        "id": "65fa28440bdb11eba7f7acde48001122",
+        "dataset": "",
+        "question": "What nationality is the composer of song Chiquilla (Julio Iglesias Song)?",
+        "gold": "Spanish",
+        "answer": "Portuguese",
+        "em": 0.0,
+        "tokens": 7916,
+        "route": "hard",
+        "profile": "bridge_2hop",
+        "topology": "dag_n2",
+        "trace": "Q: What nationality is the composer of song Chiquilla (Julio Iglesias Song)?\n  [d0] Q1.1 (person) Who composed the song Chiquilla (Julio Iglesias Song)?\n        -> answer='Carlos Cabral Jr' conf=0.90 chunk=18067130\n  [d1] Q2.1 (entity) What is the nationality of <A1.1>?\n        -> answer='Portuguese' conf=0.80 chunk=2525946\nFINAL: 'Portuguese' support=['18067130', '2525946']"
+      },
+      "force_easy": {
+        "id": "65fa28440bdb11eba7f7acde48001122",
+        "dataset": "",
+        "question": "What nationality is the composer of song Chiquilla (Julio Iglesias Song)?",
+        "gold": "Spanish",
+        "answer": "Spanish",
+        "em": 1.0,
+        "tokens": 1300,
+        "route": "easy",
+        "profile": "bridge_2hop",
+        "topology": "easy_lane",
+        "trace": "Q: What nationality is the composer of song Chiquilla (Julio Iglesias Song)?\n  [d0] Q1.1 (entity) What nationality is the composer of song Chiquilla (Julio Iglesias Song)?\n        -> answer='Spanish' conf=0.90 chunk=513874\nFINAL: 'Spanish' support=['513874']"
+      },
+      "token_savings_vs_hard": 6018
+    }
+  ],
+  "routing_hurt": [
+    {
+      "adaptive": {
+        "id": "musique_2hop__766973_770570",
+        "dataset": "",
+        "question": "What county is Erik Hort's birthplace a part of?",
+        "gold": "Rockland County",
+        "answer": "Montebello",
+        "em": 0.0,
+        "tokens": 1878,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: What county is Erik Hort's birthplace a part of?\n  [d0] Q1.1 (entity) What county is Erik Hort's birthplace a part of?\n        -> answer='Montebello' conf=0.90 chunk=11270129\nFINAL: 'Montebello' support=['11270129']"
+      },
+      "force_hard": {
+        "id": "musique_2hop__766973_770570",
+        "dataset": "",
+        "question": "What county is Erik Hort's birthplace a part of?",
+        "gold": "Rockland County",
+        "answer": "Rockland County",
+        "em": 1.0,
+        "tokens": 4749,
+        "route": "hard",
+        "profile": "one_hop",
+        "topology": "dag_n2",
+        "trace": "Q: What county is Erik Hort's birthplace a part of?\n  [d0] Q1.1 (place) Where was Erik Hort born?\n        -> answer='Montebello, New York' conf=0.90 chunk=11270129\n  [d1] Q2.1 (entity) What county is <A1.1> a part of?\n        -> answer='Rockland County' conf=0.95 chunk=8525387\nFINAL: 'Rockland County' support=['11270129', '8525387']"
+      },
+      "force_easy": {
+        "id": "musique_2hop__766973_770570",
+        "dataset": "",
+        "question": "What county is Erik Hort's birthplace a part of?",
+        "gold": "Rockland County",
+        "answer": "Montebello",
+        "em": 0.0,
+        "tokens": 1294,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: What county is Erik Hort's birthplace a part of?\n  [d0] Q1.1 (entity) What county is Erik Hort's birthplace a part of?\n        -> answer='Montebello' conf=0.90 chunk=11270129\nFINAL: 'Montebello' support=['11270129']"
+      },
+      "token_savings_vs_hard": 2871
+    },
+    {
+      "adaptive": {
+        "id": "musique_2hop__347686_127399",
+        "dataset": "",
+        "question": "In what year was the group who performed Attics To Eden formed?",
+        "gold": "2005",
+        "answer": "1987",
+        "em": 0.0,
+        "tokens": 1833,
+        "route": "easy",
+        "profile": "temporal",
+        "topology": "easy_lane",
+        "trace": "Q: In what year was the group who performed Attics To Eden formed?\n  [d0] Q1.1 (date) In what year was the group who performed Attics To Eden formed?\n        -> answer='1987' conf=0.90 chunk=14628281\nFINAL: '1987' support=['14628281']"
+      },
+      "force_hard": {
+        "id": "musique_2hop__347686_127399",
+        "dataset": "",
+        "question": "In what year was the group who performed Attics To Eden formed?",
+        "gold": "2005",
+        "answer": "2005",
+        "em": 1.0,
+        "tokens": 4656,
+        "route": "hard",
+        "profile": "temporal",
+        "topology": "dag_n2",
+        "trace": "Q: In what year was the group who performed Attics To Eden formed?\n  [d0] Q1.1 (entity) Who performed the song Attics To Eden?\n        -> answer='Madina Lake' conf=0.95 chunk=7281300\n  [d1] Q2.1 (date) In what year was <A1.1> formed?\n        -> answer='2005' conf=0.90 chunk=10027618\nFINAL: '2005' support=['7281300', '10027618']"
+      },
+      "force_easy": {
+        "id": "musique_2hop__347686_127399",
+        "dataset": "",
+        "question": "In what year was the group who performed Attics To Eden formed?",
+        "gold": "2005",
+        "answer": "1987",
+        "em": 0.0,
+        "tokens": 1256,
+        "route": "easy",
+        "profile": "temporal",
+        "topology": "easy_lane",
+        "trace": "Q: In what year was the group who performed Attics To Eden formed?\n  [d0] Q1.1 (date) In what year was the group who performed Attics To Eden formed?\n        -> answer='1987' conf=0.90 chunk=14628281\nFINAL: '1987' support=['14628281']"
+      },
+      "token_savings_vs_hard": 2823
+    },
+    {
+      "adaptive": {
+        "id": "musique_2hop__144317_120065",
+        "dataset": "",
+        "question": "What year did the city were Hans-Joachim Merker was born end?",
+        "gold": "1738",
+        "answer": "1929",
+        "em": 0.0,
+        "tokens": 1863,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: What year did the city were Hans-Joachim Merker was born end?\n  [d0] Q1.1 (date) What year did the city were Hans-Joachim Merker was born end?\n        -> answer='1929' conf=0.95 chunk=8379044\nFINAL: '1929' support=['8379044']"
+      },
+      "force_hard": {
+        "id": "musique_2hop__144317_120065",
+        "dataset": "",
+        "question": "What year did the city were Hans-Joachim Merker was born end?",
+        "gold": "1738",
+        "answer": "1738",
+        "em": 1.0,
+        "tokens": 4767,
+        "route": "hard",
+        "profile": "one_hop",
+        "topology": "dag_n2",
+        "trace": "Q: What year did the city were Hans-Joachim Merker was born end?\n  [d0] Q1.1 (place) Where was Hans-Joachim Merker born?\n        -> answer='Merseburg' conf=0.95 chunk=8379044\n  [d1] Q2.1 (date) What year did <A1.1> end?\n        -> answer='1738' conf=0.90 chunk=19065942\nFINAL: '1738' support=['8379044', '19065942']"
+      },
+      "force_easy": {
+        "id": "musique_2hop__144317_120065",
+        "dataset": "",
+        "question": "What year did the city were Hans-Joachim Merker was born end?",
+        "gold": "1738",
+        "answer": "1929",
+        "em": 0.0,
+        "tokens": 1262,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: What year did the city were Hans-Joachim Merker was born end?\n  [d0] Q1.1 (date) What year did the city were Hans-Joachim Merker was born end?\n        -> answer='1929' conf=0.95 chunk=8379044\nFINAL: '1929' support=['8379044']"
+      },
+      "token_savings_vs_hard": 2904
+    },
+    {
+      "adaptive": {
+        "id": "musique_2hop__335418_279684",
+        "dataset": "",
+        "question": "What team was Anna Benson's husband on?",
+        "gold": "Pittsburgh Pirates",
+        "answer": "New York Mets",
+        "em": 0.0,
+        "tokens": 1771,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: What team was Anna Benson's husband on?\n  [d0] Q1.1 (entity) What team was Anna Benson's husband on?\n        -> answer='New York Mets' conf=0.90 chunk=7140513\nFINAL: 'New York Mets' support=['7140513']"
+      },
+      "force_hard": {
+        "id": "musique_2hop__335418_279684",
+        "dataset": "",
+        "question": "What team was Anna Benson's husband on?",
+        "gold": "Pittsburgh Pirates",
+        "answer": "Pittsburgh Pirates",
+        "em": 1.0,
+        "tokens": 4567,
+        "route": "hard",
+        "profile": "one_hop",
+        "topology": "dag_n2",
+        "trace": "Q: What team was Anna Benson's husband on?\n  [d0] Q1.1 (person) Who is Anna Benson's husband?\n        -> answer='Kris Benson' conf=0.95 chunk=7140516\n  [d1] Q2.1 (organization) What team is <A1.1> on?\n        -> answer='Pittsburgh Pirates' conf=0.90 chunk=15212691\nFINAL: 'Pittsburgh Pirates' support=['7140516', '15212691']"
+      },
+      "force_easy": {
+        "id": "musique_2hop__335418_279684",
+        "dataset": "",
+        "question": "What team was Anna Benson's husband on?",
+        "gold": "Pittsburgh Pirates",
+        "answer": "New York Mets",
+        "em": 0.0,
+        "tokens": 1195,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: What team was Anna Benson's husband on?\n  [d0] Q1.1 (entity) What team was Anna Benson's husband on?\n        -> answer='New York Mets' conf=0.90 chunk=7140513\nFINAL: 'New York Mets' support=['7140513']"
+      },
+      "token_savings_vs_hard": 2796
+    },
+    {
+      "adaptive": {
+        "id": "musique_2hop__606439_127399",
+        "dataset": "",
+        "question": "What year did the group that performed From Them, Through Us, to You form?",
+        "gold": "2005",
+        "answer": "2007",
+        "em": 0.0,
+        "tokens": 1871,
+        "route": "easy",
+        "profile": "temporal",
+        "topology": "easy_lane",
+        "trace": "Q: What year did the group that performed From Them, Through Us, to You form?\n  [d0] Q1.1 (date) What year did the group that performed From Them, Through Us, to You form?\n        -> answer='2007' conf=0.90 chunk=14385245\nFINAL: '2007' support=['14385245']"
+      },
+      "force_hard": {
+        "id": "musique_2hop__606439_127399",
+        "dataset": "",
+        "question": "What year did the group that performed From Them, Through Us, to You form?",
+        "gold": "2005",
+        "answer": "2005",
+        "em": 1.0,
+        "tokens": 4805,
+        "route": "hard",
+        "profile": "temporal",
+        "topology": "dag_n2",
+        "trace": "Q: What year did the group that performed From Them, Through Us, to You form?\n  [d0] Q1.1 (organization) Which group performed the song From Them, Through Us, to You?\n        -> answer='Madina Lake' conf=0.95 chunk=13614051\n  [d1] Q2.1 (date) What year did <A1.1> form?\n        -> answer='2005' conf=0.90 chunk=10027618\nFINAL: '2005' support=['13614051', '10027618']"
+      },
+      "force_easy": {
+        "id": "musique_2hop__606439_127399",
+        "dataset": "",
+        "question": "What year did the group that performed From Them, Through Us, to You form?",
+        "gold": "2005",
+        "answer": "2007",
+        "em": 0.0,
+        "tokens": 1291,
+        "route": "easy",
+        "profile": "temporal",
+        "topology": "easy_lane",
+        "trace": "Q: What year did the group that performed From Them, Through Us, to You form?\n  [d0] Q1.1 (date) What year did the group that performed From Them, Through Us, to You form?\n        -> answer='2007' conf=0.90 chunk=14385245\nFINAL: '2007' support=['14385245']"
+      },
+      "token_savings_vs_hard": 2934
+    },
+    {
+      "adaptive": {
+        "id": "musique_2hop__821197_368148",
+        "dataset": "",
+        "question": "In which county is Southern Maryland Electric Cooperative headquartered?",
+        "gold": "Charles County",
+        "answer": "Calvert",
+        "em": 0.0,
+        "tokens": 1698,
+        "route": "easy",
+        "profile": "bridge_2hop",
+        "topology": "easy_lane",
+        "trace": "Q: In which county is Southern Maryland Electric Cooperative headquartered?\n  [d0] Q1.1 (entity) In which county is Southern Maryland Electric Cooperative headquartered?\n        -> answer='Calvert' conf=0.90 chunk=374020\nFINAL: 'Calvert' support=['374020']"
+      },
+      "force_hard": {
+        "id": "musique_2hop__821197_368148",
+        "dataset": "",
+        "question": "In which county is Southern Maryland Electric Cooperative headquartered?",
+        "gold": "Charles County",
+        "answer": "Charles County",
+        "em": 1.0,
+        "tokens": 4435,
+        "route": "hard",
+        "profile": "bridge_2hop",
+        "topology": "dag_n2",
+        "trace": "Q: In which county is Southern Maryland Electric Cooperative headquartered?\n  [d0] Q1.1 (place) What is the headquarters location of Southern Maryland Electric Cooperative?\n        -> answer='Hughesville, Maryland' conf=0.95 chunk=374020\n  [d1] Q2.1 (entity) In which county is <A1.1> located?\n        -> answer='Charles County' conf=0.95 chunk=14704500\nFINAL: 'Charles County' support=['374020', '14704500']"
+      },
+      "force_easy": {
+        "id": "musique_2hop__821197_368148",
+        "dataset": "",
+        "question": "In which county is Southern Maryland Electric Cooperative headquartered?",
+        "gold": "Charles County",
+        "answer": "Calvert",
+        "em": 0.0,
+        "tokens": 1098,
+        "route": "easy",
+        "profile": "bridge_2hop",
+        "topology": "easy_lane",
+        "trace": "Q: In which county is Southern Maryland Electric Cooperative headquartered?\n  [d0] Q1.1 (entity) In which county is Southern Maryland Electric Cooperative headquartered?\n        -> answer='Calvert' conf=0.90 chunk=374020\nFINAL: 'Calvert' support=['374020']"
+      },
+      "token_savings_vs_hard": 2737
+    },
+    {
+      "adaptive": {
+        "id": "musique_2hop__543050_245420",
+        "dataset": "",
+        "question": "Which city shares border with the area having Bella Vista High School?",
+        "gold": "Citrus Heights",
+        "answer": "Fayetteville",
+        "em": 0.0,
+        "tokens": 1759,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Which city shares border with the area having Bella Vista High School?\n  [d0] Q1.1 (entity) Which city shares border with the area having Bella Vista High School?\n        -> answer='Fayetteville' conf=0.90 chunk=14477667\nFINAL: 'Fayetteville' support=['14477667']"
+      },
+      "force_hard": {
+        "id": "musique_2hop__543050_245420",
+        "dataset": "",
+        "question": "Which city shares border with the area having Bella Vista High School?",
+        "gold": "Citrus Heights",
+        "answer": "Citrus Heights",
+        "em": 1.0,
+        "tokens": 4594,
+        "route": "hard",
+        "profile": "one_hop",
+        "topology": "dag_n2",
+        "trace": "Q: Which city shares border with the area having Bella Vista High School?\n  [d0] Q1.1 (place) Which city is Bella Vista High School located in?\n        -> answer='Fair Oaks, California' conf=0.95 chunk=3932118\n  [d1] Q2.1 (place) Which city shares a border with <A1.1>?\n        -> answer='Citrus Heights' conf=0.90 chunk=3941770\nFINAL: 'Citrus Heights' support=['3932118', '3941770']"
+      },
+      "force_easy": {
+        "id": "musique_2hop__543050_245420",
+        "dataset": "",
+        "question": "Which city shares border with the area having Bella Vista High School?",
+        "gold": "Citrus Heights",
+        "answer": "Fayetteville",
+        "em": 0.0,
+        "tokens": 1172,
+        "route": "easy",
+        "profile": "one_hop",
+        "topology": "easy_lane",
+        "trace": "Q: Which city shares border with the area having Bella Vista High School?\n  [d0] Q1.1 (entity) Which city shares border with the area having Bella Vista High School?\n        -> answer='Fayetteville' conf=0.90 chunk=14477667\nFINAL: 'Fayetteville' support=['14477667']"
+      },
+      "token_savings_vs_hard": 2835
+    },
+    {
+      "adaptive": {
+        "id": "musique_2hop__142881_127399",
+        "dataset": "",
+        "question": "When was the performer of the album From Them, Through Us, to You formed?",
+        "gold": "2005",
+        "answer": "March 27, 2007",
+        "em": 0.0,
+        "tokens": 1849,
+        "route": "easy",
+        "profile": "temporal",
+        "topology": "easy_lane",
+        "trace": "Q: When was the performer of the album From Them, Through Us, to You formed?\n  [d0] Q1.1 (date) When was the performer of the album From Them, Through Us, to You formed?\n        -> answer='March 27, 2007' conf=0.95 chunk=14385245\nFINAL: 'March 27, 2007' support=['14385245']"
+      },
+      "force_hard": {
+        "id": "musique_2hop__142881_127399",
+        "dataset": "",
+        "question": "When was the performer of the album From Them, Through Us, to You formed?",
+        "gold": "2005",
+        "answer": "2005",
+        "em": 1.0,
+        "tokens": 4781,
+        "route": "hard",
+        "profile": "temporal",
+        "topology": "dag_n2",
+        "trace": "Q: When was the performer of the album From Them, Through Us, to You formed?\n  [d0] Q1.1 (organization) Who performed the album From Them, Through Us, to You?\n        -> answer='Madina Lake' conf=0.95 chunk=13614051\n  [d1] Q2.1 (date) When was <A1.1> formed?\n        -> answer='2005' conf=0.90 chunk=10027618\nFINAL: '2005' support=['13614051', '10027618']"
+      },
+      "force_easy": {
+        "id": "musique_2hop__142881_127399",
+        "dataset": "",
+        "question": "When was the performer of the album From Them, Through Us, to You formed?",
+        "gold": "2005",
+        "answer": "March 27, 2007",
+        "em": 0.0,
+        "tokens": 1256,
+        "route": "easy",
+        "profile": "temporal",
+        "topology": "easy_lane",
+        "trace": "Q: When was the performer of the album From Them, Through Us, to You formed?\n  [d0] Q1.1 (date) When was the performer of the album From Them, Through Us, to You formed?\n        -> answer='March 27, 2007' conf=0.95 chunk=14385245\nFINAL: 'March 27, 2007' support=['14385245']"
+      },
+      "token_savings_vs_hard": 2932
+    }
+  ]
+}

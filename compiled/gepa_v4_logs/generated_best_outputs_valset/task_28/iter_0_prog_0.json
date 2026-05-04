@@ -1,0 +1,154 @@
+{
+    "answer": "Manhattan",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Which city in Kansas has an airport with the ICAO of KHRU?",
+                "expected_type": "place",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Manhattan",
+                "confidence": 0.95,
+                "chunk_id": "15931012",
+                "queries_used": [
+                    "Which city in Kansas has an airport with the ICAO of KHRU?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Which city in Kansas has an airport with the ICAO of KHRU?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "What was the population of Manhattan in 2010?",
+                "expected_type": "number",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "52,281",
+                "confidence": 0.95,
+                "chunk_id": "5503936",
+                "queries_used": [
+                    "What was the population of Manhattan in 2010? (given: Which city in Kansas has an airport with the ICAO of KHRU? -> Manhattan)"
+                ],
+                "expanded_into": [],
+                "raw_question": "What was the population of <A1.1> in 2010?",
+                "retrieval_query": "What was the population of Manhattan in 2010? (given: Which city in Kansas has an airport with the ICAO of KHRU? -> Manhattan)"
+            }
+        ],
+        "synth_answer_raw": "Manhattan",
+        "critic": [
+            {
+                "verdict": "flag",
+                "reason": "mismatch"
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 3956,
+        "sub_tokens": 32319,
+        "total_tokens": 36275,
+        "elapsed_s": 15.959,
+        "hops": 8,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "Michael Morpurgo",
+                "evidence_chunk_id": "19263104",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Which of Michael Morpurgo wrote a children's book illustrated by Axel Scheffler? (given: Which Scottish writer and Children's Laureate has written children's books? -> Michael Morpurgo)"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "comedy",
+                "evidence_chunk_id": "10960194",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What genre is the comedy A Comedy of Errors classified under? (given: What comedy by William Shakespeare is thought to have been written in 1598? -> A Comedy of Errors)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "Neil Armstrong",
+                "evidence_chunk_id": "63474",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who presented the prizes at the 1971 World Championship Tennis Finals?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "Purdue",
+                "evidence_chunk_id": "15250588",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Where did Neil Armstrong earn his bachelor's degree? (given: Who presented the prizes at the 1971 World Championship Tennis Finals? -> Neil Armstrong)"
+                ],
+                "expected_answer_type": "place"
+            },
+            {
+                "answer": "Manhattan",
+                "evidence_chunk_id": "15931012",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Which city in Kansas has an airport with the ICAO of KHRU?"
+                ],
+                "expected_answer_type": "place"
+            },
+            {
+                "answer": "Westfield Garden City",
+                "evidence_chunk_id": "9996753",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What is the name of the major shopping center served by Garden City bus station?"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "52,281",
+                "evidence_chunk_id": "5503936",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What was the population of Manhattan in 2010? (given: Which city in Kansas has an airport with the ICAO of KHRU? -> Manhattan)"
+                ],
+                "expected_answer_type": "number"
+            },
+            {
+                "answer": "AMP Limited",
+                "evidence_chunk_id": "9996753",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who previously operated Westfield Garden City? (given: What is the name of the major shopping center served by Garden City bus station? -> Westfield Garden City)"
+                ],
+                "expected_answer_type": "organization"
+            }
+        ],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question involves resolving a city in Kansas with a specific population and ICAO code, requiring multiple steps to identify the correct city and verify its attributes.",
+        "expected_type": "entity",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q1.1",
+        "support_ids": [
+            "15931012"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "flag",
+                "reason": "mismatch"
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

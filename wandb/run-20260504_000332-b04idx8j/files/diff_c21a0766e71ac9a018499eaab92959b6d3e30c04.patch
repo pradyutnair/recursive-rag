@@ -1,0 +1,98 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 39ee8e3..b5b96c7 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -270,9 +270,14 @@ Current driver at `src/recrag/grpo/compile.py`. Key decisions:
+ - [x] W&B logging implemented in `src/recrag/gepa/compile.py` and `src/recrag/grpo/compile.py`
+ - [x] `wandb_utils.py` provides `init_wandb`, `log`, `artifact` helpers
+ - [x] Both drivers support `--wandb-project`, `--wandb-mode`, `--no-wandb`, artifact saving per checkpoint
+-- **Remaining:** smoke test with `--max-metric-calls 20` before full run
++- [x] Smoke test with `--max-metric-calls 20 --no-wandb --track-stats` completed on 2026-05-03. Result: `compiled/gepa_smoke_20260503_rerun.json`; base val score 0.2304 over 30 examples; no GEPA runtime crash. Note: 20-call budget is consumed by the 30-example tracking eval, so this verifies plumbing rather than prompt improvement.
+ 
+-### Phase 2: GEPA optimization (6-10h compute, monitor via W&B) -- NEXT
++### Phase 2: GEPA optimization (6-10h compute, monitor via W&B) -- IN PROGRESS
++
++- [x] Service health checked on 2026-05-03: Qwen3-14B vLLM live on localhost ports 8001, 8002, 8003; retriever `node408:8003` returned 1 hit for a health query.
++- [x] `wandb` installed in `/local/yzheng/pnair/workspace/adaptive-mas/.venv`; `/local/yzheng/pnair/.env` must be loaded with `set -a` so `OPENAI_API_KEY` and `WANDB_API_KEY` are exported.
++- [x] `src/recrag/gepa/compile.py` accepts documented `--track-stats` compatibility flag; GEPA already runs with `track_stats=True`.
++- [x] Full GEPA v4 launched on 2026-05-03 in tmux session `gepa_v4_20260503`; W&B run `38a33711`; local log `compiled/gepa_v4_logs/run.log`; checkpoint `compiled/gepa_v4_logs/gepa_state.bin`; output target `compiled/gepa_v4.json`; seed program `compiled/gepa_v3_recovered_cand13.json`. Initial tracking eval completed with base composite score 0.2109 over 30 val examples.
+ 
+ - Launch GEPA run with full config:
+   ```
+diff --git a/src/recrag/gepa/compile.py b/src/recrag/gepa/compile.py
+index 42270f7..6131124 100644
+--- a/src/recrag/gepa/compile.py
++++ b/src/recrag/gepa/compile.py
+@@ -187,6 +187,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
+     p.add_argument("--max-metric-calls", type=int, default=800, help="If >0 overrides auto")
+     p.add_argument("--log-dir", default="", help="If set, GEPA writes detailed logs and supports resume from this dir")
+     p.add_argument("--num-threads", type=int, default=6)
++    p.add_argument("--track-stats", action="store_true", help="Compatibility flag; GEPA stats are always tracked.")
+     p.add_argument("--wandb-project", default="recrag-gepa")
+     p.add_argument("--wandb-mode", default="")
+     p.add_argument("--run-name", default="")
+diff --git a/src/recrag/grpo/compile.py b/src/recrag/grpo/compile.py
+index 6a1ddbe..73ff6ad 100644
+--- a/src/recrag/grpo/compile.py
++++ b/src/recrag/grpo/compile.py
+@@ -61,6 +61,26 @@ def _loads_ops(text: str) -> list[dict[str, Any]]:
+             return []
+ 
+ 
++def _load_program(path: str | None) -> dict[str, str]:
++    if not path:
++        return {}
++    obj = json.loads(Path(path).read_text(encoding="utf-8"))
++    if not isinstance(obj, dict):
++        return {}
++    raw_prompts = obj.get("prompts")
++    if isinstance(raw_prompts, dict):
++        return {str(k): str(v) for k, v in raw_prompts.items()}
++    prompts: dict[str, str] = {}
++    for name, value in obj.items():
++        if isinstance(value, str):
++            prompts[str(name)] = value
++        elif isinstance(value, dict):
++            sig = value.get("signature")
++            if isinstance(sig, dict) and isinstance(sig.get("instructions"), str):
++                prompts[str(name)] = sig["instructions"]
++    return prompts
++
++
+ def _load_oracle(args: argparse.Namespace) -> OracleLookup | None:
+     if not args.oracle_naive_dir:
+         return None
+@@ -102,6 +122,7 @@ async def compile_grpo(args: argparse.Namespace) -> ExperienceLibrary:
+         mode=args.wandb_mode or None,
+     )
+     oracle = _load_oracle(args)
++    program_prompts = _load_program(args.program)
+     if oracle:
+         print(f"[oracle] loaded {len(oracle)} entries; stats={oracle.stats()}")
+ 
+@@ -121,6 +142,12 @@ async def compile_grpo(args: argparse.Namespace) -> ExperienceLibrary:
+                             max_recursion_depth=args.max_recursion,
+                             tau_recurse=args.tau_recurse,
+                             experience_library=None,  # use the in-memory library directly
++                            router_instructions=program_prompts.get("router", AdaptiveConfig.router_instructions),
++                            planner_instructions=program_prompts.get("planner", AdaptiveConfig.planner_instructions),
++                            synth_instructions=program_prompts.get("synthesizer", AdaptiveConfig.synth_instructions),
++                            critic_instructions=program_prompts.get("critic", AdaptiveConfig.critic_instructions),
++                            budget_hint=args.budget_hint,
++                            max_searches=args.max_searches,
+                         ),
+                     )
+                     # Inject current library snapshot (profile-keyed)
+@@ -252,9 +279,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
+     p.add_argument("--max-nodes", type=int, default=6)
+     p.add_argument("--max-recursion", type=int, default=0)
+     p.add_argument("--tau-recurse", type=float, default=0.5)
++    p.add_argument("--max-searches", type=int, default=5)
++    p.add_argument("--budget-hint", choices=["tight", "normal", "rich"], default="normal")
+     p.add_argument("--token-T", type=float, default=8000.0)
+     p.add_argument("--alpha", type=float, default=0.3)
+     p.add_argument("--seed-library")
++    p.add_argument("--program", help="JSON file with GEPA/compiled prompts")
+     p.add_argument("--library-cap", type=int, default=30)
+     p.add_argument("--checkpoint-dir", default="compiled/grpo_v4_E")
+     p.add_argument("--wandb-project", default="recrag-grpo")
