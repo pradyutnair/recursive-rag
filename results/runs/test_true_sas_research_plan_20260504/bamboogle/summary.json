@@ -1,0 +1,28 @@
+{
+  "n": 125,
+  "norm_em": 0.304,
+  "token_f1": 0.4213,
+  "contain": 0.328,
+  "mean_quality": 1.1725,
+  "mean_efficiency": 0.6877,
+  "mean_composite": 1.046,
+  "mean_tokens": 3002.9,
+  "mean_elapsed_s": 14.49,
+  "mean_search_calls": 3.19,
+  "search_call_dist": {
+    "3": 94,
+    "5": 7,
+    "4": 17,
+    "2": 7
+  },
+  "profile_dist": {
+    "one_hop": 27,
+    "temporal": 28,
+    "bridge_2hop": 52,
+    "parallel_compare": 2,
+    "bridge_3hop_plus": 9,
+    "numeric": 7
+  },
+  "method": "true_sas_research_plan",
+  "wall_clock_s": 80.65
+}

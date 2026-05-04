@@ -1,0 +1,117 @@
+{
+  "musique": {
+    "n": 1000,
+    "norm_em": 0.079,
+    "token_f1": 0.1528,
+    "contain": 0.09,
+    "mean_quality": 0.4817,
+    "mean_efficiency": 0.6666,
+    "mean_composite": 0.4269,
+    "mean_tokens": 3252.2,
+    "mean_elapsed_s": 17.14,
+    "mean_search_calls": 3.67,
+    "search_call_dist": {
+      "3": 528,
+      "4": 181,
+      "5": 259,
+      "2": 32
+    },
+    "profile_dist": {
+      "temporal": 242,
+      "one_hop": 86,
+      "bridge_3hop_plus": 212,
+      "numeric": 68,
+      "bridge_2hop": 379,
+      "parallel_compare": 12,
+      "yes_no": 1
+    },
+    "method": "true_sas_research_plan",
+    "wall_clock_s": 722.05
+  },
+  "2wikimultihop": {
+    "n": 1000,
+    "norm_em": 0.281,
+    "token_f1": 0.3326,
+    "contain": 0.303,
+    "mean_quality": 1.0356,
+    "mean_efficiency": 0.6714,
+    "mean_composite": 0.9148,
+    "mean_tokens": 3198.2,
+    "mean_elapsed_s": 16.12,
+    "mean_search_calls": 3.5,
+    "search_call_dist": {
+      "3": 548,
+      "5": 188,
+      "4": 194,
+      "2": 70
+    },
+    "profile_dist": {
+      "one_hop": 256,
+      "bridge_3hop_plus": 109,
+      "yes_no": 115,
+      "parallel_compare": 69,
+      "bridge_2hop": 427,
+      "temporal": 16,
+      "numeric": 8
+    },
+    "method": "true_sas_research_plan",
+    "wall_clock_s": 676.33
+  },
+  "hotpotqa": {
+    "n": 1000,
+    "norm_em": 0.331,
+    "token_f1": 0.4369,
+    "contain": 0.38,
+    "mean_quality": 1.2418,
+    "mean_efficiency": 0.6718,
+    "mean_composite": 1.101,
+    "mean_tokens": 3191.9,
+    "mean_elapsed_s": 16.71,
+    "mean_search_calls": 3.62,
+    "search_call_dist": {
+      "3": 518,
+      "4": 287,
+      "5": 175,
+      "2": 20
+    },
+    "profile_dist": {
+      "bridge_2hop": 400,
+      "bridge_3hop_plus": 125,
+      "temporal": 89,
+      "parallel_compare": 72,
+      "one_hop": 201,
+      "yes_no": 70,
+      "numeric": 43
+    },
+    "method": "true_sas_research_plan",
+    "wall_clock_s": 703.31
+  },
+  "bamboogle": {
+    "n": 125,
+    "norm_em": 0.304,
+    "token_f1": 0.4213,
+    "contain": 0.328,
+    "mean_quality": 1.1725,
+    "mean_efficiency": 0.6877,
+    "mean_composite": 1.046,
+    "mean_tokens": 3002.9,
+    "mean_elapsed_s": 14.49,
+    "mean_search_calls": 3.19,
+    "search_call_dist": {
+      "3": 94,
+      "5": 7,
+      "4": 17,
+      "2": 7
+    },
+    "profile_dist": {
+      "one_hop": 27,
+      "temporal": 28,
+      "bridge_2hop": 52,
+      "parallel_compare": 2,
+      "bridge_3hop_plus": 9,
+      "numeric": 7
+    },
+    "method": "true_sas_research_plan",
+    "wall_clock_s": 80.65
+  }
+}
