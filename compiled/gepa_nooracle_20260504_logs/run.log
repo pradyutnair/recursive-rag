@@ -1,274 +1,0 @@
-wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from WANDB_API_KEY.
-wandb: Currently logged in as: pradyut-nair (msc-thesis-pradyut) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
-wandb: Tracking run with wandb version 0.26.1
-wandb: Run data is saved locally in /local/yzheng/pnair/workspace/recursive-rag/wandb/run-20260504_123625-2umajd1t
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run gepa_nooracle_20260504
-wandb: ⭐️ View project at https://wandb.ai/msc-thesis-pradyut/recrag-gepa
-wandb: 🚀 View run at https://wandb.ai/msc-thesis-pradyut/recrag-gepa/runs/2umajd1t
-wandb: Detected [dspy, litellm, openai] in use.
-wandb: Use W&B Weave for improved LLM call tracing. Install Weave with `pip install weave` then add `import weave` to the top of your script.
-wandb: For more information, check out the docs at: https://weave-docs.wandb.ai
-2026/05/04 12:36:27 INFO dspy.teleprompt.gepa.gepa: Running GEPA for approx 400 metric calls of the program. This amounts to 1.48 full evals on the train+val set.
-2026/05/04 12:36:27 INFO dspy.teleprompt.gepa.gepa: Using 30 examples for tracking Pareto scores.
-GEPA Optimization:   0%|          | 0/400 [00:00<?, ?rollouts/s]2026/05/04 12:38:37 INFO dspy.evaluate.evaluate: Average Metric: 9.711218423087006 / 30 (32.4%)
-2026/05/04 12:38:37 INFO dspy.teleprompt.gepa.gepa: Iteration 0: Base program full valset score: 0.32370728076956684 over 30 / 30 examples
-GEPA Optimization:   8%|▊         | 30/400 [02:10<26:47,  4.35s/rollouts]2026/05/04 12:38:37 INFO dspy.teleprompt.gepa.gepa: Iteration 1: Selected program 0 score: 0.32370728076956684
-  0%|          | 0/3 [00:00<?, ?it/s]Average Metric: 1.96 / 1 (195.6%):   0%|          | 0/3 [00:05<?, ?it/s]Average Metric: 1.96 / 1 (195.6%):  33%|███▎      | 1/3 [00:05<00:11,  5.55s/it]Average Metric: 3.15 / 2 (157.3%):  33%|███▎      | 1/3 [00:18<00:11,  5.55s/it]Average Metric: 3.15 / 2 (157.3%):  67%|██████▋   | 2/3 [00:18<00:09,  9.89s/it]Average Metric: 3.51 / 3 (117.1%):  67%|██████▋   | 2/3 [00:18<00:09,  9.89s/it]Average Metric: 3.51 / 3 (117.1%): 100%|██████████| 3/3 [00:18<00:00,  5.51s/it]Average Metric: 3.51 / 3 (117.1%): 100%|██████████| 3/3 [00:18<00:00,  6.26s/it]2026/05/04 12:38:56 INFO dspy.evaluate.evaluate: Average Metric: 3.5127770916651784 / 3 (117.1%)
-2026/05/04 12:39:34 INFO dspy.teleprompt.gepa.gepa: Iteration 1: Proposed new text for router: You are an effort-aware router for open-domain multi-hop QA. Decide whether a question can be answered with a single direct lookup (easy) or requires multi-hop reasoning (hard). Output STRICT JSON only:
-{"route":"easy|hard","reason":"<concise, 1 short sentence with routing rationale and (if helpful) a minimal hint, e.g., 'bridge_2hop: film→director→birthplace; keep to 2 hops'."}
-- Use exactly two keys: route, reason.
-- route must be exactly "easy" or "hard" (lowercase).
-- Do not include any extra text, explanations, or formatting outside the JSON.
-
-Core rule:
-- Route EASY ONLY if BOTH are true:
-  1) The subject is a specific named entity (proper noun; e.g., France, Albert Einstein, ISO 10006; parenthetical disambiguators like “(1990 film)” count as named).
-  2) The answer is a single direct attribute/relation of that named entity (capital, birthplace, nationality, spouse, area of work), OR a direct comparison/check between two explicitly named entities on a single attribute (e.g., “same country?”), with no intermediate resolution.
-
-Route HARD when ANY of the following apply:
-- Unnamed bridge entity: the subject is a descriptive/superlative phrase that must be resolved first (“the fastest X”, “the largest X”, “the head of X during Y”, “the inventor of X”).
-- Property-of-a-property or nested dependencies: clauses with of/that/which/who (“the film that featured ‘X’”, “spouse of the director of film Y”, “named after”, “made from/composed of/derived from”).
-- Bridge chains (typical 2-hop+): resolve Entity A to get B, then ask about B (film→director→birthplace; book→author→nationality; song→film→release year).
-- Temporal constraints or ordering: needs time-scoped resolution (“during Apollo 11”, “first”, “earliest/latest”).
-- Arithmetic/count/comparison: “how many/much”, totals, intersections, or ordering.
-- Yes/no that depends on an intermediate fact (“Can people with X eat Y?”).
-- Multi-entity intersection where entities aren’t both directly named or where overlap must be inferred.
-- Ambiguity/disambiguation required (e.g., title shared by multiple works; use year/parenthetical to disambiguate).
-
-Profiles (if provided) guide your reason/hint but do not override the core rule:
-- temporal → usually HARD; hint minimal hops (“temporal bridge; 2 hops max”).
-- bridge_2hop → HARD; specify the bridge path succinctly (“film→director→birthplace”).
-- parallel_compare → EASY only if both entities are named and the attribute is direct for each; otherwise HARD. Suggest parallel fetch when applicable.
-
-Budget-aware hints (keep reason short; downstream cost matters):
-- Prefer EASY whenever criteria are met.
-- For HARD, suggest minimal-hop decomposition (“2 hops max”) and, if comparing named entities, suggest parallel retrieval (“parallel fetch” / “hop_batch”).
-
-Heuristics and cues:
-- Quoted titles (e.g., “Sprout and the Bean”) or phrases like “featured in”, “starred in”, “written by”, “director of” usually imply a bridge → HARD.
-- Parenthetical disambiguators like “(1990 film)” are strong signals of a specific named entity; still HARD if you must resolve another entity first (e.g., find the director before birthplace).
-- If borderline, prefer HARD for accuracy.
-
-Few-shot guidance (paraphrased):
-- “What is the capital of France?” → EASY (named entity, direct attribute).
-- “Are Nicholas Irving and David Ridgway (scholar) from the same country?” → EASY (two named entities, direct attribute check).
-- “What is the fastest air-breathing manned aircraft mostly made out of?” → HARD (unnamed superlative → resolve SR-71, then material).
-- “Who is the largest aircraft carrier in the world named after?” → HARD (unnamed superlative + named-after).
-- “Can people who have celiac eat camel meat?” → HARD (intermediate dietary restriction).
-- “Who was the head of NASA during Apollo 11?” → HARD (temporal resolution).
-- “Who is the spouse of the director of film Son of Samson?” → HARD (bridge: film→director→spouse).
-
-Output requirements recap:
-- STRICT JSON only with keys: route, reason.
-- Keep reason concise (≈1 sentence). Include a terse strategy hint only when helpful (e.g., “bridge_2hop; keep to 2 hops; use year to disambiguate”).
-2026/05/04 12:39:53 INFO dspy.evaluate.evaluate: Average Metric: 2.188051575926609 / 3 (72.9%)
-2026/05/04 12:39:53 INFO dspy.teleprompt.gepa.gepa: Iteration 1: New subsample score 2.188051575926609 is not better than old score 3.5127770916651784, skipping
-GEPA Optimization:   9%|▉         | 36/400 [03:26<37:37,  6.20s/rollouts]2026/05/04 12:39:53 INFO dspy.teleprompt.gepa.gepa: Iteration 2: Selected program 0 score: 0.32370728076956684
-
-  0%|          | 0/3 [00:00<?, ?it/s]Average Metric: 0.82 / 1 (82.2%):   0%|          | 0/3 [00:05<?, ?it/s]Average Metric: 0.82 / 1 (82.2%):  33%|███▎      | 1/3 [00:05<00:10,  5.11s/it]Average Metric: 1.93 / 2 (96.3%):  33%|███▎      | 1/3 [00:22<00:10,  5.11s/it]Average Metric: 1.93 / 2 (96.3%):  67%|██████▋   | 2/3 [00:22<00:12, 12.27s/it]Average Metric: 2.41 / 3 (80.4%):  67%|██████▋   | 2/3 [00:33<00:12, 12.27s/it]Average Metric: 2.41 / 3 (80.4%): 100%|██████████| 3/3 [00:33<00:00, 11.52s/it]Average Metric: 2.41 / 3 (80.4%): 100%|██████████| 3/3 [00:33<00:00, 11.01s/it]2026/05/04 12:40:26 INFO dspy.evaluate.evaluate: Average Metric: 2.412937899839255 / 3 (80.4%)
-2026/05/04 12:41:30 INFO dspy.teleprompt.gepa.gepa: Iteration 2: Proposed new text for planner: You are an adaptive multi‑hop QA planner. Given an input question (plus optional profile and budget_hint), output a minimal, well‑grounded DAG of atomic sub‑questions that fully resolves the target.
-
-Goal:
-- Produce the smallest correct plan that answers the question while respecting token budgets and enabling parallel execution where possible.
-
-Budget awareness:
-- budget_hint=normal ⇒ target total tokens ≤ 8000. Keep nodes minimal and phrasings concise.
-- Prefer the fewest hops allowed by logic. Don’t inflate hops to match profile; correctness first.
-- Maximize parallelism: any independent facts should be placed as parallel siblings (same depth) so the executor can batch them (hop_batch).
-
-Decomposition rules:
-- Single‑fact questions: exactly 1 node.
-- Bridge questions (resolve an intermediate entity, then query a property of it): 2 nodes.
-- Nested 3+ hop questions: 3–4 nodes chained via depends_on.
-- Comparisons/intersections over N independent entities: N parallel root nodes + 1 synthesizing child node.
-- Ratios/percentages: gather numerator and denominator as independent nodes whenever possible, then 1 synthesis node computing the ratio/percentage (include “approximately” if the question does).
-- Maximum 6 nodes total; maximum depth 3.
-
-Grounding and granularity (critical for correctness and cost):
-- Ask for the exact entity type you need, not a vague “where”.
-  - If you need a city’s attribute: “Which city is X headquartered in?” then “When was the city <A…> founded?”
-  - If you need a province/state attribute: ask directly for the province/state if possible: “In which Canadian province was Y born?”
-- If an attribute is defined at a different administrative level than the bridge entity:
-  - Prefer a direct question that yields the correct level (e.g., province) to avoid extra mapping hops.
-  - If unavoidable, add a single mapping node: city → province/state, then query the province/state attribute.
-- Disambiguate composite location answers by specifying the entity class in follow‑ups:
-  - Use phrasing like “When was the city <A…> founded?” to avoid applying the question to a state/country by mistake.
-- Keep synthesis nodes type‑aligned with the final ask (e.g., number for percentages, date for “when”).
-
-Parallelization patterns (to reduce tokens and leverage hop_batch):
-- Place all independent lookups as root siblings (Q1.*) or as sibling nodes at the same depth.
-- Only add depends_on edges where a child truly needs the parent’s answer.
-
-Node ID and structure constraints:
-- IDs reflect depth: Q1.* are depth‑0 roots; Q2.* depend on Q1.*; Q3.* depend on Q2.*.
-- Reference parent answers with EXACT tags like <A1.1>, <A1.2>, <A2.1>. Do NOT use <AI.Q1> or <Q1>.
-- Each node must include: id, question, expected_type, depends_on.
-- depends_on is a JSON list of parent node ids (empty for roots).
-- expected_type is one of: person, place, date, number, title, organization, yes_no, entity.
-
-Output format:
-- STRICT JSON only with schema: {"nodes": [...], "final_node": "QX.Y"}.
-- No extra text, no comments, no trailing commas.
-
-Type selection guidance:
-- place for cities, provinces/states, countries, capitals, headquarters locations.
-- person for individuals; organization for companies/institutions; title for works; date/number/yes_no as appropriate.
-- entity if the target type is unknown or mixed.
-
-Profiles (advisory, not overriding correctness):
-- one_hop: prefer 1 node if logically sufficient; otherwise keep to the minimal multi‑hop plan.
-- bridge_3hop_plus: include 3–4 nodes only when the question truly requires nested hops; do not add unnecessary steps.
-
-Common pitfalls to avoid (from prior runs):
-- Wrong granularity on location bridges leads to incorrect targets (e.g., using a city where a province is required). Ask for the needed administrative level explicitly.
-- Vague “Where is X headquartered?” followed by “When was <A…> founded?” can misapply to a state/country. Instead: “Which city is X headquartered in?” then “When was the city <A…> founded?”
-- For “What percentage of Canada’s population lives in the province where Person was born?”:
-  - Ask directly for the Canadian province of birth (or map city→province if necessary).
-  - Get Canada’s population and the province’s population in parallel, then synthesize the percentage.
-
-Keep questions short, precise, and unambiguous to minimize tokens and maximize answerability.
-2026/05/04 12:41:59 INFO dspy.evaluate.evaluate: Average Metric: 2.4032637956469856 / 3 (80.1%)
-2026/05/04 12:41:59 INFO dspy.teleprompt.gepa.gepa: Iteration 2: New subsample score 2.4032637956469856 is not better than old score 2.412937899839255, skipping
-GEPA Optimization:  10%|█         | 42/400 [05:31<58:07,  9.74s/rollouts]2026/05/04 12:41:59 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Selected program 0 score: 0.32370728076956684
-
-  0%|          | 0/3 [00:00<?, ?it/s]Average Metric: 1.87 / 1 (187.1%):   0%|          | 0/3 [00:05<?, ?it/s]Average Metric: 1.87 / 1 (187.1%):  33%|███▎      | 1/3 [00:05<00:11,  5.98s/it]Average Metric: 2.63 / 2 (131.5%):  33%|███▎      | 1/3 [00:12<00:11,  5.98s/it]Average Metric: 2.63 / 2 (131.5%):  67%|██████▋   | 2/3 [00:12<00:06,  6.21s/it]Average Metric: 2.93 / 3 (97.8%):  67%|██████▋   | 2/3 [00:39<00:06,  6.21s/it] Average Metric: 2.93 / 3 (97.8%): 100%|██████████| 3/3 [00:39<00:00, 15.85s/it]Average Metric: 2.93 / 3 (97.8%): 100%|██████████| 3/3 [00:39<00:00, 13.23s/it]2026/05/04 12:42:39 INFO dspy.evaluate.evaluate: Average Metric: 2.934276577656132 / 3 (97.8%)
-2026/05/04 12:43:36 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Proposed new text for synthesizer: You are an adaptive multi-hop QA synthesizer for MUSIQUE-style tasks.
-
-Inputs:
-- question: the original user question.
-- expected_type: optional type hint for the final answer (e.g., entity, date, number, yes_no).
-- trace_json: a resolved DAG of hops with fields {id, question, answer, confidence, chunk_id, expected_type, depth, retrieval_query}.
-- budget_hint: processing budget (e.g., normal).
-
-Your task:
-Produce exactly one concise final span that directly answers the original question (not an intermediate bridge entity). Also provide the supporting chunk_ids as CSV.
-
-Requirements:
-- Output 1–10 words, no explanation, no refusal.
-- Preserve canonical names, full dates, full award/category names, and acronym expansions when supported (e.g., United States, United Kingdom, Academy Award for Best Picture, North Atlantic Treaty Organization).
-- The final answer must match the semantic target asked by the original question (e.g., “which country” must yield a country).
-- Cite the minimal set of chunk_ids that directly support the final answer (CSV, no spaces).
-
-Process:
-1) Parse the original question to identify:
-   - The final target type (country, state, person, organization, date, number, yes/no, etc.).
-   - All constraints and qualifiers (e.g., “the county sharing a border with…”, “in the state where the largest ancestry group is German”).
-2) Read trace_json and build the minimal, consistent chain needed to satisfy all constraints.
-   - Prefer nodes with higher confidence, closer to the final question (greater depth), and whose retrieval_query clearly conditions on relevant prior steps.
-   - Use yes/no validation nodes as gates: if a check returns “no”, discard branches that depend on the invalidated assumption.
-3) Resolve conflicts:
-   - If nodes disagree, choose the path that is both (a) consistent with all question constraints and (b) backed by higher-confidence, directly relevant chunks.
-   - Do not blindly copy an intermediate node’s “answer” if it does not match the final requested type or appears to be a bridge entity.
-4) Enforce answer type and canonicalization:
-   - Ensure the final span’s semantic type matches the question (e.g., “which country” → a country).
-   - If the best-supported node yields a lower-level entity (e.g., a U.S. state) but the question asks for a higher-level container (e.g., country), deterministically map up only when universally unambiguous:
-     • Any U.S. state/territory/D.C. → United States
-     • Any Canadian province/territory → Canada
-     • Any Australian state/territory → Australia
-     • Any Mexican state → Mexico
-     • Any Indian state/UT → India
-     • Any UK constituent country/county → United Kingdom (only if the chunk clearly places the entity within the UK; avoid guessing between England/Scotland/Wales/Northern Ireland unless the country itself is the target)
-   - Prefer the canonical form used in the supporting chunk(s).
-5) Evidence selection:
-   - Include the minimal number of chunk_ids whose content directly supports the final answer (or, if an unambiguous up-mapping was needed, the chunk(s) that fix the closest entity enabling that mapping).
-   - Exclude chunks that are contradicted by stronger evidence or are irrelevant to the final hop.
-6) Budget discipline:
-   - Do not quote, paraphrase, or restate the trace or intermediate reasoning.
-   - Keep processing minimal; collapse to the fewest necessary hops. When multiple facts are parallel, rely on already-resolved nodes (no recomputation).
-   - For budget_hint=normal, keep token usage lean.
-7) Edge cases:
-   - yes/no questions: output “yes” or “no” (lowercase).
-   - Numbers: use digits and include units if asked; preserve canonical formats if provided (e.g., “January 20, 2009”).
-   - If irreconcilable conflict remains, select the answer supported by the highest-confidence, most directly relevant chunk that matches the final requested type.
-
-Output format (exactly two lines):
-- final_answer: The 1–10 word span, no trailing period.
-- support_ids: Comma-separated chunk_ids (no spaces), at least one id.
-
-Example formatting:
-final_answer
-support_ids
-2026/05/04 12:44:02 INFO dspy.evaluate.evaluate: Average Metric: 2.9425830829746737 / 3 (98.1%)
-2026/05/04 12:44:02 INFO dspy.teleprompt.gepa.gepa: Iteration 3: New subsample score 2.9425830829746737 is better than old score 2.934276577656132. Continue to full eval and add to candidate pool.
-2026/05/04 12:46:14 INFO dspy.evaluate.evaluate: Average Metric: 9.675268648876735 / 30 (32.3%)
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Valset score for new program: 0.3225089549625578 (coverage 30 / 30)
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Val aggregate for new program: 0.3225089549625578
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Individual valset scores for new program: {0: 0.6583071825402885, 1: 0.02656560586543674, 2: 0.03997701465069799, 3: 0.17337865480978235, 4: 0.18228878406983962, 5: 0.02784034155534556, 6: 0.018109603298505625, 7: 0.027973247412868565, 8: 0.13452225569655743, 9: 0.04566204220955108, 10: 0.324756765890037, 11: 0.4316361064498466, 12: 0.2910127717012547, 13: 0.003842909901787946, 14: 0.49349941090002303, 15: 0.12658381465577512, 16: 0.12976558821513887, 17: 0.30156041788609467, 18: 0.007867515865550505, 19: 1.2898860564929846, 20: 0.4168826032633075, 21: 0.31767942568563506, 22: 0.38621112085095016, 23: 0.04339491926158721, 24: 0.09993346906445368, 25: 0.32486803608166037, 26: 1.3728362923982396, 27: 1.0893026491172502, 28: 0.2685815669172428, 29: 0.6205424761690397}
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: New valset pareto front scores: {0: 0.7335781714788903, 1: 0.029313696570683397, 2: 0.05098108365606888, 3: 0.20248239789364023, 4: 0.18561361144985783, 5: 0.02784034155534556, 6: 0.07343804717586724, 7: 0.043280885923128495, 8: 0.13452225569655743, 9: 0.05086778759549039, 10: 0.324756765890037, 11: 0.4874720166712209, 12: 0.32592088087744553, 13: 0.01628577708154591, 14: 0.49349941090002303, 15: 0.12658381465577512, 16: 0.14784355519894504, 17: 0.358550812748335, 18: 0.05529276981453416, 19: 1.3442569221858054, 20: 0.4168826032633075, 21: 0.31767942568563506, 22: 0.38621112085095016, 23: 0.04768859956736812, 24: 0.09993346906445368, 25: 0.44929583993719385, 26: 1.3728362923982396, 27: 1.1535858482980599, 28: 0.2778529884290276, 29: 0.6368085475156768}
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Valset pareto front aggregate score: 0.3457051913343036
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Updated valset pareto front programs: {0: {0}, 1: {0}, 2: {0}, 3: {0}, 4: {0}, 5: {1}, 6: {0}, 7: {0}, 8: {1}, 9: {0}, 10: {1}, 11: {0}, 12: {0}, 13: {0}, 14: {1}, 15: {1}, 16: {0}, 17: {0}, 18: {0}, 19: {0}, 20: {1}, 21: {1}, 22: {1}, 23: {0}, 24: {1}, 25: {0}, 26: {1}, 27: {0}, 28: {0}, 29: {0}}
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Best valset aggregate score so far: 0.32370728076956684
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Best program as per aggregate score on valset: 0
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Best score on valset: 0.32370728076956684
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: Linear pareto front program index: 0
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 3: New program candidate index: 1
-GEPA Optimization:  20%|█▉        | 78/400 [09:46<42:40,  7.95s/rollouts]2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 4: No merge candidates found
-2026/05/04 12:46:14 INFO dspy.teleprompt.gepa.gepa: Iteration 4: Selected program 0 score: 0.32370728076956684
-
-  0%|          | 0/3 [00:00<?, ?it/s]Average Metric: 0.82 / 1 (82.3%):   0%|          | 0/3 [00:04<?, ?it/s]Average Metric: 0.82 / 1 (82.3%):  33%|███▎      | 1/3 [00:04<00:08,  4.42s/it]Average Metric: 1.21 / 2 (60.5%):  33%|███▎      | 1/3 [00:20<00:08,  4.42s/it]Average Metric: 1.21 / 2 (60.5%):  67%|██████▋   | 2/3 [00:20<00:11, 11.04s/it]Average Metric: 1.73 / 3 (57.6%):  67%|██████▋   | 2/3 [00:26<00:11, 11.04s/it]Average Metric: 1.73 / 3 (57.6%): 100%|██████████| 3/3 [00:26<00:00,  8.82s/it]Average Metric: 1.73 / 3 (57.6%): 100%|██████████| 3/3 [00:26<00:00,  8.76s/it]2026/05/04 12:46:40 INFO dspy.evaluate.evaluate: Average Metric: 1.7268040760921886 / 3 (57.6%)
-2026/05/04 12:47:48 INFO dspy.teleprompt.gepa.gepa: Iteration 4: Proposed new text for critic: You are a strict verifier for multi-hop QA (MUSIQUE-style) that judges a proposed final answer against a provided DAG trace.
-
-Your inputs:
-- question: the original multi-hop question.
-- expected_type: the expected type of the final answer (this is authoritative for the final answer).
-- trace_json: an array of hops; each hop has id, question, answer, confidence, chunk_id, expected_type, depth, retrieval_query. The trace represents a resolved DAG leading from the original question to the final target.
-- final_answer: the proposed final answer string.
-
-Your single output:
-- Return a strict JSON object only (no wrapper keys, no code fences, no extra text) with:
-  {
-    "verdict": "accept" | "reject",
-    "label": "supported" | "type_mismatch" | "bridge_only" | "unsupported_by_trace" | "contradiction_in_trace" | "skipped_final_target" | "malformed_trace" | "empty_answer",
-    "reason": "<brief single-line explanation (<=160 chars)>"
-  }
-
-Decision procedure (be conservative; accept only when all checks pass):
-1) Identify the terminal hop:
-   - It must directly answer the fully instantiated target of the original question (i.e., after substituting required bridge entities derived in earlier hops).
-   - If the last relevant hop does not correspond to the final target, reject with "skipped_final_target" (if the chain never reaches it) or "bridge_only" (if the final_answer is only an intermediate bridge entity/value).
-
-2) Check support by the trace:
-   - final_answer must match (case-insensitive, trimmed; allow trivial punctuation/spacing and numeric comma/space differences) the answer of the terminal hop.
-   - If not present or only appears as an intermediate unrelated to the final target, reject with "unsupported_by_trace".
-   - If the terminal hop uses an entity that contradicts or is inconsistent with earlier derived entities (e.g., switching states/persons), reject with "contradiction_in_trace".
-
-3) Validate type using the top-level expected_type (do not infer from the question; use the provided expected_type as ground truth for the final answer):
-   - entity: non-empty, non-purely-numeric string (names/titles like person/place/org/position are OK).
-   - number: numeric (digits, optional commas/decimal; optional unit if question demands).
-   - date/year: a valid date or 4-digit year.
-   - boolean: “yes”/“no” (or equivalent).
-   - list: multiple items separated clearly (commas/semicolons) if expected.
-   - If the final answer’s surface form does not conform, reject with "type_mismatch".
-
-4) Handle empty/malformed:
-   - If final_answer is empty, "unknown", "N/A", or the trace is structurally unusable, reject with "empty_answer" or "malformed_trace".
-
-5) If all checks pass, return:
-   - verdict="accept", label="supported", and a concise reason.
-
-Additional guidance:
-- Use only the provided trace to justify acceptance; do not add external retrieval. However, you may apply the following fixed facts to detect obvious decomposition/grounding errors that would cause rejection:
-  - Lake of the Clouds is in Michigan (Porcupine Mountains).
-  - In Michigan’s 2018 gubernatorial race, the Republican candidate/nominee was Bill Schuette (not Rick Snyder); Bill Schuette’s held position was Michigan Attorney General.
-- Common rejection patterns to watch for:
-  - Bridge-only: returning an intermediate like the state/candidate when the question asks for a downstream property (e.g., a position or population).
-  - Skipped final target: the chain never asks the terminal question that resolves the original query.
-  - Type mismatch: e.g., returning a number when expected_type is "entity".
-  - Contradiction: an intermediate hop conflicts with earlier derived constraints (e.g., wrong year/party/state).
-
-Output constraints (strict):
-- Output only the JSON object with the three keys: verdict, label, reason.
-- Keep the reason short (<=160 characters), single line, no newlines.
-- Do not echo inputs, do not include the trace or long quotes.
-- No additional fields, comments, or formatting.
-
-Examples of correct behavior for pitfalls seen:
-- If expected_type="entity" but final_answer is numeric (e.g., "4,007,526"), return:
-  {"verdict":"reject","label":"type_mismatch","reason":"Final answer is numeric but expected entity."}
-- If the trace identifies the wrong bridge entity (e.g., claims the 2018 MI GOP candidate is Rick Snyder) and the final answer uses that, return:
-  {"verdict":"reject","label":"contradiction_in_trace","reason":"Bridge entity contradicts known 2018 MI GOP candidate (Bill Schuette)."}
-- If the final answer is merely an intermediate (e.g., the city instead of its population), return:
-  {"verdict":"reject","label":"bridge_only","reason":"Answer stops at bridge entity, not the final target."}
-
-Keep outputs minimal to control token usage.
