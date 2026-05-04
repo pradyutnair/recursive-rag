@@ -1,0 +1,157 @@
+{
+    "answer": "a woman's desperation for her former lover to return",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Who is the composer of Forever?",
+                "expected_type": "person",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Ludwig G\u00f6ransson",
+                "confidence": 0.9,
+                "chunk_id": "10407153",
+                "queries_used": [
+                    "Who is the composer of Forever?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Who is the composer of Forever?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "Who is We Belong Together by Ludwig G\u00f6ransson about?",
+                "expected_type": "entity",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "a woman's desperation for her former lover to return",
+                "confidence": 0.6,
+                "chunk_id": "2868701",
+                "queries_used": [
+                    "Who is We Belong Together by Ludwig G\u00f6ransson about? (given: Who is the composer of Forever? -> Ludwig G\u00f6ransson)",
+                    "What is the subject or theme of the song \"We Belong Together\" by Ludwig G\u00f6ransson?",
+                    "Who is the song \"We Belong Together\" by Ludwig G\u00f6ransson about?",
+                    "Who is the song \"We Belong Together\" by Mariah Carey about?",
+                    "Who is the song \"We Belong Together\" by Ludwig G\u00f6ransson about? (given: a woman's desperation for her former lover to return)"
+                ],
+                "expanded_into": [],
+                "raw_question": "Who is We Belong Together by <A1.1> about?",
+                "retrieval_query": "Who is We Belong Together by Ludwig G\u00f6ransson about? (given: Who is the composer of Forever? -> Ludwig G\u00f6ransson)"
+            }
+        ],
+        "synth_answer_raw": "a woman's desperation for her former lover to return",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer is supported by the trace and matches the expected type."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 9603,
+        "sub_tokens": 56143,
+        "total_tokens": 65746,
+        "elapsed_s": 44.448,
+        "hops": 7,
+        "retries": 8,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "Gyeongju City, South Korea",
+                "evidence_chunk_id": "1319162",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Where does Gyeongju bread originate?"
+                ],
+                "expected_answer_type": "place"
+            },
+            {
+                "answer": "",
+                "evidence_chunk_id": "",
+                "confidence": 0.0,
+                "queries_used": [
+                    "What is the area of <A1.1> in square miles?",
+                    "What is the area of <A1.1> in square miles? evidence",
+                    "What is the area of <A1.1> in square miles? evidence evidence",
+                    "What is the area of <A1.1> in square miles? evidence evidence",
+                    "What is the area of <A1.1> in square miles? evidence"
+                ],
+                "expected_answer_type": "auto"
+            },
+            {
+                "answer": "a woman's desperation for her former lover to return",
+                "evidence_chunk_id": "2868701",
+                "confidence": 0.6,
+                "queries_used": [
+                    "Who is We Belong Together by Ludwig G\u00f6ransson about? (given: Who is the composer of Forever? -> Ludwig G\u00f6ransson)",
+                    "What is the subject or theme of the song \"We Belong Together\" by Ludwig G\u00f6ransson?",
+                    "Who is the song \"We Belong Together\" by Ludwig G\u00f6ransson about?",
+                    "Who is the song \"We Belong Together\" by Mariah Carey about?",
+                    "Who is the song \"We Belong Together\" by Ludwig G\u00f6ransson about? (given: a woman's desperation for her former lover to return)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "Howard Penman",
+                "evidence_chunk_id": "4499103",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who is the person who could describe the process of evaporation?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "South Korea",
+                "evidence_chunk_id": "5714399",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is the country of Gyeongju City, South Korea? (given: Where does Gyeongju bread originate? -> Gyeongju City, South Korea)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "British",
+                "evidence_chunk_id": "2381460",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Which country is the mainland of the country where Howard Penman is from? (given: Who is the person who could describe the process of evaporation? -> Howard Penman)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "Chile",
+                "evidence_chunk_id": "6961937",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is the country containing Nancova?"
+                ],
+                "expected_answer_type": "entity"
+            }
+        ],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "'the composer of Forever' is an unnamed bridge entity that must be resolved first to determine the subject of the song 'We Belong Together'.",
+        "expected_type": "person",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [
+            "2868701"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer is supported by the trace and matches the expected type."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

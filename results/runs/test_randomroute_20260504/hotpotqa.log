@@ -4,3 +4,81 @@
 {"ds": "hotpotqa", "done": 100, "n": 1000, "em_running": 0.3, "wall_s": 172.4}
 {"ds": "hotpotqa", "done": 125, "n": 1000, "em_running": 0.296, "wall_s": 229.8}
 {"ds": "hotpotqa", "done": 150, "n": 1000, "em_running": 0.3133, "wall_s": 275.5}
+{"ds": "hotpotqa", "done": 175, "n": 1000, "em_running": 0.2914, "wall_s": 313.2}
+{"ds": "hotpotqa", "done": 200, "n": 1000, "em_running": 0.29, "wall_s": 365.3}
+{"ds": "hotpotqa", "done": 225, "n": 1000, "em_running": 0.28, "wall_s": 395.3}
+{"ds": "hotpotqa", "done": 250, "n": 1000, "em_running": 0.288, "wall_s": 451.1}
+{"ds": "hotpotqa", "done": 275, "n": 1000, "em_running": 0.2873, "wall_s": 506.0}
+{"ds": "hotpotqa", "done": 300, "n": 1000, "em_running": 0.3033, "wall_s": 559.6}
+{"ds": "hotpotqa", "done": 325, "n": 1000, "em_running": 0.3046, "wall_s": 621.9}
+{"ds": "hotpotqa", "done": 350, "n": 1000, "em_running": 0.3057, "wall_s": 659.2}
+{"ds": "hotpotqa", "done": 375, "n": 1000, "em_running": 0.3173, "wall_s": 706.8}
+{"ds": "hotpotqa", "done": 400, "n": 1000, "em_running": 0.3275, "wall_s": 754.6}
+{"ds": "hotpotqa", "done": 425, "n": 1000, "em_running": 0.3129, "wall_s": 775.1}
+{"ds": "hotpotqa", "done": 450, "n": 1000, "em_running": 0.32, "wall_s": 832.4}
+{"ds": "hotpotqa", "done": 475, "n": 1000, "em_running": 0.3158, "wall_s": 860.8}
+{"ds": "hotpotqa", "done": 500, "n": 1000, "em_running": 0.312, "wall_s": 900.7}
+{"ds": "hotpotqa", "done": 525, "n": 1000, "em_running": 0.3162, "wall_s": 947.6}
+{"ds": "hotpotqa", "done": 550, "n": 1000, "em_running": 0.3273, "wall_s": 1014.6}
+{"ds": "hotpotqa", "done": 575, "n": 1000, "em_running": 0.3357, "wall_s": 1061.5}
+{"ds": "hotpotqa", "done": 600, "n": 1000, "em_running": 0.3283, "wall_s": 1093.3}
+{"ds": "hotpotqa", "done": 625, "n": 1000, "em_running": 0.3216, "wall_s": 1131.7}
+{"ds": "hotpotqa", "done": 650, "n": 1000, "em_running": 0.3185, "wall_s": 1178.8}
+{"ds": "hotpotqa", "done": 675, "n": 1000, "em_running": 0.3111, "wall_s": 1222.4}
+{"ds": "hotpotqa", "done": 700, "n": 1000, "em_running": 0.31, "wall_s": 1267.7}
+{"ds": "hotpotqa", "done": 725, "n": 1000, "em_running": 0.3145, "wall_s": 1328.7}
+{"ds": "hotpotqa", "done": 750, "n": 1000, "em_running": 0.3147, "wall_s": 1384.5}
+{"ds": "hotpotqa", "done": 775, "n": 1000, "em_running": 0.3148, "wall_s": 1423.6}
+{"ds": "hotpotqa", "done": 800, "n": 1000, "em_running": 0.3237, "wall_s": 1497.7}
+{"ds": "hotpotqa", "done": 825, "n": 1000, "em_running": 0.3236, "wall_s": 1554.4}
+{"ds": "hotpotqa", "done": 850, "n": 1000, "em_running": 0.3188, "wall_s": 1593.5}
+{"ds": "hotpotqa", "done": 875, "n": 1000, "em_running": 0.3154, "wall_s": 1636.0}
+{"ds": "hotpotqa", "done": 900, "n": 1000, "em_running": 0.3133, "wall_s": 1697.9}
+{"ds": "hotpotqa", "done": 925, "n": 1000, "em_running": 0.3081, "wall_s": 1738.9}
+{"ds": "hotpotqa", "done": 950, "n": 1000, "em_running": 0.3116, "wall_s": 1808.6}
+{"ds": "hotpotqa", "done": 975, "n": 1000, "em_running": 0.3118, "wall_s": 1862.5}
+{"ds": "hotpotqa", "done": 1000, "n": 1000, "em_running": 0.306, "wall_s": 1902.0}
+[done] hotpotqa: {"n": 1000, "norm_em": 0.306, "token_f1": 0.4095, "contain": 0.365, "mean_quality": 1.1108, "mean_efficiency": 0.5961, "mean_composite": 0.9402, "mean_tokens": 4775.2, "mean_elapsed_s": 15.14, "mean_nodes": 1.81, "route_dist": {"hard": 628, "easy": 372}, "topology_dist": {"dag_n2": 348, "dag_n3": 198, "easy_lane": 372, "single_hop": 62, "dag_n4": 17, "dag_n7": 1, "dag_n6": 1, "parallel_compare": 1}, "profile_dist": {"bridge_2hop": 400, "bridge_3hop_plus": 125, "temporal": 89, "parallel_compare": 72, "one_hop": 201, "yes_no": 70, "numeric": 43}, "topology_mutated_rate": 0.0, "easy_route_fraction": 0.372, "easy_route_norm_em": 0.2903, "easy_route_mean_tokens": 1855.6, "wall_clock_s": 1902.01}
+
+ALL: {
+  "hotpotqa": {
+    "n": 1000,
+    "norm_em": 0.306,
+    "token_f1": 0.4095,
+    "contain": 0.365,
+    "mean_quality": 1.1108,
+    "mean_efficiency": 0.5961,
+    "mean_composite": 0.9402,
+    "mean_tokens": 4775.2,
+    "mean_elapsed_s": 15.14,
+    "mean_nodes": 1.81,
+    "route_dist": {
+      "hard": 628,
+      "easy": 372
+    },
+    "topology_dist": {
+      "dag_n2": 348,
+      "dag_n3": 198,
+      "easy_lane": 372,
+      "single_hop": 62,
+      "dag_n4": 17,
+      "dag_n7": 1,
+      "dag_n6": 1,
+      "parallel_compare": 1
+    },
+    "profile_dist": {
+      "bridge_2hop": 400,
+      "bridge_3hop_plus": 125,
+      "temporal": 89,
+      "parallel_compare": 72,
+      "one_hop": 201,
+      "yes_no": 70,
+      "numeric": 43
+    },
+    "topology_mutated_rate": 0.0,
+    "easy_route_fraction": 0.372,
+    "easy_route_norm_em": 0.2903,
+    "easy_route_mean_tokens": 1855.6,
+    "wall_clock_s": 1902.01
+  }
+}

@@ -1,0 +1,63 @@
+{
+    "answer": "no",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Are Joey Tempest and Aaron Lewis both considered American musicians?",
+                "expected_type": "yes_no",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "no",
+                "confidence": 0.9,
+                "chunk_id": "18119438",
+                "queries_used": [
+                    "Are Joey Tempest and Aaron Lewis both considered American musicians?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Are Joey Tempest and Aaron Lewis both considered American musicians?",
+                "retrieval_query": ""
+            }
+        ],
+        "synth_answer_raw": "no",
+        "critic": []
+    },
+    "metadata": {
+        "root_tokens": 0,
+        "sub_tokens": 9063,
+        "total_tokens": 9063,
+        "elapsed_s": 5.227,
+        "hops": 1,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "no",
+                "evidence_chunk_id": "18119438",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Are Joey Tempest and Aaron Lewis both considered American musicians?"
+                ],
+                "expected_answer_type": "yes_no"
+            }
+        ],
+        "profile": "yes_no",
+        "budget_hint": "normal",
+        "route": "easy",
+        "router_reason": "Both entities explicitly named; direct relation check.",
+        "expected_type": "yes_no",
+        "topology": "easy_lane",
+        "n_nodes": 1,
+        "final_node": "Q1.1",
+        "support_ids": [
+            "18119438"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 1,
+        "critic": [],
+        "critic_skipped_reason": "direct_easy_high_confidence",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": true
+    }
+}

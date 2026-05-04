@@ -1,0 +1,92 @@
+{
+    "answer": "8 April 1866",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Who is the director of the film Young Sinners?",
+                "expected_type": "person",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Marc Benardout",
+                "confidence": 0.95,
+                "chunk_id": "3526662",
+                "queries_used": [
+                    "Who is the director of the film Young Sinners?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Who is the director of the film Young Sinners?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "Where was Marc Benardout born?",
+                "expected_type": "place",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "Rennes",
+                "confidence": 0.95,
+                "chunk_id": "20572526",
+                "queries_used": [
+                    "Where was Marc Benardout born? (given: Who is the director of the film Young Sinners? -> Marc Benardout)",
+                    "Birthplace of Marc Benardout"
+                ],
+                "expanded_into": [],
+                "raw_question": "Where was <A1.1> born?",
+                "retrieval_query": "Where was Marc Benardout born? (given: Who is the director of the film Young Sinners? -> Marc Benardout)"
+            }
+        ],
+        "synth_answer_raw": "8 April 1866",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'Rennes' is supported by the trace and matches the expected type 'place'."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 6413,
+        "sub_tokens": 30941,
+        "total_tokens": 37354,
+        "elapsed_s": 24.636,
+        "hops": 1,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "8 April 1866",
+                "evidence_chunk_id": "7557444",
+                "confidence": 0.95,
+                "queries_used": [
+                    "When was Princess Louise Sophie of Schleswig-Holstein-Sonderburg-Augustenburg born? (given: Who was Princess Victoria Margaret Of Prussia's mother? -> Princess Louise Sophie of Schleswig-Holstein-Sonderburg-Augustenburg)"
+                ],
+                "expected_answer_type": "date"
+            }
+        ],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "Requires resolving the director of 'Young Sinners' first, then finding their birthplace.",
+        "expected_type": "place",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [
+            "7557444"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'Rennes' is supported by the trace and matches the expected type 'place'."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

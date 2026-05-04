@@ -1,41 +1,37 @@
 {
-  "2wikimultihop": {
-    "n": 1000,
-    "norm_em": 0.275,
-    "token_f1": 0.3344,
-    "contain": 0.329,
-    "mean_quality": 1.0187,
-    "mean_efficiency": 0.5067,
-    "mean_composite": 0.8038,
-    "mean_tokens": 6817.8,
-    "mean_elapsed_s": 19.74,
-    "mean_nodes": 2.33,
+  "bamboogle": {
+    "n": 125,
+    "norm_em": 0.272,
+    "token_f1": 0.4351,
+    "contain": 0.312,
+    "mean_quality": 1.1268,
+    "mean_efficiency": 0.5914,
+    "mean_composite": 0.9462,
+    "mean_tokens": 4535.9,
+    "mean_elapsed_s": 15.02,
+    "mean_nodes": 1.78,
     "route_dist": {
-      "hard": 692,
-      "easy": 308
+      "hard": 100,
+      "easy": 25
     },
     "topology_dist": {
-      "dag_n2": 323,
-      "dag_n3": 186,
-      "dag_n5": 141,
-      "easy_lane": 308,
-      "single_hop": 29,
-      "dag_n7": 10,
-      "dag_n4": 3
+      "dag_n2": 84,
+      "dag_n3": 7,
+      "single_hop": 9,
+      "easy_lane": 25
     },
     "profile_dist": {
-      "one_hop": 256,
-      "bridge_3hop_plus": 109,
-      "yes_no": 115,
-      "parallel_compare": 69,
-      "bridge_2hop": 427,
-      "temporal": 16,
-      "numeric": 8
+      "bridge_2hop": 52,
+      "temporal": 28,
+      "one_hop": 27,
+      "bridge_3hop_plus": 9,
+      "parallel_compare": 2,
+      "numeric": 7
     },
     "topology_mutated_rate": 0.0,
-    "easy_route_fraction": 0.308,
-    "easy_route_norm_em": 0.211,
-    "easy_route_mean_tokens": 2236.7,
-    "wall_clock_s": 2482.8
+    "easy_route_fraction": 0.2,
+    "easy_route_norm_em": 0.04,
+    "easy_route_mean_tokens": 1514.9,
+    "wall_clock_s": 242.55
   }
 }

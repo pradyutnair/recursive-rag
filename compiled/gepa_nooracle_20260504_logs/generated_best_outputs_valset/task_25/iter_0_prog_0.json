@@ -1,0 +1,146 @@
+{
+    "answer": "Purdue",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Who presented the prizes at the 1971 World Championship Tennis Finals?",
+                "expected_type": "person",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Neil Armstrong",
+                "confidence": 0.9,
+                "chunk_id": "63474",
+                "queries_used": [
+                    "Who presented the prizes at the 1971 World Championship Tennis Finals?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Who presented the prizes at the 1971 World Championship Tennis Finals?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "Where did Neil Armstrong earn his bachelor's degree?",
+                "expected_type": "place",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "Purdue",
+                "confidence": 0.9,
+                "chunk_id": "15250588",
+                "queries_used": [
+                    "Where did Neil Armstrong earn his bachelor's degree? (given: Who presented the prizes at the 1971 World Championship Tennis Finals? -> Neil Armstrong)"
+                ],
+                "expanded_into": [],
+                "raw_question": "Where did <A1.1> earn his bachelor's degree?",
+                "retrieval_query": "Where did Neil Armstrong earn his bachelor's degree? (given: Who presented the prizes at the 1971 World Championship Tennis Finals? -> Neil Armstrong)"
+            }
+        ],
+        "synth_answer_raw": "Purdue",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'Purdue' is supported by the trace and matches the expected type 'place'."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 3128,
+        "sub_tokens": 24511,
+        "total_tokens": 27639,
+        "elapsed_s": 20.846,
+        "hops": 7,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "Lieutenant Commander Steve McGarrett",
+                "evidence_chunk_id": "18293203",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Which character does Alex O'Loughlin play in \"Hawaii Five-O\"?"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "Neil Armstrong",
+                "evidence_chunk_id": "63474",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who presented the prizes at the 1971 World Championship Tennis Finals?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "Purdue",
+                "evidence_chunk_id": "15250588",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Where did Neil Armstrong earn his bachelor's degree? (given: Who presented the prizes at the 1971 World Championship Tennis Finals? -> Neil Armstrong)"
+                ],
+                "expected_answer_type": "place"
+            },
+            {
+                "answer": "Manhattan",
+                "evidence_chunk_id": "15931012",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Which city in Kansas has an airport with the ICAO of KHRU?"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "Westfield Garden City",
+                "evidence_chunk_id": "9996753",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What is the name of the major shopping center served by Garden City bus station?"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "52,281",
+                "evidence_chunk_id": "5503936",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What was the population of Manhattan in 2010? (given: Which city in Kansas has an airport with the ICAO of KHRU? -> Manhattan)"
+                ],
+                "expected_answer_type": "number"
+            },
+            {
+                "answer": "AMP Limited",
+                "evidence_chunk_id": "9996753",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who previously operated Westfield Garden City? (given: What is the name of the major shopping center served by Garden City bus station? -> Westfield Garden City)"
+                ],
+                "expected_answer_type": "organization"
+            }
+        ],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The subject 'the celebrity who presented the prizes at the 1971 World Championship Tennis Finals' is an unnamed bridge entity that must be resolved first to identify the individual, then their bachelor's degree can be determined.",
+        "expected_type": "place",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [
+            "63474",
+            "15250588"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'Purdue' is supported by the trace and matches the expected type 'place'."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

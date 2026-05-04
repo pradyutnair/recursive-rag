@@ -1,0 +1,79 @@
+{
+    "answer": "M\u00e1s a Tierra, Chile",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "What is the country containing Nancova?",
+                "expected_type": "entity",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Chile",
+                "confidence": 0.9,
+                "chunk_id": "6961937",
+                "queries_used": [
+                    "What is the country containing Nancova?"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the country containing Nancova?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "In what region of Chile did the Germans clash with the Portuguese?",
+                "expected_type": "entity",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "M\u00e1s a Tierra",
+                "confidence": 0.9,
+                "chunk_id": "20463606",
+                "queries_used": [
+                    "In what region of Chile did the Germans clash with the Portuguese? (given: What is the country containing Nancova? -> Chile)"
+                ],
+                "expanded_into": [],
+                "raw_question": "In what region of <A1.1> did the Germans clash with the Portuguese?",
+                "retrieval_query": "In what region of Chile did the Germans clash with the Portuguese? (given: What is the country containing Nancova? -> Chile)"
+            }
+        ],
+        "synth_answer_raw": "M\u00e1s a Tierra, Chile",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'M\u00e1s a Tierra, Chile' is supported by the trace and matches the expected type 'entity'. The trace correctly resolves the country containing Nancova as Chile and then identifies the region of Chile where the Germans clashed with the Portuguese as M\u00e1s a Tierra."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 5259,
+        "sub_tokens": 34505,
+        "total_tokens": 39764,
+        "elapsed_s": 22.464,
+        "hops": 0,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question involves resolving the country containing Nancova first, then determining the region where the Germans clashed with the Portuguese, requiring multiple hops and bridge entities.",
+        "expected_type": "entity",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [],
+        "citation_accepted": false,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'M\u00e1s a Tierra, Chile' is supported by the trace and matches the expected type 'entity'. The trace correctly resolves the country containing Nancova as Chile and then identifies the region of Chile where the Germans clashed with the Portuguese as M\u00e1s a Tierra."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

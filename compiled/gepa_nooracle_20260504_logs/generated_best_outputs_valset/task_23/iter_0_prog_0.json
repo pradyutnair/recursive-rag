@@ -1,0 +1,79 @@
+{
+    "answer": "The Gruffalo",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Who is the Scottish writer and Children's laureate?",
+                "expected_type": "person",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Julia Donaldson MBE",
+                "confidence": 0.9,
+                "chunk_id": "1536638",
+                "queries_used": [
+                    "Who is the Scottish writer and Children's laureate?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Who is the Scottish writer and Children's laureate?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "Which children's book written by Julia Donaldson MBE is illustrated by Axel Scheffler?",
+                "expected_type": "title",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "The Gruffalo",
+                "confidence": 0.95,
+                "chunk_id": "2058144",
+                "queries_used": [
+                    "Which children's book written by Julia Donaldson MBE is illustrated by Axel Scheffler? (given: Who is the Scottish writer and Children's laureate? -> Julia Donaldson MBE)"
+                ],
+                "expanded_into": [],
+                "raw_question": "Which children's book written by <A1.1> is illustrated by Axel Scheffler?",
+                "retrieval_query": "Which children's book written by Julia Donaldson MBE is illustrated by Axel Scheffler? (given: Who is the Scottish writer and Children's laureate? -> Julia Donaldson MBE)"
+            }
+        ],
+        "synth_answer_raw": "The Gruffalo",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'The Gruffalo' is supported by the trace and matches the expected type 'entity'."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 4136,
+        "sub_tokens": 34094,
+        "total_tokens": 38230,
+        "elapsed_s": 22.171,
+        "hops": 0,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question involves resolving the identity of a Scottish writer and Children's laureate, which is an unnamed bridge entity, and then checking if they wrote a children's book illustrated by Axel Scheffler.",
+        "expected_type": "entity",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [],
+        "citation_accepted": false,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'The Gruffalo' is supported by the trace and matches the expected type 'entity'."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": true,
+        "direct_easy_answer": false
+    }
+}

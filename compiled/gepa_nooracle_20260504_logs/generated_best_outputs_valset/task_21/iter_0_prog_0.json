@@ -1,0 +1,61 @@
+{
+    "answer": "2007 Fiesta Bowl",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Which game played on January 1, 2007 did the 2006 Boise State Broncos football team face Oklahoma in?",
+                "expected_type": "entity",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "2007 Fiesta Bowl",
+                "confidence": 0.9,
+                "chunk_id": "12055674",
+                "queries_used": [
+                    "Which game played on January 1, 2007 did the 2006 Boise State Broncos football team face Oklahoma in?"
+                ],
+                "expanded_into": [],
+                "raw_question": "Which game played on January 1, 2007 did the 2006 Boise State Broncos football team face Oklahoma in?",
+                "retrieval_query": ""
+            }
+        ],
+        "synth_answer_raw": "2007 Fiesta Bowl",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer '2007 Fiesta Bowl' is directly supported by the trace and matches the expected type 'entity'."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 4136,
+        "sub_tokens": 27279,
+        "total_tokens": 31415,
+        "elapsed_s": 17.098,
+        "hops": 0,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [],
+        "profile": "one_hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question involves a specific game on a particular date and requires resolving the 2006 Boise State Broncos football team's schedule to identify the opponent, Oklahoma, which involves multi-step reasoning.",
+        "expected_type": "entity",
+        "topology": "single_hop",
+        "n_nodes": 1,
+        "final_node": "Q1.1",
+        "support_ids": [],
+        "citation_accepted": false,
+        "expected_hops_for_profile": 1,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer '2007 Fiesta Bowl' is directly supported by the trace and matches the expected type 'entity'."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

@@ -1,0 +1,113 @@
+{
+    "answer": "The Gruffalo",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera?",
+                "expected_type": "title",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Snow Maiden",
+                "confidence": 0.9,
+                "chunk_id": "19846564",
+                "queries_used": [
+                    "What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera?"
+                ],
+                "expanded_into": [],
+                "raw_question": "What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera?",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "What is the subtitle of Snow Maiden?",
+                "expected_type": "title",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "A Spring Fairy Tale",
+                "confidence": 0.95,
+                "chunk_id": "14061456",
+                "queries_used": [
+                    "What is the subtitle of Snow Maiden? (given: What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera? -> Snow Maiden)"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the subtitle of <A1.1>?",
+                "retrieval_query": "What is the subtitle of Snow Maiden? (given: What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera? -> Snow Maiden)"
+            }
+        ],
+        "synth_answer_raw": "The Gruffalo",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'A Spring Fairy Tale' is supported by the trace and matches the expected type 'entity'."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 4136,
+        "sub_tokens": 33945,
+        "total_tokens": 38081,
+        "elapsed_s": 21.262,
+        "hops": 3,
+        "retries": 4,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "The Gruffalo",
+                "evidence_chunk_id": "2058144",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Which children's book written by Julia Donaldson MBE is illustrated by Axel Scheffler? (given: Who is the Scottish writer and Children's laureate? -> Julia Donaldson MBE)"
+                ],
+                "expected_answer_type": "title"
+            },
+            {
+                "answer": "no",
+                "evidence_chunk_id": "13808250",
+                "confidence": 0.8,
+                "queries_used": [
+                    "Is A Midsummer Night's Dream a comedy of intrigue? (given: What is the name of the comedy by William Shakespeare that is thought to have been written in 1598? -> A Midsummer Night's Dream)"
+                ],
+                "expected_answer_type": "yes_no"
+            },
+            {
+                "answer": "Dominic Sena",
+                "evidence_chunk_id": "1267417",
+                "confidence": 0.4,
+                "queries_used": [
+                    "Which director was born first, Luc Besson (18 March 1959) or Dominic Sena (April 26, 1949)? (given: When was Luc Besson born? -> 18 March 1959; When was Dominic Sena born? -> April 26, 1949)",
+                    "Who was born first between Luc Besson and Dominic Sena?",
+                    "Who was born first between Luc Besson (18 March 1959) and Dominic Sena (April 26, 1949)?",
+                    "Who was born first between Luc Besson (18 March 1959) and Dominic Sena (April 26, 1949)? evidence",
+                    "Who was born first between Luc Besson (18 March 1959) and Dominic Sena (April 26, 1949)? evidence"
+                ],
+                "expected_answer_type": "person"
+            }
+        ],
+        "profile": "bridge_2hop",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question involves resolving the opera conducted by Nikolai Rimsky-Korsakov at Novaya Opera, which requires identifying the specific opera first before determining its subtitle.",
+        "expected_type": "entity",
+        "topology": "dag_n2",
+        "n_nodes": 2,
+        "final_node": "Q2.1",
+        "support_ids": [
+            "2058144"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 2,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The final answer 'A Spring Fairy Tale' is supported by the trace and matches the expected type 'entity'."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}

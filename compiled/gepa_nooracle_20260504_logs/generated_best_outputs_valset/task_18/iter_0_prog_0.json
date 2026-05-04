@@ -1,0 +1,228 @@
+{
+    "answer": "yes",
+    "trajectory": {
+        "plan_nodes": [
+            {
+                "id": "Q1.1",
+                "question": "Who directed the film Whoops, I'm an Indian!",
+                "expected_type": "person",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "The Three Stooges",
+                "confidence": 0.8,
+                "chunk_id": "15278569",
+                "queries_used": [
+                    "Who directed the film Whoops, I'm an Indian!"
+                ],
+                "expanded_into": [],
+                "raw_question": "Who directed the film Whoops, I'm an Indian!",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q1.2",
+                "question": "Who directed the film Chasing Rainbows (1930 film)",
+                "expected_type": "person",
+                "depends_on": [],
+                "depth": 0,
+                "answer": "Charles Reisner",
+                "confidence": 0.95,
+                "chunk_id": "10899328",
+                "queries_used": [
+                    "Who directed the film Chasing Rainbows (1930 film)"
+                ],
+                "expanded_into": [],
+                "raw_question": "Who directed the film Chasing Rainbows (1930 film)",
+                "retrieval_query": ""
+            },
+            {
+                "id": "Q2.1",
+                "question": "What is the nationality of The Three Stooges",
+                "expected_type": "entity",
+                "depends_on": [
+                    "Q1.1"
+                ],
+                "depth": 1,
+                "answer": "American",
+                "confidence": 0.9,
+                "chunk_id": "15278569",
+                "queries_used": [
+                    "What is the nationality of The Three Stooges (given: Who directed the film Whoops, I'm an Indian! -> The Three Stooges)"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the nationality of <A1.1>",
+                "retrieval_query": "What is the nationality of The Three Stooges (given: Who directed the film Whoops, I'm an Indian! -> The Three Stooges)"
+            },
+            {
+                "id": "Q2.2",
+                "question": "What is the nationality of Charles Reisner",
+                "expected_type": "entity",
+                "depends_on": [
+                    "Q1.2"
+                ],
+                "depth": 1,
+                "answer": "American",
+                "confidence": 0.95,
+                "chunk_id": "19306075",
+                "queries_used": [
+                    "What is the nationality of Charles Reisner (given: Who directed the film Chasing Rainbows (1930 film) -> Charles Reisner)"
+                ],
+                "expanded_into": [],
+                "raw_question": "What is the nationality of <A1.2>",
+                "retrieval_query": "What is the nationality of Charles Reisner (given: Who directed the film Chasing Rainbows (1930 film) -> Charles Reisner)"
+            },
+            {
+                "id": "Q3.1",
+                "question": "Are American and American the same?",
+                "expected_type": "yes_no",
+                "depends_on": [
+                    "Q2.1",
+                    "Q2.2"
+                ],
+                "depth": 2,
+                "answer": "yes",
+                "confidence": 0.7,
+                "chunk_id": "13055699",
+                "queries_used": [
+                    "Are American and American the same? (given: What is the nationality of The Three Stooges -> American; What is the nationality of Charles Reisner -> American)"
+                ],
+                "expanded_into": [],
+                "raw_question": "Are <A2.1> and <A2.2> the same?",
+                "retrieval_query": "Are American and American the same? (given: What is the nationality of The Three Stooges -> American; What is the nationality of Charles Reisner -> American)"
+            }
+        ],
+        "synth_answer_raw": "yes",
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The answer 'yes' is directly supported by the trace. Both directors, The Three Stooges and Charles Reisner, are confirmed to be American, and the final question checks if their nationalities are the same, which is affirmed."
+            }
+        ]
+    },
+    "metadata": {
+        "root_tokens": 10549,
+        "sub_tokens": 53032,
+        "total_tokens": 63581,
+        "elapsed_s": 35.656,
+        "hops": 10,
+        "retries": 0,
+        "tool_errors": [],
+        "findings": [
+            {
+                "answer": "The Three Stooges",
+                "evidence_chunk_id": "15278569",
+                "confidence": 0.8,
+                "queries_used": [
+                    "Who directed the film Whoops, I'm an Indian!"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "Charles Reisner",
+                "evidence_chunk_id": "10899328",
+                "confidence": 0.95,
+                "queries_used": [
+                    "Who directed the film Chasing Rainbows (1930 film)"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "American",
+                "evidence_chunk_id": "19306075",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What is the nationality of Charles Reisner (given: Who directed the film Chasing Rainbows (1930 film) -> Charles Reisner)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "American",
+                "evidence_chunk_id": "15278569",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is the nationality of The Three Stooges (given: Who directed the film Whoops, I'm an Indian! -> The Three Stooges)"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "yes",
+                "evidence_chunk_id": "13055699",
+                "confidence": 0.7,
+                "queries_used": [
+                    "Are American and American the same? (given: What is the nationality of The Three Stooges -> American; What is the nationality of Charles Reisner -> American)"
+                ],
+                "expected_answer_type": "yes_no"
+            },
+            {
+                "answer": "2007 Fiesta Bowl",
+                "evidence_chunk_id": "12055674",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Which game played on January 1, 2007 did the 2006 Boise State Broncos football team face Oklahoma in?"
+                ],
+                "expected_answer_type": "entity"
+            },
+            {
+                "answer": "Snow Maiden",
+                "evidence_chunk_id": "19846564",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera?"
+                ],
+                "expected_answer_type": "title"
+            },
+            {
+                "answer": "Julia Donaldson MBE",
+                "evidence_chunk_id": "1536638",
+                "confidence": 0.9,
+                "queries_used": [
+                    "Who is the Scottish writer and Children's laureate?"
+                ],
+                "expected_answer_type": "person"
+            },
+            {
+                "answer": "A Midsummer Night's Dream",
+                "evidence_chunk_id": "10960194",
+                "confidence": 0.9,
+                "queries_used": [
+                    "What is the name of the comedy by William Shakespeare that is thought to have been written in 1598?"
+                ],
+                "expected_answer_type": "title"
+            },
+            {
+                "answer": "A Spring Fairy Tale",
+                "evidence_chunk_id": "14061456",
+                "confidence": 0.95,
+                "queries_used": [
+                    "What is the subtitle of Snow Maiden? (given: What opera did Nikolai Rimsky-Korsakov conduct at Novaya Opera? -> Snow Maiden)"
+                ],
+                "expected_answer_type": "title"
+            }
+        ],
+        "profile": "yes_no",
+        "budget_hint": "normal",
+        "route": "hard",
+        "router_reason": "The question requires checking if the directors of two films share the same nationality, which involves resolving the directors first and then checking their nationalities.",
+        "expected_type": "entity",
+        "topology": "dag_n5",
+        "n_nodes": 5,
+        "final_node": "Q3.1",
+        "support_ids": [
+            "15278569",
+            "10899328",
+            "19306075",
+            "13055699"
+        ],
+        "citation_accepted": true,
+        "expected_hops_for_profile": 1,
+        "critic": [
+            {
+                "verdict": "accept",
+                "reason": "The answer 'yes' is directly supported by the trace. Both directors, The Three Stooges and Charles Reisner, are confirmed to be American, and the final question checks if their nationalities are the same, which is affirmed."
+            }
+        ],
+        "critic_skipped_reason": "",
+        "topology_mutated": false,
+        "used_final_node_answer": false,
+        "direct_easy_answer": false
+    }
+}
