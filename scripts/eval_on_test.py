@@ -1,12 +1,17 @@
-"""Evaluate the force-hard no-critic RecRAG-MAS base."""
+"""Run a configured AdaptiveRecursivePipeline on the fixed 1000q test sets and
+the OOD Bamboogle 125q. Outputs predictions.jsonl and a Pareto summary that
+can be compared apples-to-apples with the existing FlashRAG baselines.
+"""
 from __future__ import annotations
 
 import argparse
 import asyncio
 import json
+import random
 import sys
 import time
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -17,24 +22,71 @@ from recrag.metric import composite_reward
 from recrag.retriever import Retriever
 
 TEST_SETS = {
-    "musique": "data/musique/questions_1000_seedfull_combined.json",
-    "2wikimultihop": "data/2wikimultihop/questions_1000_seed42.json",
-    "hotpotqa": "data/hotpotqa/questions_1000_seed42.json",
-    "bamboogle": "data/bamboogle/questions_125.json",
+    "musique": "/local/yzheng/pnair/workspace/adaptive-mas/data/musique/questions_1000_seedfull_combined.json",
+    "2wikimultihop": "/local/yzheng/pnair/workspace/adaptive-mas/data/2wikimultihop/questions_1000_seed42.json",
+    "hotpotqa": "/local/yzheng/pnair/workspace/adaptive-mas/data/hotpotqa/questions_1000_seed42.json",
+    "bamboogle": "/local/yzheng/pnair/workspace/adaptive-mas/data/bamboogle/questions_125.json",
 }
+
+
+def _load_program(path: str | None) -> dict[str, str] | None:
+    if not path:
+        return None
+    obj = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(obj, dict):
+        return None
+    raw_prompts = obj.get("prompts")
+    if isinstance(raw_prompts, dict):
+        return {str(k): str(v) for k, v in raw_prompts.items()}
+    prompts: dict[str, str] = {}
+    for name, value in obj.items():
+        if isinstance(value, str):
+            prompts[str(name)] = value
+        elif isinstance(value, dict):
+            sig = value.get("signature")
+            if isinstance(sig, dict) and isinstance(sig.get("instructions"), str):
+                prompts[str(name)] = sig["instructions"]
+    return prompts or None
 
 
 def make_pipeline(args: argparse.Namespace, idx: int) -> AdaptiveRecursivePipeline:
     root_lm = make_lm(args.root_lm, replica_idx=idx, max_tokens=args.root_max_tokens)
     sub_lm = make_lm(args.sub_lm, replica_idx=idx, max_tokens=args.sub_max_tokens)
-    cfg = AdaptiveConfig(
+    force_route = None if args.force_route == "auto" else args.force_route
+    if force_route is None and args.random_easy_rate >= 0:
+        rng = random.Random(args.random_route_seed + idx)
+        force_route = "easy" if rng.random() < args.random_easy_rate else "hard"
+    cfg_kwargs: dict[str, Any] = dict(
         max_nodes=args.max_nodes,
         max_recursion_depth=args.max_recursion,
         tau_recurse=args.tau_recurse,
+        experience_library=args.experience_library,
+        use_dag=args.use_dag,
+        use_critic=args.use_critic,
+        use_router=args.use_router,
+        force_route=force_route,
+        max_critic_retries=args.max_critic_retries,
         budget_hint=args.budget_hint,
         max_searches=args.max_searches,
+        share_mode=args.share_mode,
+        worker_width=args.worker_width,
+        blackboard_top_k=args.blackboard_top_k,
+        repair_budget=args.repair_budget,
+        use_escalation=args.use_escalation,
+        tau_escalate=args.tau_escalate,
+        easy_max_attempts=args.easy_max_attempts,
     )
-    return AdaptiveRecursivePipeline(root_lm, sub_lm, Retriever(args.retriever_url), cfg)
+    prompts = _load_program(args.program)
+    if prompts:
+        if "router" in prompts:
+            cfg_kwargs["router_instructions"] = prompts["router"]
+        if "planner" in prompts:
+            cfg_kwargs["planner_instructions"] = prompts["planner"]
+        if "synthesizer" in prompts:
+            cfg_kwargs["synth_instructions"] = prompts["synthesizer"]
+        if "critic" in prompts:
+            cfg_kwargs["critic_instructions"] = prompts["critic"]
+    return AdaptiveRecursivePipeline(root_lm, sub_lm, Retriever(args.retriever_url), AdaptiveConfig(**cfg_kwargs))
 
 
 async def run_one(q: dict[str, Any], args: argparse.Namespace, idx: int) -> dict[str, Any]:
@@ -50,6 +102,8 @@ async def run_one(q: dict[str, Any], args: argparse.Namespace, idx: int) -> dict
         "id": str(q.get("id", idx)),
         "dataset": str(q.get("dataset", "")),
         "source_profile": q.get("profile"),
+        "oracle_easy": q.get("oracle_easy"),
+        "naive_tokens": q.get("naive_tokens"),
         "question": str(q.get("question", "")),
         "answer": pred.get("answer", ""),
         "gold": gold,
@@ -65,6 +119,7 @@ def summarize(rows: list[dict]) -> dict:
         return {}
     n = len(rows)
     em = sum(1 for r in rows if r["reward"]["em"] == 1.0)
+    easy_rows = [r for r in rows if r["metadata"].get("route") == "easy"]
     summary = {
         "n": n,
         "norm_em": round(em / n, 4),
@@ -79,8 +134,23 @@ def summarize(rows: list[dict]) -> dict:
         "route_dist": _hist(rows, "route"),
         "topology_dist": _hist(rows, "topology"),
         "profile_dist": _hist(rows, "profile"),
-        "method": "force_hard_no_critic",
+        "topology_mutated_rate": round(sum(1 for r in rows if r["metadata"].get("topology_mutated")) / n, 4),
+        "escalation_rate": round(sum(1 for r in rows if r["metadata"].get("escalated")) / n, 4),
+        "mean_wall_clock": round(sum(r["metadata"].get("elapsed_s", 0.0) for r in rows) / n, 2),
+        "mean_retrievals": round(sum(r["metadata"].get("hops", 0) for r in rows) / n, 2),
+        "answer_rate": round(sum(1 for r in rows if str(r.get("answer", "")).strip()) / n, 4),
+        "share_mode_dist": _hist(rows, "share_mode"),
+        "worker_width_dist": _hist(rows, "worker_width"),
+        "blackboard_top_k_dist": _hist(rows, "blackboard_top_k"),
     }
+    if easy_rows:
+        summary["easy_route_fraction"] = round(len(easy_rows) / n, 4)
+        summary["easy_route_norm_em"] = round(sum(1 for r in easy_rows if r["reward"]["em"] == 1.0) / len(easy_rows), 4)
+        summary["easy_route_mean_tokens"] = round(sum(r["metadata"].get("total_tokens", 0) for r in easy_rows) / len(easy_rows), 1)
+    else:
+        summary["easy_route_fraction"] = 0.0
+        summary["easy_route_norm_em"] = 0.0
+        summary["easy_route_mean_tokens"] = 0.0
     return summary
 
 
@@ -179,8 +249,28 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--max-nodes", type=int, default=6)
     p.add_argument("--max-recursion", type=int, default=0)
     p.add_argument("--tau-recurse", type=float, default=0.5)
+    p.add_argument("--use-dag", action="store_true", default=True)
+    p.add_argument("--no-dag", dest="use_dag", action="store_false")
+    p.add_argument("--use-critic", action="store_true", default=False)
+    p.add_argument("--no-critic", dest="use_critic", action="store_false")
+    p.add_argument("--use-escalation", action="store_true", default=True)
+    p.add_argument("--no-escalation", dest="use_escalation", action="store_false")
+    p.add_argument("--tau-escalate", type=float, default=0.7)
+    p.add_argument("--easy-max-attempts", type=int, default=2)
+    p.add_argument("--use-router", action="store_true", default=True)
+    p.add_argument("--no-router", dest="use_router", action="store_false")
+    p.add_argument("--force-route", choices=["auto", "easy", "hard"], default="auto")
+    p.add_argument("--random-easy-rate", type=float, default=-1.0, help="Ablation only: force random easy route with this probability when >=0")
+    p.add_argument("--random-route-seed", type=int, default=17)
+    p.add_argument("--max-critic-retries", type=int, default=0)
     p.add_argument("--max-searches", type=int, default=5)
+    p.add_argument("--share-mode", choices=["full_share", "parents_only", "blind_workers"], default="full_share")
+    p.add_argument("--worker-width", type=int, default=999)
+    p.add_argument("--blackboard-top-k", type=int, default=3)
+    p.add_argument("--repair-budget", type=int, default=0)
     p.add_argument("--budget-hint", choices=["tight", "normal", "rich"], default="normal")
+    p.add_argument("--experience-library")
+    p.add_argument("--program", help="JSON file with recovered/compiled prompts {planner, synthesizer, critic}")
     p.add_argument("--retriever-url", default="http://node408:8003")
     p.add_argument("--concurrency", type=int, default=8)
     return p

@@ -331,6 +331,9 @@ class AdaptiveDAGRunner:
     max_recursion_depth: int = 2
     tau_recurse: float = 0.5
     max_searches: int = 3
+    share_mode: str = "full_share"
+    worker_width: int = 999
+    blackboard_top_k: int = 3
 
     async def run_node(self, node: PlannedNode) -> None:
         """Execute a single node (retrieve + extract + maybe rewrite)."""
@@ -346,6 +349,30 @@ class AdaptiveDAGRunner:
         node.confidence = float(data.get("confidence", 0.0) or 0.0)
         node.chunk_id = str(data.get("evidence_chunk_id", ""))
         node.queries_used = list(data.get("queries_used", []) or [])
+
+    def context_for_node(self, plan: PlanRun, node: PlannedNode) -> str:
+        """Compact Blackboard context visible to a worker under the selected share mode."""
+        if self.share_mode == "blind_workers":
+            return ""
+
+        facts: list[str] = []
+        if self.share_mode == "parents_only":
+            visible_ids = [dep for dep in node.depends_on if dep in plan.nodes]
+        else:
+            visible_ids = [
+                nid for nid, other in sorted(plan.nodes.items())
+                if nid != node.id and other.answer
+            ]
+
+        for nid in visible_ids:
+            other = plan.nodes[nid]
+            if not other.answer:
+                continue
+            q = other.question or other.raw_question
+            facts.append(f"{nid}: {q} -> {other.answer}")
+            if len(facts) >= max(0, self.blackboard_top_k):
+                break
+        return "; ".join(facts)
 
 
     async def maybe_recurse(
@@ -403,23 +430,38 @@ async def execute_plan(
 ) -> None:
     layers = plan.topo_layers()
     for layer in layers:
-        # Resolve tag substitutions for this layer using ANY ancestors that have answers
-        resolved: dict[str, str] = {nid: plan.nodes[nid].answer for nid in plan.nodes if plan.nodes[nid].answer}
+        # Resolve tag substitutions using the Blackboard view allowed by share_mode.
+        all_resolved: dict[str, str] = {
+            nid: plan.nodes[nid].answer for nid in plan.nodes if plan.nodes[nid].answer
+        }
         for nid in layer:
             n = plan.nodes[nid]
-            n.question = substitute_tags(n.raw_question, resolved)
+            if runner.share_mode == "blind_workers":
+                visible_resolved: dict[str, str] = {}
+            elif runner.share_mode == "parents_only":
+                visible_resolved = {
+                    dep: plan.nodes[dep].answer
+                    for dep in n.depends_on
+                    if dep in plan.nodes and plan.nodes[dep].answer
+                }
+            else:
+                visible_resolved = all_resolved
+
+            n.question = substitute_tags(n.raw_question, visible_resolved)
             if n.retrieval_query:
-                n.retrieval_query = substitute_tags(n.retrieval_query, resolved)
-            # For child nodes, augment retrieval query with parent context so the
-            # retriever can disambiguate (e.g. "Euclid" the mathematician vs city).
-            if n.depends_on and not n.retrieval_query:
-                parent_ctx = "; ".join(
-                    f"{plan.nodes[dep].question} -> {plan.nodes[dep].answer}"
-                    for dep in n.depends_on if dep in plan.nodes and plan.nodes[dep].answer
-                )
-                if parent_ctx:
-                    n.retrieval_query = f"{n.question} (given: {parent_ctx})"
-        await asyncio.gather(*[runner.run_node(plan.nodes[nid]) for nid in layer])
+                n.retrieval_query = substitute_tags(n.retrieval_query, visible_resolved)
+            if not n.retrieval_query:
+                bb_context = runner.context_for_node(plan, n)
+                if bb_context:
+                    n.retrieval_query = f"{n.question} (given: {bb_context})"
+
+        sem = asyncio.Semaphore(max(1, int(runner.worker_width or 1)))
+
+        async def _guarded_run(nid: str) -> None:
+            async with sem:
+                await runner.run_node(plan.nodes[nid])
+
+        await asyncio.gather(*[_guarded_run(nid) for nid in layer])
         if plan_one is not None:
             # After running the layer, attempt recursion for low-conf bridge nodes
             for nid in layer:
