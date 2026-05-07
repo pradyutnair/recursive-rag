@@ -1,0 +1,54 @@
+{
+  "2wikimultihop": {
+    "dataset": "2wikimultihop",
+    "W": 4,
+    "D": 2,
+    "n": 100,
+    "em": 0.38,
+    "f1": 0.5187,
+    "acc": 0.57,
+    "avg_tokens": 22371.1,
+    "avg_rounds": 1.59,
+    "avg_wall_s": 152.49,
+    "wall_clock_s": 839.43
+  },
+  "bamboogle": {
+    "dataset": "bamboogle",
+    "W": 2,
+    "D": 8,
+    "n": 42,
+    "em": 0.4048,
+    "f1": 0.5764,
+    "acc": 0.4524,
+    "avg_tokens": 11328.2,
+    "avg_rounds": 1.6,
+    "avg_wall_s": 86.11,
+    "wall_clock_s": 938.96
+  },
+  "hotpotqa": {
+    "dataset": "hotpotqa",
+    "W": 4,
+    "D": 8,
+    "n": 100,
+    "em": 0.39,
+    "f1": 0.499,
+    "acc": 0.46,
+    "avg_tokens": 32328.1,
+    "avg_rounds": 1.99,
+    "avg_wall_s": 164.34,
+    "wall_clock_s": 2182.07
+  },
+  "musique": {
+    "dataset": "musique",
+    "W": 4,
+    "D": 8,
+    "n": 100,
+    "em": 0.13,
+    "f1": 0.2506,
+    "acc": 0.19,
+    "avg_tokens": 40798.8,
+    "avg_rounds": 2.36,
+    "avg_wall_s": 299.89,
+    "wall_clock_s": 1860.31
+  }
+}

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hera"
+version = "0.1.0"
+description = "HERA reproduction: Hierarchical Evolution multi-agent RAG"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "openai>=1.40.0",
+    "httpx>=0.27.0",
+    "pydantic>=2.0.0",
+    "tqdm>=4.66.0",
+    "tenacity>=8.0.0",
+    "wandb>=0.16.0",
+    "datasets>=2.14.0",
+    "python-dotenv>=1.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,39 @@
+{"done": 2, "n": 42, "em": 0.5, "f1": 0.5, "avg_tokens": 1786.0, "wall_s": 17.6}
+{"done": 4, "n": 42, "em": 0.25, "f1": 0.3333, "avg_tokens": 1833.2, "wall_s": 21.2}
+{"done": 6, "n": 42, "em": 0.3333, "f1": 0.4722, "avg_tokens": 1898.7, "wall_s": 24.2}
+{"done": 8, "n": 42, "em": 0.375, "f1": 0.4792, "avg_tokens": 1906.0, "wall_s": 34.4}
+{"done": 10, "n": 42, "em": 0.4, "f1": 0.4833, "avg_tokens": 1857.7, "wall_s": 38.3}
+{"done": 12, "n": 42, "em": 0.4167, "f1": 0.5278, "avg_tokens": 1848.7, "wall_s": 42.2}
+{"done": 14, "n": 42, "em": 0.4286, "f1": 0.5238, "avg_tokens": 1946.3, "wall_s": 47.2}
+{"done": 16, "n": 42, "em": 0.4375, "f1": 0.5521, "avg_tokens": 1991.2, "wall_s": 55.5}
+{"done": 18, "n": 42, "em": 0.3889, "f1": 0.5352, "avg_tokens": 2002.8, "wall_s": 67.8}
+{"done": 20, "n": 42, "em": 0.35, "f1": 0.4817, "avg_tokens": 1991.7, "wall_s": 76.3}
+{"done": 22, "n": 42, "em": 0.3182, "f1": 0.4606, "avg_tokens": 2093.5, "wall_s": 84.4}
+{"done": 24, "n": 42, "em": 0.2917, "f1": 0.4266, "avg_tokens": 2159.7, "wall_s": 90.7}
+{"done": 26, "n": 42, "em": 0.3462, "f1": 0.4707, "avg_tokens": 2129.3, "wall_s": 96.3}
+{"done": 28, "n": 42, "em": 0.3571, "f1": 0.4728, "avg_tokens": 2129.8, "wall_s": 105.6}
+{"done": 30, "n": 42, "em": 0.3333, "f1": 0.4413, "avg_tokens": 2311.5, "wall_s": 107.1}
+{"done": 32, "n": 42, "em": 0.3438, "f1": 0.4658, "avg_tokens": 2274.2, "wall_s": 114.4}
+{"done": 34, "n": 42, "em": 0.3529, "f1": 0.4874, "avg_tokens": 2241.7, "wall_s": 114.5}
+{"done": 36, "n": 42, "em": 0.3889, "f1": 0.5159, "avg_tokens": 2204.3, "wall_s": 121.3}
+{"done": 38, "n": 42, "em": 0.3947, "f1": 0.5282, "avg_tokens": 2179.9, "wall_s": 133.5}
+{"done": 40, "n": 42, "em": 0.375, "f1": 0.5143, "avg_tokens": 2307.0, "wall_s": 165.4}
+{"done": 42, "n": 42, "em": 0.3571, "f1": 0.4898, "avg_tokens": 2434.4, "wall_s": 172.3}
+
+SUMMARY: {
+  "n": 42,
+  "em": 0.3571,
+  "f1": 0.4898,
+  "acc": 0.381,
+  "avg_tokens": 2434.4,
+  "avg_rounds": 1.21,
+  "avg_wall_s": 27.74,
+  "wall_clock_s": 172.29,
+  "error_count": 0,
+  "config": {
+    "width": 1,
+    "max_depth": 2,
+    "topk": 6,
+    "concurrency": 8
+  }
+}

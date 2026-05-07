@@ -1,0 +1,12 @@
+{
+  "dataset": "musique",
+  "n": 1000,
+  "em": 0.097,
+  "f1": 0.1807886032754734,
+  "contain": 0.194,
+  "acc": 0.194,
+  "tokens": 8937.166,
+  "elapsed_s": 4874.402590751648,
+  "library": "exp_lib/run01/library.json",
+  "prompts": "exp_lib/run01/prompts.json"
+}

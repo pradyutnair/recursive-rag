@@ -1,0 +1,11 @@
+[run] 2wikimultihop W=2 D=8 conc=20
+}
+[run] 2wikimultihop W=4 D=2 conc=20
+}
+[run] 2wikimultihop W=4 D=4 conc=20
+}
+[run] 2wikimultihop W=4 D=6 conc=20
+}
+[run] 2wikimultihop W=4 D=8 conc=20
+}
+[done] 2wikimultihop missing grid complete
