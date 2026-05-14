@@ -1,0 +1,38 @@
+{"done": 5, "n": 100, "em": 0.4, "f1": 0.44, "avg_tokens": 1675.4, "wall_s": 11.1}
+{"done": 10, "n": 100, "em": 0.4, "f1": 0.47, "avg_tokens": 1753.2, "wall_s": 16.8}
+{"done": 15, "n": 100, "em": 0.4, "f1": 0.5222, "avg_tokens": 1819.9, "wall_s": 24.7}
+{"done": 20, "n": 100, "em": 0.4, "f1": 0.5317, "avg_tokens": 1947.8, "wall_s": 33.2}
+{"done": 25, "n": 100, "em": 0.44, "f1": 0.5453, "avg_tokens": 1933.4, "wall_s": 39.3}
+{"done": 30, "n": 100, "em": 0.4, "f1": 0.4878, "avg_tokens": 2092.7, "wall_s": 51.0}
+{"done": 35, "n": 100, "em": 0.4, "f1": 0.5181, "avg_tokens": 2073.9, "wall_s": 60.2}
+{"done": 40, "n": 100, "em": 0.375, "f1": 0.5075, "avg_tokens": 2364.0, "wall_s": 69.2}
+{"done": 45, "n": 100, "em": 0.4, "f1": 0.528, "avg_tokens": 2347.7, "wall_s": 77.2}
+{"done": 50, "n": 100, "em": 0.4, "f1": 0.5286, "avg_tokens": 2414.4, "wall_s": 91.4}
+{"done": 55, "n": 100, "em": 0.4182, "f1": 0.5351, "avg_tokens": 2496.0, "wall_s": 99.4}
+{"done": 60, "n": 100, "em": 0.4, "f1": 0.5155, "avg_tokens": 2568.2, "wall_s": 128.1}
+{"done": 65, "n": 100, "em": 0.3692, "f1": 0.4758, "avg_tokens": 2794.8, "wall_s": 148.8}
+{"done": 70, "n": 100, "em": 0.3714, "f1": 0.4854, "avg_tokens": 3014.4, "wall_s": 160.8}
+{"done": 75, "n": 100, "em": 0.3867, "f1": 0.493, "avg_tokens": 3147.5, "wall_s": 174.0}
+{"done": 80, "n": 100, "em": 0.375, "f1": 0.4847, "avg_tokens": 3148.2, "wall_s": 191.5}
+{"done": 85, "n": 100, "em": 0.3765, "f1": 0.4797, "avg_tokens": 3278.3, "wall_s": 209.8}
+{"done": 90, "n": 100, "em": 0.3889, "f1": 0.4931, "avg_tokens": 3288.0, "wall_s": 221.7}
+{"done": 95, "n": 100, "em": 0.3789, "f1": 0.4777, "avg_tokens": 3488.9, "wall_s": 242.6}
+{"done": 100, "n": 100, "em": 0.36, "f1": 0.4638, "avg_tokens": 3868.6, "wall_s": 301.2}
+
+SUMMARY: {
+  "n": 100,
+  "em": 0.36,
+  "f1": 0.4638,
+  "acc": 0.42,
+  "avg_tokens": 3868.6,
+  "avg_rounds": 1.72,
+  "avg_wall_s": 25.63,
+  "wall_clock_s": 301.18,
+  "error_count": 0,
+  "config": {
+    "width": 1,
+    "max_depth": 4,
+    "topk": 6,
+    "concurrency": 10
+  }
+}

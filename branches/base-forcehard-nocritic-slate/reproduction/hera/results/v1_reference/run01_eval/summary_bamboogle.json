@@ -1,0 +1,12 @@
+{
+  "dataset": "bamboogle",
+  "n": 125,
+  "em": 0.312,
+  "f1": 0.44340442380849426,
+  "contain": 0.432,
+  "acc": 0.432,
+  "tokens": 8488.304,
+  "elapsed_s": 612.6788578033447,
+  "library": "exp_lib/run01/library.json",
+  "prompts": "exp_lib/run01/prompts.json"
+}

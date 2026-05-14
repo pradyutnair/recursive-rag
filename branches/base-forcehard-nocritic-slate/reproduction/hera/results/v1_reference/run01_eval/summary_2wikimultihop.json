@@ -1,0 +1,12 @@
+{
+  "dataset": "2wikimultihop",
+  "n": 1000,
+  "em": 0.108,
+  "f1": 0.22749103344066662,
+  "contain": 0.577,
+  "acc": 0.577,
+  "tokens": 9171.544,
+  "elapsed_s": 4825.118266820908,
+  "library": "exp_lib/run01/library.json",
+  "prompts": "exp_lib/run01/prompts.json"
+}

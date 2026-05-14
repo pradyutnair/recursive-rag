@@ -1,0 +1,12 @@
+{
+  "dataset": "hotpotqa",
+  "n": 1000,
+  "em": 0.264,
+  "f1": 0.388174345021561,
+  "contain": 0.524,
+  "acc": 0.524,
+  "tokens": 8410.68,
+  "elapsed_s": 4652.964763879776,
+  "library": "exp_lib/run01/library.json",
+  "prompts": "exp_lib/run01/prompts.json"
+}

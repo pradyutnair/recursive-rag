@@ -1,0 +1,22 @@
+{
+  "n": 1000,
+  "norm_em": 0.304,
+  "token_f1": 0.3661,
+  "contain": 0.365,
+  "mean_tokens": 6016.0,
+  "mean_elapsed_s": 17.72,
+  "route_dist": {
+    "easy": 371,
+    "hard": 629
+  },
+  "profile_dist": {
+    "bridge_3hop_plus": 109,
+    "bridge_2hop": 427,
+    "temporal": 16,
+    "one_hop": 256,
+    "parallel_compare": 69,
+    "yes_no": 115,
+    "numeric": 8
+  },
+  "method": "adaptive_profile_blend_sas_onehop_yesno_else_mas"
+}

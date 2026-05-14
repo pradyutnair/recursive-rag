@@ -1,0 +1,17 @@
+{
+  "n": 100,
+  "em": 0.36,
+  "f1": 0.4638,
+  "acc": 0.42,
+  "avg_tokens": 3868.6,
+  "avg_rounds": 1.72,
+  "avg_wall_s": 25.63,
+  "wall_clock_s": 301.18,
+  "error_count": 0,
+  "config": {
+    "width": 1,
+    "max_depth": 4,
+    "topk": 6,
+    "concurrency": 10
+  }
+}

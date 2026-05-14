@@ -1,0 +1,47 @@
+{
+  "os":  "Linux-4.18.0-348.2.1.el8_5.x86_64-x86_64-with-glibc2.28",
+  "python":  "CPython 3.10.18",
+  "startedAt":  "2026-05-06T15:05:17.838964Z",
+  "args":  [
+    "--dataset",
+    "musique",
+    "--out-dir",
+    "results/run01_eval",
+    "--library",
+    "exp_lib/run01/library.json",
+    "--prompts",
+    "exp_lib/run01/prompts.json",
+    "--limit",
+    "1000",
+    "--temperature",
+    "0.0",
+    "--parallel",
+    "6",
+    "--vllm-concurrency",
+    "12",
+    "--openai-concurrency",
+    "16",
+    "--wandb",
+    "--run-name",
+    "hera_eval_musique"
+  ],
+  "program":  "/local/yzheng/pnair/workspace/hera/scripts/eval.py",
+  "codePath":  "scripts/eval.py",
+  "codePathLocal":  "scripts/eval.py",
+  "email":  "pradyut.nair@student.uva.nl",
+  "root":  "/local/yzheng/pnair/workspace/hera",
+  "host":  "node409",
+  "executable":  "/local/yzheng/pnair/workspace/adaptive-mas/.venv/bin/python",
+  "cpu_count":  24,
+  "cpu_count_logical":  48,
+  "disk":  {
+    "/":  {
+      "total":  "187420844032",
+      "used":  "7839907840"
+    }
+  },
+  "memory":  {
+    "total":  "118110580736"
+  },
+  "writerId":  "xjz8zjucqyiapkopycesk5advkzz7dvl"
+}

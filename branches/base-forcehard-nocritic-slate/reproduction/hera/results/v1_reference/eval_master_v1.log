@@ -1,0 +1,62 @@
+[launch] musique limit=1000 temp=0.0
+  pid=2235132
+[launch] 2wikimultihop limit=1000 temp=0.0
+  pid=2235133
+[launch] hotpotqa limit=1000 temp=0.0
+  pid=2235134
+[launch] bamboogle limit=125 temp=0.3
+  pid=2235135
+=== ALL EVAL COMPLETE ===
+results/run01_eval/summary_2wikimultihop.json
+results/run01_eval/summary_bamboogle.json
+results/run01_eval/summary_hotpotqa.json
+results/run01_eval/summary_musique.json
+--- results/run01_eval/summary_2wikimultihop.json ---
+{
+  "dataset": "2wikimultihop",
+  "n": 1000,
+  "em": 0.108,
+  "f1": 0.22749103344066662,
+  "contain": 0.577,
+  "acc": 0.577,
+  "tokens": 9171.544,
+  "elapsed_s": 4825.118266820908,
+  "library": "exp_lib/run01/library.json",
+  "prompts": "exp_lib/run01/prompts.json"
+}--- results/run01_eval/summary_bamboogle.json ---
+{
+  "dataset": "bamboogle",
+  "n": 125,
+  "em": 0.312,
+  "f1": 0.44340442380849426,
+  "contain": 0.432,
+  "acc": 0.432,
+  "tokens": 8488.304,
+  "elapsed_s": 612.6788578033447,
+  "library": "exp_lib/run01/library.json",
+  "prompts": "exp_lib/run01/prompts.json"
+}--- results/run01_eval/summary_hotpotqa.json ---
+{
+  "dataset": "hotpotqa",
+  "n": 1000,
+  "em": 0.264,
+  "f1": 0.388174345021561,
+  "contain": 0.524,
+  "acc": 0.524,
+  "tokens": 8410.68,
+  "elapsed_s": 4652.964763879776,
+  "library": "exp_lib/run01/library.json",
+  "prompts": "exp_lib/run01/prompts.json"
+}--- results/run01_eval/summary_musique.json ---
+{
+  "dataset": "musique",
+  "n": 1000,
+  "em": 0.097,
+  "f1": 0.1807886032754734,
+  "contain": 0.194,
+  "acc": 0.194,
+  "tokens": 8937.166,
+  "elapsed_s": 4874.402590751648,
+  "library": "exp_lib/run01/library.json",
+  "prompts": "exp_lib/run01/prompts.json"
+}
