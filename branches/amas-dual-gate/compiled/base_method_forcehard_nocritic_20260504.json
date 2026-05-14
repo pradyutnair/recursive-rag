@@ -1,0 +1,32 @@
+{
+  "name": "base_forcehard_nocritic_20260504",
+  "frozen_at": "2026-05-04",
+  "method": "recursive-rag force-hard no-critic with generic final-answer canonicalization",
+  "code_change": "src/recrag/pipeline.py::_clean_final_answer generic span cleanup only; no Bamboogle/test-id/question-specific strings",
+  "eval_command": "PYTHONPATH=src DSPY_CACHEDIR=/local/yzheng/pnair/workspace/recursive-rag/.dspy_cache /local/yzheng/pnair/workspace/adaptive-mas/.venv/bin/python scripts/eval_on_test.py --out-dir results/runs/base_forcehard_nocritic_bamboogle_20260504 --questions-file /local/yzheng/pnair/workspace/adaptive-mas/data/bamboogle/questions_125.json --dataset-name bamboogle --root-lm qwen14b-nothink --sub-lm qwen14b-nothink --root-max-tokens 768 --sub-max-tokens 512 --max-searches 5 --max-recursion 0 --concurrency 24",
+  "config": {
+    "root_lm": "qwen14b-nothink",
+    "sub_lm": "qwen14b-nothink",
+    "root_max_tokens": 768,
+    "sub_max_tokens": 512,
+    "max_searches": 5,
+    "max_recursion": 0,
+    "concurrency": 24,
+    "retriever": "http://node408:8003 topk=5 via recrag.tools.RETRIEVE_TOPK"
+  },
+  "bamboogle_125_result": {
+    "n": 125,
+    "norm_em": 0.392,
+    "token_f1": 0.4944,
+    "contain": 0.4,
+    "mean_tokens": 4760.6,
+    "mean_elapsed_s": 21.63,
+    "route_dist": {"hard": 125},
+    "topology_dist": {"dag_n2": 107, "dag_n3": 7, "single_hop": 11}
+  },
+  "success_gate": {
+    "required_em": 0.384,
+    "achieved_em": 0.392,
+    "passed": true
+  }
+}

@@ -1,0 +1,39 @@
+{"done": 2, "n": 42, "em": 0.5, "f1": 0.5, "avg_tokens": 1786.0, "wall_s": 14.9}
+{"done": 4, "n": 42, "em": 0.25, "f1": 0.3333, "avg_tokens": 1833.2, "wall_s": 17.8}
+{"done": 6, "n": 42, "em": 0.5, "f1": 0.5556, "avg_tokens": 1854.2, "wall_s": 28.5}
+{"done": 8, "n": 42, "em": 0.5, "f1": 0.5417, "avg_tokens": 1796.8, "wall_s": 30.5}
+{"done": 10, "n": 42, "em": 0.4, "f1": 0.5333, "avg_tokens": 1873.7, "wall_s": 37.2}
+{"done": 12, "n": 42, "em": 0.5, "f1": 0.6111, "avg_tokens": 1862.3, "wall_s": 58.1}
+{"done": 14, "n": 42, "em": 0.4286, "f1": 0.581, "avg_tokens": 1903.9, "wall_s": 77.6}
+{"done": 16, "n": 42, "em": 0.375, "f1": 0.5083, "avg_tokens": 1916.1, "wall_s": 101.9}
+{"done": 18, "n": 42, "em": 0.4444, "f1": 0.563, "avg_tokens": 2781.1, "wall_s": 107.3}
+{"done": 20, "n": 42, "em": 0.4, "f1": 0.5233, "avg_tokens": 2769.4, "wall_s": 116.6}
+{"done": 22, "n": 42, "em": 0.3636, "f1": 0.4758, "avg_tokens": 2699.4, "wall_s": 133.2}
+{"done": 24, "n": 42, "em": 0.4167, "f1": 0.5194, "avg_tokens": 2623.8, "wall_s": 135.3}
+{"done": 26, "n": 42, "em": 0.4231, "f1": 0.5179, "avg_tokens": 2587.4, "wall_s": 150.9}
+{"done": 28, "n": 42, "em": 0.4286, "f1": 0.5405, "avg_tokens": 2524.8, "wall_s": 171.4}
+{"done": 30, "n": 42, "em": 0.4, "f1": 0.5044, "avg_tokens": 2867.4, "wall_s": 271.3}
+{"done": 32, "n": 42, "em": 0.4062, "f1": 0.5042, "avg_tokens": 3465.2, "wall_s": 311.2}
+{"done": 34, "n": 42, "em": 0.4118, "f1": 0.5186, "avg_tokens": 3363.8, "wall_s": 332.9}
+{"done": 36, "n": 42, "em": 0.4167, "f1": 0.5315, "avg_tokens": 3959.6, "wall_s": 364.1}
+{"done": 38, "n": 42, "em": 0.3947, "f1": 0.5167, "avg_tokens": 5190.6, "wall_s": 406.6}
+{"done": 40, "n": 42, "em": 0.4, "f1": 0.5158, "avg_tokens": 6243.9, "wall_s": 527.6}
+{"done": 42, "n": 42, "em": 0.381, "f1": 0.4913, "avg_tokens": 7167.9, "wall_s": 575.5}
+
+SUMMARY: {
+  "n": 42,
+  "em": 0.381,
+  "f1": 0.4913,
+  "acc": 0.4048,
+  "avg_tokens": 7167.9,
+  "avg_rounds": 2.64,
+  "avg_wall_s": 87.63,
+  "wall_clock_s": 575.52,
+  "error_count": 0,
+  "config": {
+    "width": 1,
+    "max_depth": 8,
+    "topk": 6,
+    "concurrency": 8
+  }
+}

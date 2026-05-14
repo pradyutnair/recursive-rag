@@ -1,0 +1,97 @@
+{
+  "musique": {
+    "n": 200,
+    "norm_em": 0.19,
+    "token_f1": 0.2779,
+    "contain": 0.225,
+    "mean_quality": 1.213,
+    "mean_efficiency": 0.46,
+    "mean_composite": 0.977,
+    "mean_tokens": 6930.2,
+    "mean_elapsed_s": 18.82,
+    "mean_nodes": 2.71,
+    "route_dist": {
+      "hard": 200
+    },
+    "topology_dist": {
+      "dag_n2": 104,
+      "dag_n5": 8,
+      "dag_n4": 32,
+      "dag_n3": 47,
+      "single_hop": 6,
+      "dag_n6": 3
+    },
+    "profile_dist": {
+      "temporal": 61,
+      "one_hop": 18,
+      "bridge_3hop_plus": 41,
+      "numeric": 17,
+      "bridge_2hop": 61,
+      "parallel_compare": 2
+    },
+    "topology_mutated_rate": 0.0,
+    "escalation_rate": 0.0,
+    "mean_wall_clock": 18.82,
+    "mean_retrievals": 2.71,
+    "answer_rate": 1.0,
+    "share_mode_dist": {
+      "full_share": 200
+    },
+    "worker_width_dist": {
+      "4": 200
+    },
+    "blackboard_top_k_dist": {
+      "3": 200
+    },
+    "easy_route_fraction": 0.0,
+    "easy_route_norm_em": 0.0,
+    "easy_route_mean_tokens": 0.0,
+    "wall_clock_s": 483.28
+  },
+  "bamboogle": {
+    "n": 125,
+    "norm_em": 0.368,
+    "token_f1": 0.4711,
+    "contain": 0.384,
+    "mean_quality": 1.7354,
+    "mean_efficiency": 0.5687,
+    "mean_composite": 1.4608,
+    "mean_tokens": 4684.9,
+    "mean_elapsed_s": 12.72,
+    "mean_nodes": 1.98,
+    "route_dist": {
+      "hard": 125
+    },
+    "topology_dist": {
+      "dag_n2": 106,
+      "dag_n3": 8,
+      "single_hop": 11
+    },
+    "profile_dist": {
+      "bridge_2hop": 52,
+      "temporal": 28,
+      "one_hop": 27,
+      "bridge_3hop_plus": 9,
+      "parallel_compare": 2,
+      "numeric": 7
+    },
+    "topology_mutated_rate": 0.0,
+    "escalation_rate": 0.0,
+    "mean_wall_clock": 12.72,
+    "mean_retrievals": 1.98,
+    "answer_rate": 1.0,
+    "share_mode_dist": {
+      "full_share": 125
+    },
+    "worker_width_dist": {
+      "4": 125
+    },
+    "blackboard_top_k_dist": {
+      "3": 125
+    },
+    "easy_route_fraction": 0.0,
+    "easy_route_norm_em": 0.0,
+    "easy_route_mean_tokens": 0.0,
+    "wall_clock_s": 208.27
+  }
+}

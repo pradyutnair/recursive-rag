@@ -1,0 +1,85 @@
+_wandb:
+    value:
+        cli_version: 0.26.1
+        code_path: code/scripts/train.py
+        e:
+            3zfyu3ulf6elt36qnoau6gtbzsormg9j:
+                args:
+                    - --train-path
+                    - data/train_240.jsonl
+                    - --out-dir
+                    - exp_lib/run01
+                    - --run-name
+                    - hera_train_run01
+                    - --epochs
+                    - "1"
+                    - --train-size
+                    - "240"
+                    - --group-size
+                    - "4"
+                    - --batch-size
+                    - "6"
+                    - --rollout-temperature
+                    - "0.9"
+                    - --rope-update-every
+                    - "30"
+                    - --rope-variants
+                    - "3"
+                    - --rope-max-failures
+                    - "4"
+                    - --vllm-concurrency
+                    - "24"
+                    - --openai-concurrency
+                    - "24"
+                    - --wandb
+                codePath: scripts/train.py
+                codePathLocal: scripts/train.py
+                cpu_count: 24
+                cpu_count_logical: 48
+                disk:
+                    /:
+                        total: "187420844032"
+                        used: "7858221056"
+                email: pradyut.nair@student.uva.nl
+                executable: /local/yzheng/pnair/workspace/adaptive-mas/.venv/bin/python
+                host: node409
+                memory:
+                    total: "118110580736"
+                os: Linux-4.18.0-348.2.1.el8_5.x86_64-x86_64-with-glibc2.28
+                program: /local/yzheng/pnair/workspace/hera/scripts/train.py
+                python: CPython 3.10.18
+                root: /local/yzheng/pnair/workspace/hera
+                startedAt: "2026-05-06T13:26:34.976977Z"
+                writerId: 3zfyu3ulf6elt36qnoau6gtbzsormg9j
+        m: []
+        python_version: 3.10.18
+        t:
+            "1":
+                - 95
+            "2":
+                - 95
+            "3":
+                - 2
+                - 13
+                - 15
+                - 16
+            "4": 3.10.18
+            "5": 0.26.1
+            "12": 0.26.1
+            "13": linux-x86_64
+epochs:
+    value: 1
+group_size:
+    value: 4
+model_orchestrator:
+    value: Qwen/Qwen3-14B
+model_subagent:
+    value: gpt-4o-mini
+rollout_temperature:
+    value: 0.9
+rope_update_every:
+    value: 30
+rope_variants:
+    value: 3
+train_size:
+    value: 240

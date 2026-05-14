@@ -1,0 +1,38 @@
+{"done": 5, "n": 100, "em": 0.2, "f1": 0.2, "avg_tokens": 2832.6, "wall_s": 30.1}
+{"done": 10, "n": 100, "em": 0.3, "f1": 0.3, "avg_tokens": 3204.6, "wall_s": 71.7}
+{"done": 15, "n": 100, "em": 0.4, "f1": 0.4, "avg_tokens": 3258.0, "wall_s": 101.3}
+{"done": 20, "n": 100, "em": 0.35, "f1": 0.35, "avg_tokens": 3388.8, "wall_s": 117.6}
+{"done": 25, "n": 100, "em": 0.36, "f1": 0.36, "avg_tokens": 3350.6, "wall_s": 130.0}
+{"done": 30, "n": 100, "em": 0.3667, "f1": 0.3833, "avg_tokens": 3238.1, "wall_s": 146.5}
+{"done": 35, "n": 100, "em": 0.3429, "f1": 0.3571, "avg_tokens": 3307.8, "wall_s": 171.7}
+{"done": 40, "n": 100, "em": 0.325, "f1": 0.3375, "avg_tokens": 3249.8, "wall_s": 214.2}
+{"done": 45, "n": 100, "em": 0.2889, "f1": 0.3, "avg_tokens": 3359.9, "wall_s": 241.9}
+{"done": 50, "n": 100, "em": 0.32, "f1": 0.3433, "avg_tokens": 3421.6, "wall_s": 277.4}
+{"done": 55, "n": 100, "em": 0.3273, "f1": 0.3485, "avg_tokens": 3407.2, "wall_s": 310.4}
+{"done": 60, "n": 100, "em": 0.3333, "f1": 0.3575, "avg_tokens": 3434.7, "wall_s": 324.5}
+{"done": 65, "n": 100, "em": 0.3231, "f1": 0.3454, "avg_tokens": 3412.4, "wall_s": 362.8}
+{"done": 70, "n": 100, "em": 0.3143, "f1": 0.3477, "avg_tokens": 3424.7, "wall_s": 381.6}
+{"done": 75, "n": 100, "em": 0.2933, "f1": 0.3466, "avg_tokens": 3400.8, "wall_s": 415.1}
+{"done": 80, "n": 100, "em": 0.275, "f1": 0.325, "avg_tokens": 3470.8, "wall_s": 440.6}
+{"done": 85, "n": 100, "em": 0.2706, "f1": 0.33, "avg_tokens": 3558.5, "wall_s": 473.2}
+{"done": 90, "n": 100, "em": 0.2778, "f1": 0.3394, "avg_tokens": 3557.2, "wall_s": 512.0}
+{"done": 95, "n": 100, "em": 0.2842, "f1": 0.3496, "avg_tokens": 3626.7, "wall_s": 528.3}
+{"done": 100, "n": 100, "em": 0.28, "f1": 0.3494, "avg_tokens": 3651.3, "wall_s": 589.6}
+
+SUMMARY: {
+  "n": 100,
+  "em": 0.28,
+  "f1": 0.3494,
+  "acc": 0.33,
+  "avg_tokens": 3651.3,
+  "avg_rounds": 1.56,
+  "avg_wall_s": 43.71,
+  "wall_clock_s": 589.57,
+  "error_count": 0,
+  "config": {
+    "width": 1,
+    "max_depth": 2,
+    "topk": 6,
+    "concurrency": 8
+  }
+}

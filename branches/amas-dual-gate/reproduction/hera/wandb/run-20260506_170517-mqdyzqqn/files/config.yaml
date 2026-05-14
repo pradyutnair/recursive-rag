@@ -1,0 +1,69 @@
+_wandb:
+    value:
+        cli_version: 0.26.1
+        code_path: code/scripts/eval.py
+        e:
+            qlk96pxs0clppzbhdcq6lbczw4tsij48:
+                args:
+                    - --dataset
+                    - hotpotqa
+                    - --out-dir
+                    - results/run01_eval
+                    - --library
+                    - exp_lib/run01/library.json
+                    - --prompts
+                    - exp_lib/run01/prompts.json
+                    - --limit
+                    - "1000"
+                    - --temperature
+                    - "0.0"
+                    - --parallel
+                    - "6"
+                    - --vllm-concurrency
+                    - "12"
+                    - --openai-concurrency
+                    - "16"
+                    - --wandb
+                    - --run-name
+                    - hera_eval_hotpotqa
+                codePath: scripts/eval.py
+                codePathLocal: scripts/eval.py
+                cpu_count: 24
+                cpu_count_logical: 48
+                disk:
+                    /:
+                        total: "187420844032"
+                        used: "7839907840"
+                email: pradyut.nair@student.uva.nl
+                executable: /local/yzheng/pnair/workspace/adaptive-mas/.venv/bin/python
+                host: node409
+                memory:
+                    total: "118110580736"
+                os: Linux-4.18.0-348.2.1.el8_5.x86_64-x86_64-with-glibc2.28
+                program: /local/yzheng/pnair/workspace/hera/scripts/eval.py
+                python: CPython 3.10.18
+                root: /local/yzheng/pnair/workspace/hera
+                startedAt: "2026-05-06T15:05:17.774366Z"
+                writerId: qlk96pxs0clppzbhdcq6lbczw4tsij48
+        m: []
+        python_version: 3.10.18
+        t:
+            "1":
+                - 95
+            "2":
+                - 95
+            "3":
+                - 2
+                - 13
+                - 15
+                - 16
+            "4": 3.10.18
+            "5": 0.26.1
+            "12": 0.26.1
+            "13": linux-x86_64
+dataset:
+    value: hotpotqa
+limit:
+    value: 1000
+temperature:
+    value: 0

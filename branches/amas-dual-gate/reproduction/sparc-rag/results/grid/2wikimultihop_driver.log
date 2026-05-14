@@ -1,0 +1,10 @@
+[skip] results/grid/2wikimultihop/W1_D2 (summary exists)
+[skip] results/grid/2wikimultihop/W1_D4 (summary exists)
+[skip] results/grid/2wikimultihop/W1_D6 (summary exists)
+[skip] results/grid/2wikimultihop/W1_D8 (summary exists)
+[skip] results/grid/2wikimultihop/W2_D2 (summary exists)
+[run] ds=2wikimultihop W=2 D=4 N=100
+}
+[run] ds=2wikimultihop W=2 D=6 N=100
+}
+[run] ds=2wikimultihop W=2 D=8 N=100

@@ -1,0 +1,111 @@
+#!/bin/bash
+#SBATCH --job-name=hera_v2_e2e
+#SBATCH --partition=gpu_a100
+#SBATCH --time=06:00:00
+#SBATCH --gpus=1
+#SBATCH --cpus-per-task=18
+#SBATCH --mem=180G
+#SBATCH --output=/projects/prjs1800/jobs/output/%j_hera_v2_e2e.log
+set -eo pipefail
+
+# ---------- env ----------
+module purge
+module load 2025
+module load Anaconda3/2025.06-1
+module load CUDA/12.8.0
+
+set -a
+. /projects/prjs1800/.env
+set +a
+export OPENAI_API_KEY="${OPENAI_API_KEY:-${OPENAI_API_KEY_PRIVATE:-}}"
+export PYTHONNOUSERSITE=1
+export HF_HOME=${HF_HOME:-/projects/prjs1800/.cache/huggingface}
+export TRANSFORMERS_CACHE=${TRANSFORMERS_CACHE:-$HF_HOME}
+export HF_HUB_CACHE=${HF_HUB_CACHE:-$HF_HOME/hub}
+# Use HF_API_KEY as HF_TOKEN if set.
+export HF_TOKEN="${HF_TOKEN:-${HF_API_KEY:-}}"
+
+source /projects/prjs1800/venvs/FlashRAG-venv/bin/activate
+
+HERA_DIR=/projects/prjs1800/hera
+INDEX_PATH=/projects/prjs1800/datasets/flashrag/indexes/e5_Flat.index
+CORPUS_PATH=/projects/prjs1800/datasets/flashrag/retrieval-corpus/wiki18_100w.jsonl
+
+cd $HERA_DIR
+export PYTHONPATH=$HERA_DIR/src
+
+# ---------- launch retriever ----------
+RETR_PORT=8003
+echo "[retriever] launching ..."
+python scripts/snellius_retriever_server.py \
+  --index-path $INDEX_PATH \
+  --corpus-path $CORPUS_PATH \
+  --encoder intfloat/e5-base-v2 \
+  --host 127.0.0.1 \
+  --port $RETR_PORT \
+  --device cuda > $HERA_DIR/logs/retriever_$RETR_PORT.log 2>&1 &
+RETR_PID=$!
+
+# ---------- launch vLLM Qwen3-14B ----------
+VLLM_PORT=8001
+echo "[vllm] launching Qwen3-14B on port $VLLM_PORT ..."
+python -m vllm.entrypoints.openai.api_server \
+  --model Qwen/Qwen3-14B \
+  --host 127.0.0.1 \
+  --port $VLLM_PORT \
+  --dtype auto \
+  --max-model-len 8192 \
+  --gpu-memory-utilization 0.85 \
+  --trust-remote-code > $HERA_DIR/logs/vllm_$VLLM_PORT.log 2>&1 &
+VLLM_PID=$!
+trap "kill ${RETR_PID:-} ${VLLM_PID:-} 2>/dev/null || true" EXIT
+
+# ---------- wait for retriever ----------
+echo "[wait] retriever ..."
+for i in $(seq 1 600); do
+  if curl -sf http://127.0.0.1:$RETR_PORT/health >/dev/null 2>&1; then
+    echo "[retriever] ready after $i sec"
+    break
+  fi
+  sleep 5
+done
+curl -sf http://127.0.0.1:$RETR_PORT/health || { echo "[retriever] failed to start"; exit 1; }
+
+# ---------- wait for vLLM ----------
+echo "[wait] vllm ..."
+for i in $(seq 1 600); do
+  if curl -sf http://127.0.0.1:$VLLM_PORT/v1/models >/dev/null 2>&1; then
+    echo "[vllm] ready after $i sec"
+    break
+  fi
+  sleep 5
+done
+curl -sf http://127.0.0.1:$VLLM_PORT/v1/models || { echo "[vllm] failed to start"; exit 1; }
+
+# ---------- override hera config endpoints ----------
+export HERA_VLLM_ENDPOINTS="http://127.0.0.1:$VLLM_PORT/v1"
+export HERA_RETRIEVER_URL="http://127.0.0.1:$RETR_PORT/retrieve"
+
+# Patch retriever_url at runtime via a one-line override in a Python wrapper.
+# (HERAConfig has retriever_url default; we override via env variable handled below.)
+
+# ---------- run train ----------
+echo "[train] starting ..."
+python scripts/train.py \
+  --train-path data/train_240_v2.jsonl \
+  --out-dir exp_lib/run02 --run-name hera_train_run02 \
+  --epochs 1 --train-size 200 --group-size 4 --batch-size 6 \
+  --rollout-temperature 0.9 --rope-per-query --rope-min-buffer 2 \
+  --rope-variants 3 --rope-max-failures 4 \
+  --vllm-concurrency 16 --openai-concurrency 24 \
+  --wandb 2>&1 | tee $HERA_DIR/logs/train_run02.log
+
+# ---------- run eval (parallel) ----------
+echo "[eval] starting all 4 datasets ..."
+bash scripts/run_all_eval.sh exp_lib/run02 results/run02_eval 1000 2>&1 | tee $HERA_DIR/logs/eval_master_v2.log
+
+# ---------- aggregate ----------
+echo "[aggregate]"
+python scripts/aggregate_results.py --out-dir results/run02_eval | tee $HERA_DIR/logs/aggregate_v2.log
+
+echo "=== HERA v2 DONE ==="
